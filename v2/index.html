@@ -1,0 +1,2190 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#D9008D" />
+<title>नेट सेटअप — व्योम · Onboarding</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..700,0..1,-50..200" rel="stylesheet">
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+<style>
+/* ---------- Wiom Foundations · element-first tokens ---------- */
+:root {
+  /* Color · bg.* */
+  --bg-default:#FAF9FC; --bg-subtle:#F1EDF7; --bg-strong:#E8E4F0; --bg-disabled:#D7D3E0;
+  --bg-brand:#D9008D; --bg-brand-pressed:#B5007A; --bg-brand-subtle:#FFE5F6; --bg-brand-accent:#FF66C9; --bg-brand-bold:#443152;
+  --bg-selected:#FFCCED;
+  --bg-positive:#008043; --bg-positive-subtle:#E1FAED;
+  --bg-warning:#FFD83D; --bg-warning-subtle:#FFE9A1;
+  --bg-critical:#D92130; --bg-critical-subtle:#FFE5E7;
+  --bg-info:#6D17CE; --bg-info-subtle:#F1E5FF;
+  --bg-overlay:rgba(22,16,33,0.50);
+  --bg-chat-incoming:#EFEEF1; --bg-chat-outgoing:#FFFFFF;
+
+  --text-default:#161021; --text-subtle:#5C5468; --text-disabled:#A7A1B2;
+  --text-brand:#D9008D; --text-onBrand:#FAF9FC; --text-selected:#D9008D;
+  --text-onWarning:#372902; --text-critical:#D92130; --text-positive:#008043; --text-info:#6D17CE;
+  --text-onCritical:#FFFFFF; --text-inverse:#FFFFFF; --text-onBrandAccent:#161021;
+
+  --stroke-subtle:#D7D3E0; --stroke-default:#E8E4F0; --stroke-strong:#473F55;
+  --stroke-brand-focus:#D9008D; --stroke-critical-focus:#D92130; --stroke-selected:#D9008D;
+
+  --icon-action:#352D42; --icon-nonAction:#898296; --icon-disabled:#A7A1B2;
+  --icon-brand:#D9008D; --icon-inverse:#FAF9FC;
+  --icon-positive:#008043; --icon-critical:#D92130; --icon-warning:#E2B203; --icon-info:#6D17CE;
+
+  --s4:4px; --s8:8px; --s12:12px; --s16:16px; --s24:24px; --s32:32px; --s40:40px; --s48:48px; --s64:64px;
+
+  --r-tiny:4px; --r-small:8px; --r-medium:12px; --r-large:16px; --r-xlarge:24px; --r-full:9999px;
+
+  --sh-sm:0 1px 3px 0 rgba(0,0,0,.15);
+  --sh-md:0 2px 6px 0 rgba(0,0,0,.15);
+  --sh-lg:0 4px 12px 0 rgba(0,0,0,.15);
+  --sh-xl:0 8px 24px 0 rgba(0,0,0,.15);
+
+  --ff:'Noto Sans','Noto Sans Devanagari',sans-serif;
+  --t-display-lg:700 48px/64px var(--ff);
+  --t-heading-xl:700 32px/44px var(--ff);
+  --t-heading-lg:700 24px/32px var(--ff);
+  --t-heading-md:700 20px/28px var(--ff);
+  --t-title-lg:500 20px/28px var(--ff);
+  --t-title-sm:700 16px/24px var(--ff);
+  --t-body-lg:400 16px/24px var(--ff);
+  --t-body-md:400 14px/20px var(--ff);
+  --t-body-sm:400 12px/16px var(--ff);
+  --t-label-lg:600 16px/24px var(--ff);
+  --t-label-md:600 14px/20px var(--ff);
+  --t-label-sm:600 12px/16px var(--ff);
+  --t-meta-xs:400 10px/16px var(--ff);
+}
+
+/* ---------- Material Symbols Rounded ---------- */
+.ms {
+  font-family:'Material Symbols Rounded'; font-weight:normal; font-style:normal;
+  font-size:24px; line-height:1; letter-spacing:normal; text-transform:none;
+  display:inline-block; white-space:nowrap; word-wrap:normal; direction:ltr;
+  -webkit-font-feature-settings:'liga'; -webkit-font-smoothing:antialiased;
+  font-variation-settings:'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  user-select:none;
+}
+.ms.outlined { font-variation-settings:'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.ms-16 { font-size:16px; font-variation-settings:'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
+.ms.ms-20 { font-size:20px; font-variation-settings:'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
+.ms.ms-32 { font-size:32px; font-variation-settings:'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.ms-48 { font-size:48px; font-variation-settings:'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 48; }
+
+/* ---------- Page chrome ---------- */
+* { box-sizing:border-box; margin:0; padding:0; }
+html, body { height:100%; }
+body {
+  font:var(--t-body-lg); color:var(--text-default);
+  background:#1f1830;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+button { font-family:inherit; cursor:pointer; }
+
+/* ===== Stage + Device (Rescheduling-style) ===== */
+.stage {
+  height:100vh; height:100dvh; width:100vw;
+  display:flex; align-items:center; justify-content:center;
+  padding:0;
+}
+.device {
+  width:100%; height:100%;
+  background:var(--bg-default);
+  overflow:hidden;
+  position:relative;
+  display:flex; flex-direction:column;
+}
+@media (min-width:768px) {
+  .stage { padding:var(--s32); }
+  .device {
+    width:390px; height:min(844px, 100%);
+    max-height:844px; border-radius:40px;
+    box-shadow:var(--sh-xl), 0 0 0 8px #1f1830, 0 0 0 10px #2a2238;
+  }
+}
+
+/* ===== Screens — slide between layout groups, cross-fade within a group ===== */
+.screen {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  background:var(--bg-default);
+  transform:translateX(100%);
+  opacity:0;
+  pointer-events:none;
+  transition:transform 280ms cubic-bezier(0.32, 0.72, 0, 1), opacity 200ms ease;
+  will-change:transform, opacity;
+  z-index:1;
+}
+.screen.active {
+  transform:translateX(0);
+  opacity:1;
+  pointer-events:auto;
+  z-index:2;
+}
+.screen > * { flex-shrink:0; }
+
+/* Same-group transition: kill the slide, cross-fade the changed parts only.
+   Persistent chrome (top bar, sticky-net, chat-input) is pixel-identical
+   between sibling chat/form screens, so the user perceives it as static —
+   only the body content fades through. */
+body.same-group .screen {
+  transform:none;
+  transition:opacity 160ms ease;
+}
+body.same-group .screen.active {
+  transform:none;
+}
+
+/* ===== Yellow context + scenario screens (Rescheduling pattern) ===== */
+.yellow-screen {
+  background:#FFD888;
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  overflow-y:auto; scrollbar-width:none;
+}
+.yellow-screen::-webkit-scrollbar { display:none; }
+
+.context-content {
+  padding:32px 24px 0;
+  display:flex; flex-direction:column;
+  gap:20px; flex:1;
+}
+.context-header {
+  display:flex; justify-content:space-between; align-items:flex-start; gap:16px;
+}
+.context-user-info {
+  display:flex; flex-direction:column; gap:4px; flex:1;
+}
+.context-avatar {
+  width:100px; height:100px; border-radius:50%; overflow:hidden;
+  flex:0 0 auto; box-shadow:0 2px 8px rgba(0,0,0,0.15);
+  background:#D9008D; display:grid; place-items:center;
+}
+.context-avatar svg { width:64px; height:64px; }
+.context-q {
+  font-weight:800; font-size:14px; line-height:20px; color:#565656;
+}
+.context-a {
+  font-weight:500; font-size:14px; line-height:20px; color:#D92B90;
+}
+.context-block { display:flex; flex-direction:column; gap:4px; }
+.context-block ul { margin:0; padding-left:18px; color:#D92B90; font-size:14px; font-weight:500; line-height:22px; }
+.context-block ul li::marker { color:#D92B90; }
+.context-name { font-size:20px; font-weight:500; color:#D92B90; line-height:28px; }
+.context-tag  { font-size:12px; font-weight:500; color:#000000; line-height:16px; }
+
+.context-cta-wrap {
+  flex:0 0 auto; padding:24px 24px 24px;
+  position:sticky; bottom:0; background:#FFD888;
+  box-shadow:0 -6px 20px 0 #FFD888;
+}
+.btn-yellow-cta {
+  background:#444444; color:#FFD888; border:none; border-radius:16px;
+  padding:14px 32px; font-size:16px; font-weight:600; line-height:24px;
+  width:100%; box-shadow:0 2px 6px rgba(0,0,0,0.17); cursor:pointer;
+}
+.btn-yellow-cta:active { transform:scale(0.98); }
+
+/* Scenario / variant chooser */
+.scenario-content {
+  padding:40px 24px 0;
+  display:flex; flex-direction:column; gap:16px; flex:1;
+}
+.scenario-title {
+  font-size:22px; font-weight:700; line-height:30px; color:#161021; text-align:center;
+}
+.scenario-subtitle {
+  font-size:14px; font-weight:400; line-height:20px; color:#565656;
+  text-align:center; margin-top:-8px;
+}
+.scenario-card {
+  background:#FFFFFF; border-radius:16px; padding:16px;
+  display:flex; flex-direction:column; gap:6px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1); cursor:pointer;
+  border:2px solid transparent; transition:transform 120ms;
+}
+.scenario-card:hover { transform:translateY(-2px); }
+.scenario-card-num {
+  font-size:11px; font-weight:700; color:#D92B90;
+  text-transform:uppercase; letter-spacing:0.04em;
+}
+.scenario-card-title { font-size:15px; font-weight:700; color:#161021; line-height:22px; }
+.scenario-card-desc  { font-size:13px; font-weight:400; color:#565656; line-height:18px; }
+.scenario-card-cta   {
+  font-size:13px; font-weight:600; color:#D9008D; margin-top:4px;
+  display:flex; align-items:center; gap:4px;
+}
+.scenario-card-cta .ms { font-size:16px; }
+
+/* Floating variant badge — tells the reviewer which variant they are walking */
+.variant-badge {
+  position:absolute; left:12px; top:12px; z-index:20;
+  background:rgba(217,0,141,0.95); color:#fff; border:0;
+  padding:4px 10px; border-radius:var(--r-full);
+  font:600 11px/16px var(--ff);
+  display:none; gap:4px; align-items:center;
+  pointer-events:none;
+}
+body.has-variant .variant-badge { display:flex; }
+
+/* ---------- Status bar ---------- */
+.statusbar {
+  height:24px; padding:0 var(--s16);
+  display:flex; align-items:center; justify-content:space-between;
+  font:var(--t-body-sm); color:var(--text-default);
+  position:relative; z-index:5;
+}
+.statusbar .right { display:flex; gap:var(--s4); align-items:center; opacity:.85; }
+
+/* ---------- Top app bar (chat) ---------- */
+.topbar {
+  height:56px; padding:0 var(--s16);
+  display:flex; align-items:center; gap:var(--s12);
+  background:var(--bg-default); border-bottom:1px solid var(--stroke-subtle);
+}
+.topbar .vyom-logo {
+  width:32px; height:32px; border-radius:var(--r-full);
+  display:grid; place-items:center; background:var(--bg-default);
+}
+.topbar .vyom-logo svg { width:24px; height:24px; }
+.topbar .title-block { flex:1; min-width:0; }
+.topbar .title-block .name   { font:var(--t-title-lg); color:var(--text-default); }
+.topbar .title-block .status { font:var(--t-body-sm); color:var(--text-subtle); }
+.topbar .icon-btn {
+  width:48px; height:48px; display:grid; place-items:center;
+  border:0; background:transparent; cursor:pointer; color:var(--icon-action);
+}
+.topbar .icon-btn svg, .topbar .icon-btn .ms { color:var(--icon-action); }
+
+.topbar.minimal { border-bottom:0; }
+.topbar.minimal .right { margin-left:auto; display:flex; gap:var(--s8); }
+.topbar.back { padding-left:var(--s8); }
+.topbar.back .back-btn {
+  width:48px; height:48px; display:grid; place-items:center;
+  border:0; background:transparent; cursor:pointer; color:var(--icon-action);
+}
+.topbar.back .back-btn .ms { color:var(--icon-action); }
+
+/* ---------- Chat (Rescheduling-style) ---------- */
+:root {
+  --chat-bg-pri:#FFFFFF;
+  --chat-bg-sec:#F5F6F7;
+  --chat-bubble-bot:#EBEDF0;
+  --chat-bubble-user:#FFFFFF;
+  --chat-quote-bar:#B6B9BF;
+  --chat-divider:#DCDEE0;
+}
+
+/* Chat top app bar */
+.chat-top-bar {
+  flex:0 0 auto; background:var(--chat-bg-pri);
+  border-bottom:1px solid var(--stroke-default);
+  padding:var(--s8) var(--s4) var(--s8) var(--s12);
+  display:flex; gap:var(--s4); align-items:center;
+}
+.chat-top-bar-left { flex:1; min-width:0; display:flex; align-items:center; gap:var(--s8); height:48px; }
+.wiom-avatar { width:48px; height:48px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
+.wiom-avatar svg { width:100%; height:100%; display:block; }
+.chat-top-text { display:flex; flex-direction:column; gap:var(--s4); min-width:0; }
+.chat-top-name { font-weight:500; font-size:14px; line-height:20px; color:var(--text-default); }
+.chat-top-status { font-weight:400; font-size:10px; line-height:14px; color:var(--text-subtle); }
+.chat-top-actions { display:flex; align-items:center; }
+.chat-icon-btn {
+  width:48px; height:48px; background:transparent; border:0;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:var(--r-large); color:var(--icon-action); flex:0 0 auto; cursor:pointer;
+}
+.chat-icon-btn:hover { background:var(--chat-bg-sec); }
+.chat-icon-btn .ms { color:var(--icon-action); }
+
+/* Sticky net card */
+.sticky-net {
+  flex:0 0 auto; background:var(--chat-bg-pri);
+  padding:var(--s12) var(--s16); display:flex; justify-content:center;
+}
+.net-card {
+  width:100%; background:var(--bg-default);
+  border-radius:var(--r-large); box-shadow:var(--sh-lg);
+  padding:var(--s12); display:flex; gap:var(--s12); align-items:center;
+}
+.net-card-icon { width:24px; height:24px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
+.net-card-icon .ms { font-size:24px; color:var(--icon-nonAction); font-variation-settings:'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.net-card-text { flex:1; display:flex; flex-direction:column; gap:var(--s4); min-width:0; }
+.net-card-heading { font-size:12px; line-height:16px; color:var(--text-subtle); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.net-card-status { display:flex; gap:4px; align-items:baseline; }
+.net-card-status-label { font-size:12px; line-height:16px; color:var(--text-subtle); }
+.net-card-status-value { font-size:16px; line-height:24px; font-weight:600; color:var(--text-default); }
+
+/* Chat body */
+.chat-body {
+  flex:1 1 auto; overflow-y:auto;
+  background:var(--chat-bg-sec);
+  padding:var(--s16) var(--s12) var(--s12);
+  display:flex; flex-direction:column; gap:var(--s12);
+  scroll-behavior:smooth;
+  scrollbar-width:none; -ms-overflow-style:none;
+}
+.chat-body::-webkit-scrollbar { display:none; }
+
+/* Bubbles */
+.msg-row { display:flex; width:100%; animation:fadeUp 220ms ease-out; }
+.msg-row.bot  { padding-left:var(--s12); padding-right:72px; }
+.msg-row.user { padding-left:72px; padding-right:var(--s12); justify-content:flex-end; }
+
+.msg-wrap { position:relative; max-width:280px; display:flex; flex-direction:column; }
+.msg-bubble { padding:var(--s4); display:flex; flex-direction:column; gap:var(--s4); }
+.msg-row.bot  .msg-bubble { background:var(--chat-bubble-bot); border-radius:0 var(--r-medium) var(--r-medium) var(--r-medium); align-items:flex-end; }
+.msg-row.user .msg-bubble { background:var(--chat-bubble-user); border-radius:var(--r-medium) 0 var(--r-medium) var(--r-medium); align-items:flex-start; }
+.msg-row.bot  .msg-bubble.has-cta-below { border-radius:0 var(--r-medium) 0 0; }
+.msg-row.bot.follow-up  .msg-bubble { border-radius:var(--r-medium); }
+.msg-row.user.follow-up .msg-bubble { border-radius:var(--r-medium); }
+.msg-row.bot.follow-up  .msg-bubble.has-cta-below { border-radius:var(--r-medium) var(--r-medium) 0 0; }
+.msg-row.follow-up .msg-tail { display:none; }
+
+.msg-tail { position:absolute; top:0; width:12px; height:12px; pointer-events:none; }
+.msg-row.bot  .msg-tail { left:-12px;  background:var(--chat-bubble-bot);  clip-path:polygon(100% 0%, 100% 100%, 0% 0%); }
+.msg-row.user .msg-tail { right:-12px; background:var(--chat-bubble-user); clip-path:polygon(0% 0%, 100% 0%, 0% 100%); }
+
+.msg-content { padding:var(--s8); display:flex; flex-direction:column; gap:var(--s4); width:100%; align-items:flex-start; }
+.msg-text { font-size:14px; line-height:20px; font-weight:400; color:var(--text-default); max-width:228px; }
+.msg-text.title { font-weight:700; font-size:16px; line-height:24px; }
+.msg-text strong, .msg-text .accent { font-weight:700; }
+.msg-time { font-size:10px; line-height:1.2; color:var(--text-disabled); align-self:flex-end; display:flex; align-items:center; gap:4px; }
+.msg-time .ms { font-size:12px; color:var(--text-disabled); }
+.msg-time.sent .ms { color:var(--icon-positive); }
+
+/* Inline CTA — sibling of bubble, joined by divider */
+.msg-divider { height:1px; background:var(--chat-divider); width:100%; }
+.msg-cta {
+  background:var(--chat-bubble-bot); border:0; width:100%;
+  padding:var(--s12) var(--s8);
+  display:flex; align-items:center; justify-content:center;
+  border-radius:0 0 var(--r-medium) var(--r-medium);
+  cursor:pointer;
+}
+.msg-cta-text { font-size:14px; line-height:20px; font-weight:500; color:var(--text-brand); text-align:center; }
+.msg-cta.muted .msg-cta-text { color:var(--text-disabled); }
+.msg-cta.muted { cursor:default; pointer-events:none; }
+.msg-cta.middle { border-radius:0; }
+
+/* Reply quote (user side) */
+.reply-quote { background:var(--chat-bubble-bot); border-radius:var(--r-small); overflow:hidden; display:flex; align-items:stretch; width:100%; }
+.reply-quote-bar { background:var(--chat-quote-bar); width:4px; flex:0 0 auto; border-radius:var(--r-small) 0 0 var(--r-small); }
+.reply-quote-text { padding:var(--s8); display:flex; flex-direction:column; gap:var(--s4); min-width:0; flex:1; }
+.reply-quote-author { font-size:12px; line-height:16px; font-weight:600; color:var(--text-default); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.reply-quote-msg    { font-size:12px; line-height:16px; font-weight:400; color:var(--text-subtle); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+
+/* Typing bubble */
+.waiting-bubble {
+  padding:var(--s12); display:flex; align-items:center; gap:var(--s8);
+  background:var(--chat-bubble-bot);
+  border-radius:0 var(--r-medium) var(--r-medium) var(--r-medium);
+  align-self:flex-start;
+}
+.waiting-dots { width:36px; height:20px; display:flex; align-items:center; justify-content:center; gap:4px; }
+.waiting-dot { width:7px; height:7px; border-radius:50%; background:var(--text-disabled); animation:dotPulse 1.2s ease-in-out infinite; }
+.waiting-dot:nth-child(2) { animation-delay:0.15s; }
+.waiting-dot:nth-child(3) { animation-delay:0.3s; }
+
+/* Contact card (follow-up bot bubble) */
+.contact-card {
+  background:var(--chat-bubble-bot); border-radius:var(--r-medium);
+  padding:16px 0 12px; width:280px;
+  display:flex; flex-direction:column; gap:16px;
+}
+.contact-card-header { display:flex; gap:12px; align-items:center; padding:0 16px; }
+.contact-card-avatar {
+  width:40px; height:40px; background:var(--chat-bg-pri);
+  border-radius:24px; display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+}
+.contact-card-avatar .ms { font-size:24px; color:var(--icon-action); }
+.contact-card-info { display:flex; flex-direction:column; gap:4px; flex:1; min-width:0; }
+.contact-card-name   { font-size:14px; font-weight:600; line-height:20px; color:var(--text-default); }
+.contact-card-number { font-size:12px; font-weight:400; line-height:16px; color:var(--text-default); }
+.contact-card-footer { display:flex; flex-direction:column; gap:12px; width:100%; }
+.contact-card-divider { height:1px; background:var(--chat-divider); width:100%; }
+.contact-card-cta {
+  font-size:14px; font-weight:500; line-height:20px;
+  color:var(--text-brand); text-align:center; cursor:pointer;
+  background:transparent; border:0; padding:0 16px;
+}
+.contact-card-cta.muted { color:var(--text-disabled); cursor:default; pointer-events:none; }
+
+/* Chat input */
+.chat-input {
+  flex:0 0 auto; background:var(--chat-bg-pri);
+  padding:var(--s12);
+  display:flex; gap:var(--s8); align-items:flex-end;
+  position:relative; z-index:2;
+}
+.input-field {
+  flex:1; background:var(--chat-bg-pri);
+  border:1px solid var(--stroke-default); border-radius:var(--r-xlarge);
+  padding:var(--s12) var(--s16); min-height:48px;
+  display:flex; align-items:center;
+  font-size:16px; line-height:24px; color:var(--text-default); cursor:text;
+}
+.input-field.placeholder { color:var(--text-disabled); }
+.send-btn {
+  width:48px; height:48px; border-radius:var(--r-xlarge);
+  background:var(--bg-brand); border:0;
+  display:flex; align-items:center; justify-content:center;
+  color:#FFFFFF; flex:0 0 auto; cursor:pointer;
+}
+.send-btn .ms { color:#FFFFFF; }
+.send-btn:disabled { background:var(--text-disabled); cursor:not-allowed; }
+.send-btn:not(:disabled):hover { background:var(--bg-brand-pressed); }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+@keyframes dotPulse { 0%, 60%, 100% { opacity:0.35; transform:scale(0.8); } 30% { opacity:1; transform:scale(1); } }
+
+/* ---------- Form screen ---------- */
+.screen-body { flex:1; overflow-y:auto; padding:var(--s16); display:flex; flex-direction:column; gap:var(--s16); background:var(--bg-default); }
+.screen-body.no-pad { padding:0; }
+.illust { display:flex; justify-content:center; padding:var(--s24) 0 var(--s16); }
+.illust-row { display:flex; gap:var(--s8); justify-content:center; align-items:flex-end; padding:var(--s24) 0 0; }
+.headline { font:var(--t-heading-lg); color:var(--text-default); }
+.subhead  { font:var(--t-body-lg); color:var(--text-subtle); }
+
+.field-block { display:flex; flex-direction:column; gap:var(--s8); }
+.field-block .label-row { display:flex; align-items:center; justify-content:space-between; }
+.field-block .label { font:var(--t-label-lg); color:var(--text-default); }
+.field-block .info-icon { width:24px; height:24px; color:var(--icon-action); cursor:pointer; background:transparent; border:0; }
+.input-shell {
+  display:flex; align-items:center; gap:var(--s12); padding:var(--s12) var(--s16);
+  background:var(--bg-default); border:1px solid var(--stroke-subtle); border-radius:var(--r-medium);
+}
+.input-shell.focused { border:2px solid var(--stroke-brand-focus); padding:11px 15px; }
+.input-shell.error   { border:2px solid var(--stroke-critical-focus); padding:11px 15px; }
+.input-shell .pre-icon { color:var(--icon-nonAction); width:24px; height:24px; flex-shrink:0; }
+.input-shell input, .input-shell textarea { flex:1; border:0; outline:0; background:transparent; font:var(--t-body-lg); color:var(--text-default); width:100%; min-width:0; resize:none; font-family:var(--ff); }
+.input-shell input::placeholder, .input-shell textarea::placeholder { color:var(--text-disabled); }
+.input-shell.focused input, .input-shell.focused textarea { caret-color:var(--text-brand); }
+.input-shell.value-strong input { font-weight:700; }
+.input-textarea { align-items:flex-start; min-height:120px; }
+.input-textarea textarea { min-height:96px; }
+.input-helper { font:var(--t-body-md); color:var(--text-subtle); }
+.input-helper.error   { color:var(--text-critical); }
+.input-helper.success { color:var(--text-positive); display:flex; align-items:center; gap:var(--s4); }
+
+.chip-section { display:flex; flex-direction:column; gap:var(--s12); }
+.chip-section .lbl { font:var(--t-body-md); color:var(--text-default); font-weight:700; }
+.chip-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s12); }
+.chip {
+  padding:var(--s12) var(--s16); border-radius:var(--r-full);
+  border:1px solid var(--stroke-subtle); background:var(--bg-default);
+  font:var(--t-label-md); color:var(--text-brand); text-align:center; cursor:pointer;
+}
+.chip:hover { background:var(--bg-brand-subtle); }
+.chip.selected { background:var(--bg-selected); border-color:var(--stroke-selected); color:var(--text-selected); }
+.chip-row { display:flex; flex-wrap:wrap; gap:var(--s8); }
+.chip-row .chip { padding:var(--s8) var(--s16); }
+
+.tertiary-link { background:transparent; border:0; cursor:pointer; color:var(--text-default); font:var(--t-body-md); text-decoration:underline; padding:var(--s12); align-self:center; }
+
+.cta { width:100%; padding:var(--s12) var(--s16); border-radius:var(--r-large); border:0; cursor:pointer; font:var(--t-label-lg); display:inline-flex; align-items:center; justify-content:center; gap:var(--s8); }
+.cta.primary { background:var(--bg-brand); color:var(--text-onBrand); }
+.cta.primary:active { background:var(--bg-brand-pressed); }
+.cta.primary:disabled, .cta.primary[disabled] { background:var(--bg-disabled); color:var(--text-disabled); cursor:not-allowed; }
+.cta.secondary { background:transparent; border:2px solid var(--stroke-brand-focus); color:var(--text-brand); padding:10px 14px; }
+.cta.tertiary  { background:transparent; color:var(--text-brand); }
+.cta.destructive { background:var(--bg-critical); color:var(--text-onCritical); }
+
+.sticky-bar {
+  background:var(--bg-default); border-top:1px solid var(--stroke-subtle);
+  padding:var(--s16) var(--s16) var(--s12);
+}
+.sticky-bar.stack { display:flex; flex-direction:column; gap:var(--s8); }
+
+.confirmed-row {
+  display:flex; align-items:center; gap:var(--s12); padding:var(--s12) var(--s16);
+  background:var(--bg-default); border:1px solid var(--stroke-subtle); border-radius:var(--r-medium);
+}
+.confirmed-row .icon { color:var(--icon-positive); width:24px; height:24px; }
+.confirmed-row .name { flex:1; font:var(--t-body-lg); color:var(--text-positive); font-weight:700; }
+.confirmed-row .check { width:24px; height:24px; color:var(--icon-positive); }
+
+/* ---------- Loader screen ---------- */
+.brand-loader {
+  position:absolute; inset:0; background:#3a363f; color:#fff;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s24);
+}
+.brand-loader .logo { width:96px; height:72px; }
+.brand-loader .logo svg { width:100%; height:100%; overflow:visible; }
+.brand-loader .msg { font:var(--t-body-lg); color:#fff; }
+
+.wiom-infinity .track {
+  fill:none; stroke:rgba(255,255,255,0.18);
+  stroke-width:4; stroke-linecap:round; stroke-linejoin:round;
+}
+.wiom-infinity .comet {
+  fill:none; stroke:#fff;
+  stroke-width:4; stroke-linecap:round; stroke-linejoin:round;
+  stroke-dasharray:22 90;
+  animation:wiom-infinity-trace 1.6s linear infinite;
+}
+@keyframes wiom-infinity-trace {
+  from { stroke-dashoffset:0; }
+  to   { stroke-dashoffset:-112; }
+}
+
+/* ---------- Dialog ---------- */
+.scrim { position:absolute; inset:0; background:var(--bg-overlay); display:flex; align-items:center; justify-content:center; z-index:50; }
+.dialog {
+  width:312px; background:var(--bg-default); border-radius:var(--r-xlarge); padding:var(--s32) var(--s24);
+  display:flex; flex-direction:column; gap:var(--s48); box-shadow:var(--sh-xl);
+}
+.dialog .head { display:flex; flex-direction:column; gap:var(--s12); }
+.dialog .title { font:var(--t-heading-md); color:var(--text-default); }
+.dialog .body  { font:var(--t-body-lg); color:var(--text-default); }
+.dialog ol { padding-left:var(--s24); display:flex; flex-direction:column; gap:var(--s4); }
+
+/* ---------- Bottom sheet ---------- */
+.sheet-scrim { position:absolute; inset:0; background:var(--bg-overlay); display:flex; align-items:flex-end; z-index:40; }
+.sheet {
+  width:100%; max-height:80%; background:var(--bg-default);
+  border-top-left-radius:var(--r-xlarge); border-top-right-radius:var(--r-xlarge);
+  padding:var(--s16);
+  display:flex; flex-direction:column; gap:var(--s16);
+  box-shadow:var(--sh-md);
+  overflow-y:auto;
+}
+.sheet .handle { width:32px; height:4px; background:var(--bg-strong); border-radius:var(--r-full); align-self:center; }
+.sheet .heading { font:var(--t-heading-lg); color:var(--text-default); }
+.sheet .list { display:flex; flex-direction:column; }
+
+.list-item {
+  display:flex; align-items:center; gap:var(--s12); padding:var(--s16); cursor:pointer;
+  border-radius:var(--r-medium); background:var(--bg-default);
+}
+.list-item:hover { background:var(--bg-subtle); }
+.list-item .leading {
+  width:48px; height:48px; flex-shrink:0; border-radius:var(--r-full);
+  background:var(--bg-subtle); display:grid; place-items:center;
+  font:var(--t-label-md); color:var(--text-subtle);
+}
+.list-item .leading svg { color:var(--icon-nonAction); width:24px; height:24px; }
+.list-item .leading.distance { font-size:11px; line-height:14px; flex-direction:column; padding:var(--s4); text-align:center; }
+.list-item .body { flex:1; min-width:0; display:flex; flex-direction:column; gap:var(--s4); }
+.list-item .primary   { font:var(--t-title-sm); color:var(--text-default); }
+.list-item .secondary { font:var(--t-body-md); color:var(--text-subtle); }
+
+/* Keyboard mock */
+.kb-illust {
+  height:240px; background:#1f1c25; padding:var(--s8); display:grid;
+  grid-template-rows:repeat(4,1fr); gap:var(--s4);
+}
+.kb-illust .row { display:flex; gap:var(--s4); justify-content:center; }
+.kb-illust .key { flex:1; max-width:32px; background:#2c2832; color:#fff; border-radius:var(--r-tiny); display:grid; place-items:center; font:var(--t-label-md); }
+.kb-illust .key.wide { max-width:none; flex:3; }
+
+/* Landmark type tiles */
+.type-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s12); }
+.type-tile {
+  background:var(--bg-default); border:1px solid var(--stroke-subtle); border-radius:var(--r-large);
+  padding:var(--s16) var(--s12); cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:var(--s12);
+  transition:border-color .15s, background .15s;
+}
+.type-tile:hover { border-color:var(--stroke-brand-focus); background:var(--bg-brand-subtle); }
+.type-tile.selected { border-color:var(--stroke-selected); background:var(--bg-selected); }
+.type-tile .badge {
+  width:64px; height:64px; border-radius:var(--r-full);
+  background:var(--bg-brand-subtle); color:var(--icon-brand);
+  display:grid; place-items:center;
+}
+.type-tile .badge .ms { font-size:32px; font-variation-settings:'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.type-tile .label { font:var(--t-label-lg); color:var(--text-default); text-align:center; }
+
+.type-dropdown {
+  display:flex; align-items:center; gap:var(--s12);
+  padding:var(--s12) var(--s16); width:100%;
+  background:var(--bg-default); border:1px solid var(--stroke-subtle); border-radius:var(--r-medium);
+  cursor:pointer; text-align:left;
+}
+.type-dropdown:hover { border-color:var(--stroke-brand-focus); }
+.type-dropdown .lead-icon { width:24px; height:24px; flex-shrink:0; color:var(--icon-brand); display:grid; place-items:center; }
+.type-dropdown .lead-icon .ms { color:var(--icon-brand); }
+.type-dropdown .lbl  { flex:1; font:var(--t-body-lg); color:var(--text-default); font-weight:700; }
+.type-dropdown .chev { color:var(--icon-nonAction); }
+.type-dropdown .chev .ms { color:var(--icon-nonAction); }
+
+.input-shell .clear-btn {
+  background:transparent; border:0; padding:0;
+  width:24px; height:24px; display:grid; place-items:center; cursor:pointer; flex-shrink:0;
+}
+.input-shell .clear-btn .ms { color:var(--icon-nonAction); }
+
+.sheet-scrim.lm-sheet {
+  opacity:0; pointer-events:none; transition:opacity .18s ease; cursor:default;
+}
+.sheet-scrim.lm-sheet.open { opacity:1; pointer-events:auto; }
+.sheet-scrim.lm-sheet .sheet {
+  transform:translateY(100%); transition:transform .25s cubic-bezier(.2,.7,.2,1);
+}
+.sheet-scrim.lm-sheet.open .sheet { transform:translateY(0); }
+
+.sheet-head { display:flex; align-items:center; gap:var(--s8); }
+.sheet-head .heading { flex:1; }
+.sheet-close-btn {
+  width:40px; height:40px; border-radius:var(--r-full); border:0; background:transparent;
+  display:grid; place-items:center; cursor:pointer; color:var(--icon-action); flex-shrink:0;
+}
+.sheet-close-btn .ms { color:var(--icon-action); }
+.list-item.custom-row .leading { background:var(--bg-brand-subtle); color:var(--icon-brand); }
+.list-item.custom-row .leading .ms { color:var(--icon-brand); }
+.list-item.custom-row .primary { color:var(--text-brand); }
+
+/* Voice-guide example tip */
+.example-tip {
+  display:flex; gap:var(--s8); align-items:flex-start;
+  padding:var(--s12); border-radius:var(--r-medium);
+  background:var(--bg-info-subtle); color:var(--text-default);
+  font:var(--t-body-md); font-style:italic;
+}
+.example-tip .ms { color:var(--icon-info); flex-shrink:0; margin-top:2px; }
+
+/* Audio recorder */
+.audio-section {
+  background:var(--bg-default); border:1px solid var(--stroke-subtle); border-radius:var(--r-large);
+  padding:var(--s16); display:flex; flex-direction:column; gap:var(--s12);
+}
+.audio-head { display:flex; align-items:center; gap:var(--s8); }
+.audio-head .h-title { flex:1; font:var(--t-label-lg); color:var(--text-default); }
+.opt-tag {
+  font:var(--t-label-sm); color:var(--text-subtle);
+  background:var(--bg-subtle); padding:2px var(--s8); border-radius:var(--r-full);
+}
+.audio-sub { font:var(--t-body-md); color:var(--text-subtle); }
+
+.audio-rec { display:flex; align-items:center; gap:var(--s12); padding:var(--s8) 0; }
+.audio-rec.idle { flex-direction:column; gap:var(--s12); padding:var(--s12) 0; }
+.rec-btn {
+  width:80px; height:80px; border-radius:var(--r-full); border:0;
+  background:var(--bg-brand); color:var(--text-onBrand); cursor:pointer;
+  display:grid; place-items:center; box-shadow:var(--sh-md);
+}
+.rec-btn .ms { color:var(--text-onBrand); font-size:32px; }
+.rec-btn:hover  { background:var(--bg-brand-pressed); }
+.rec-btn:active { transform:scale(0.96); }
+.rec-label { font:var(--t-body-md); color:var(--text-subtle); }
+
+.rec-pulse {
+  width:48px; height:48px; border-radius:var(--r-full); flex-shrink:0;
+  background:var(--bg-critical); color:var(--text-onCritical);
+  display:grid; place-items:center;
+  animation:rec-pulse 1.2s ease-in-out infinite;
+}
+.rec-pulse .ms { color:var(--text-onCritical); font-size:24px; }
+@keyframes rec-pulse {
+  0%,100% { box-shadow:0 0 0 0 rgba(217,33,48,.45); }
+  50%     { box-shadow:0 0 0 10px rgba(217,33,48,0); }
+}
+.rec-meta { flex:1; min-width:0; display:flex; flex-direction:column; gap:var(--s4); }
+.rec-meta .time { font:var(--t-label-md); color:var(--text-default); }
+.rec-meta .hint { font:var(--t-body-sm); color:var(--text-critical); }
+
+.wave { display:flex; gap:3px; height:24px; align-items:center; }
+.wave span {
+  flex:1; max-width:6px; min-width:3px;
+  background:var(--bg-brand); border-radius:var(--r-full);
+  height:30%; animation:wave 0.7s ease-in-out infinite alternate;
+}
+.wave span:nth-child(1) { animation-delay:0.0s; }
+.wave span:nth-child(2) { animation-delay:0.1s; }
+.wave span:nth-child(3) { animation-delay:0.2s; }
+.wave span:nth-child(4) { animation-delay:0.3s; }
+.wave span:nth-child(5) { animation-delay:0.4s; }
+.wave span:nth-child(6) { animation-delay:0.5s; }
+.wave span:nth-child(7) { animation-delay:0.6s; }
+.wave span:nth-child(8) { animation-delay:0.7s; }
+@keyframes wave { 0% { height:25%; } 100%{ height:90%; } }
+.wave.static span { animation:none; height:var(--h, 50%); }
+
+.stop-btn, .play-btn, .del-btn {
+  width:40px; height:40px; border-radius:var(--r-full); border:0; cursor:pointer;
+  display:grid; place-items:center; flex-shrink:0;
+}
+.stop-btn { background:var(--bg-critical); color:var(--icon-inverse); }
+.stop-btn .ms { color:var(--icon-inverse); }
+.play-btn { background:var(--bg-brand); color:var(--icon-inverse); }
+.play-btn .ms { color:var(--icon-inverse); font-size:24px; }
+.del-btn  { background:transparent; border:1px solid var(--stroke-subtle); color:var(--icon-action); }
+.del-btn .ms { color:var(--icon-action); }
+
+/* helpers */
+.divider     { height:1px; background:var(--stroke-subtle); margin:0 var(--s16); }
+.spacer-flex { flex:1; }
+
+/* Floating "back to scenarios" pill — only on phone screens, useful for demo navigation */
+.back-to-scenarios {
+  position:absolute; right:12px; top:12px; z-index:20;
+  background:rgba(31,24,48,0.78); color:#fff; border:0;
+  padding:6px 10px; border-radius:var(--r-full);
+  font:600 11px/16px var(--ff); cursor:pointer;
+  display:flex; gap:4px; align-items:center;
+  backdrop-filter:blur(8px);
+}
+.back-to-scenarios .ms { color:#fff; font-size:14px; }
+.back-to-scenarios:hover { background:rgba(31,24,48,0.95); }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="device" id="device">
+
+    <!-- Floating badge that names the active variant for the reviewer -->
+    <div class="variant-badge" id="variantBadge">Variant —</div>
+
+    <!-- ============ CONTEXT SCREEN (yellow intro) ============ -->
+    <section class="screen active" data-screen="context">
+      <div class="yellow-screen">
+        <div class="context-content">
+
+          <div class="context-header">
+            <div class="context-user-info">
+              <div class="context-q">यूजर कौन है?</div>
+              <div class="context-name">रमेश शर्मा</div>
+              <div class="context-tag">शर्मा परिवार के मुखिया।</div>
+            </div>
+            <div class="context-avatar">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="24" r="12" fill="#FFD888"/>
+                <path d="M12 56 C 12 42, 52 42, 52 56 Z" fill="#FFD888"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="context-block">
+            <div class="context-q">रमेश जी इस स्क्रीन पर क्यों आए?</div>
+            <div class="context-a">रमेश जी ने अभी-अभी Wiom पर ₹100 का पेमेंट किया है। अब बुकिंग पूरी करनी है — घर के नेट का नाम रखना है, पता भरना है, और घर के पास की कोई जगह बतानी है ताकि टेक्निशियन सीधे घर पहुँच सके।</div>
+          </div>
+
+          <div class="context-block">
+            <div class="context-q">रमेश जी इस स्टेप पर पहुँचने से पहले क्या कर रहे थे?</div>
+            <div class="context-a">पड़ोस में किसी ने Wiom की तारीफ़ की। रमेश जी ने Play Store से ऐप डाउनलोड किया, नंबर डाला, OTP से लॉग-इन हुए, और UPI से ₹100 का पेमेंट कर दिया। पेमेंट होते ही व्योम चैट खुल गई।</div>
+          </div>
+
+          <div class="context-block">
+            <div class="context-q">इस स्टेप के बाद रमेश जी क्या करेंगे?</div>
+            <div class="context-a">घर के नेट का एक नाम रखेंगे (जैसे “Ramesh Ji Ka Net”), पता भरेंगे, घर के पास की एक जगह चुनेंगे (मंदिर / दुकान / स्कूल), और घर पर पहुँच कर बुकिंग पक्की कर देंगे। फिर Wiom की टीम कॉल करके सेटअप का दिन तय कर देगी।</div>
+          </div>
+
+          <div class="context-block">
+            <div class="context-q">रमेश जी को कैसा महसूस होगा अगर यह दुनिया का सबसे बेहतरीन डिज़ाइन हो?</div>
+            <div class="context-a">पहली बार ब्रॉडबैंड लगवा रहे हैं, फिर भी एक भी कदम पर अटके नहीं। न कोई फॉर्म समझ नहीं आया, न कोई बटन गुम लगा। चैट में बातें होते-होते सब हो गया — जैसे किसी जान-पहचान वाले से बात कर रहे हों।</div>
+          </div>
+
+        </div>
+
+        <div class="context-cta-wrap">
+          <button class="btn-yellow-cta" onclick="goto('variants')">Variants देखें</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VARIANT CHOOSER (yellow) ============ -->
+    <section class="screen" data-screen="variants">
+      <div class="yellow-screen">
+        <div class="scenario-content">
+          <div class="scenario-title">पता-कैप्चर के 5 variants</div>
+          <div class="scenario-subtitle">हर variant एक अलग trade-off test करता है — कौन-सा सबसे साफ़ location signal देता है?</div>
+
+          <div class="scenario-card" onclick="startVariant('A1')">
+            <div class="scenario-card-num">Variant A1</div>
+            <div class="scenario-card-title">सिर्फ़ पता + आवाज़</div>
+            <div class="scenario-card-desc">कस्टमर पूरा पता भरते हैं, फिर अपनी आवाज़ में रास्ता बताते हैं। पास की जगह नहीं पूछते।</div>
+            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
+          </div>
+
+          <div class="scenario-card" onclick="startVariant('A2')">
+            <div class="scenario-card-num">Variant A2 · with audio prompt</div>
+            <div class="scenario-card-title">सिर्फ़ पता + आवाज़</div>
+            <div class="scenario-card-desc">A1 जैसा ही, पर voice screen खुलते ही Hindi में आवाज़ चलती है जो रिकॉर्ड करने को कहती है।</div>
+            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
+          </div>
+
+          <div class="scenario-card" onclick="startVariant('B')">
+            <div class="scenario-card-num">Variant B</div>
+            <div class="scenario-card-title">पता + पास की जगह</div>
+            <div class="scenario-card-desc">कस्टमर पता भरते हैं और मंदिर / दुकान / स्कूल / बैंक चुनते हैं। आवाज़ रिकॉर्ड नहीं करते।</div>
+            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
+          </div>
+
+          <div class="scenario-card" onclick="startVariant('C1')">
+            <div class="scenario-card-num">Variant C1 · current build</div>
+            <div class="scenario-card-title">पता + पास की जगह + आवाज़</div>
+            <div class="scenario-card-desc">पूरा flow — पता, landmark, और voice route guide तीनों।</div>
+            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
+          </div>
+
+          <div class="scenario-card" onclick="startVariant('C2')">
+            <div class="scenario-card-num">Variant C2 · with audio prompt</div>
+            <div class="scenario-card-title">पता + पास की जगह + आवाज़</div>
+            <div class="scenario-card-desc">C1 जैसा ही, पर voice screen खुलते ही Hindi में आवाज़ चलती है जो रिकॉर्ड करने को कहती है।</div>
+            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
+          </div>
+
+        </div>
+        <div class="context-cta-wrap" style="background:transparent; box-shadow:none;"></div>
+      </div>
+    </section>
+
+    <!-- ============== 1. SPLASH LOADER ============== -->
+    <section class="screen" data-screen="1">
+      <div class="brand-loader">
+        <div class="logo">
+          <svg viewBox="0 0 64 48" class="wiom-infinity">
+            <path class="track" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24"/>
+            <path class="comet" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24"/>
+          </svg>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 2. CHAT · INITIAL GREET ============== -->
+    <section class="screen" data-screen="2">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="20" fill="#D9008D"/>
+              <path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">बुकिंग अधूरी है</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="waiting-bubble">
+              <div class="waiting-dots">
+                <span class="waiting-dot"></span><span class="waiting-dot"></span><span class="waiting-dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 3. CHAT · FIRST INSTRUCTION ============== -->
+    <section class="screen" data-screen="3">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">बुकिंग अधूरी है</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">नमस्ते रमेश जी,</div>
+                <div class="msg-text">अब हम आपका सेटअप आसानी से पूरा करवा देंगे।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="msg-bubble has-cta-below">
+              <div class="msg-content">
+                <div class="msg-text">बुकिंग पूरी करने के लिए सबसे पहले, अपने घर के नेट का एक <strong>अच्छा-सा नाम</strong> रख लें।</div>
+                <div class="msg-text">ये नाम आपके घर के नेट को पहचान देगा।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+            <div class="msg-divider"></div>
+            <button class="msg-cta" onclick="goto(4)">
+              <span class="msg-cta-text">नेट का नाम रखें</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 4. NAME — SUGGESTIONS ============== -->
+    <section class="screen" data-screen="4">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar minimal">
+        <div class="spacer-flex"></div>
+        <div class="right">
+          <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+          <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+        </div>
+      </header>
+      <div class="screen-body">
+        <div class="illust">
+          <svg width="160" height="160" viewBox="0 0 160 160" fill="none">
+            <rect x="40" y="80" width="80" height="32" rx="6" fill="#D9008D"/>
+            <circle cx="56" cy="96" r="3" fill="#fff"/>
+            <circle cx="104" cy="96" r="3" fill="#fff"/>
+            <rect x="64" y="56" width="6" height="20" fill="#D9008D"/>
+            <rect x="78" y="44" width="6" height="32" fill="#D9008D"/>
+            <rect x="92" y="32" width="6" height="44" fill="#D9008D"/>
+          </svg>
+        </div>
+        <div class="headline">घर के नेट का एक अच्छा-सा नाम रख लें।</div>
+        <div class="subhead">ये नाम आपके घर के नेट को पहचान देगा</div>
+        <div class="chip-section">
+          <div class="lbl">इनमें से कोई एक नाम चुन सकते हैं :</div>
+          <div class="chip-grid">
+            <button class="chip" onclick="goto(5)">Ramesh Ji Ka Net</button>
+            <button class="chip" onclick="goto(5)">Ramesh Ka Net</button>
+            <button class="chip" onclick="goto(5)">Ramesh Net 123</button>
+            <button class="chip" onclick="goto(5)">Rameshnet</button>
+          </div>
+          <button class="tertiary-link" onclick="goto(6)">या अपनी पसंद का नाम लिखें ›</button>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 5. NAME — CONFIRMED ============== -->
+    <section class="screen" data-screen="5">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar minimal">
+        <div class="spacer-flex"></div>
+        <div class="right">
+          <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+          <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+        </div>
+      </header>
+      <div class="screen-body">
+        <div class="illust">
+          <svg width="160" height="160" viewBox="0 0 160 160" fill="none">
+            <rect x="40" y="80" width="80" height="32" rx="6" fill="#D9008D"/><circle cx="56" cy="96" r="3" fill="#fff"/><circle cx="104" cy="96" r="3" fill="#fff"/>
+            <rect x="64" y="56" width="6" height="20" fill="#D9008D"/><rect x="78" y="44" width="6" height="32" fill="#D9008D"/><rect x="92" y="32" width="6" height="44" fill="#D9008D"/>
+          </svg>
+        </div>
+        <div class="headline">अब घर का नेट आपके नाम पर है</div>
+        <div class="confirmed-row">
+          <div class="icon"><span class="ms">home</span></div>
+          <div class="name">Ramesh Ji Ka Net</div>
+          <div class="check"><span class="ms">check_circle</span></div>
+        </div>
+        <div class="input-helper" style="color:var(--text-default);">अच्छा नाम रखा है 🙂</div>
+      </div>
+      <div class="sticky-bar"><button class="cta primary" onclick="goto(9)">अगला कदम</button></div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 6. NAME — CUSTOM (typing) ============== -->
+    <section class="screen" data-screen="6">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar minimal">
+        <div class="spacer-flex"></div>
+        <div class="right">
+          <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+          <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+        </div>
+      </header>
+      <div class="screen-body">
+        <div class="illust">
+          <svg width="120" height="80" viewBox="0 0 160 160" fill="none">
+            <rect x="40" y="80" width="80" height="32" rx="6" fill="#D9008D"/><circle cx="56" cy="96" r="3" fill="#fff"/><circle cx="104" cy="96" r="3" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="headline" style="font:var(--t-heading-md);">घर के नेट का एक अच्छा-सा नाम रख लें</div>
+        <div class="subhead">ये नाम आपके घर के नेट को पहचान देगा</div>
+        <div class="field-block">
+          <div class="label-row">
+            <div class="label">नेट का नाम</div>
+            <button class="info-icon" onclick="showDialog()" aria-label="Naming rules"><span class="ms">info</span></button>
+          </div>
+          <div class="input-shell focused value-strong">
+            <span class="pre-icon"><span class="ms">home</span></span>
+            <input value="Ramesh Ji Ka Net" />
+          </div>
+        </div>
+      </div>
+      <div class="sticky-bar"><button class="cta primary" onclick="goto(7)">नाम सेव करें</button></div>
+      <div class="kb-illust">
+        <div class="row"><div class="key">q</div><div class="key">w</div><div class="key">e</div><div class="key">r</div><div class="key">t</div><div class="key">y</div><div class="key">u</div><div class="key">i</div><div class="key">o</div><div class="key">p</div></div>
+        <div class="row"><div class="key">a</div><div class="key">s</div><div class="key">d</div><div class="key">f</div><div class="key">g</div><div class="key">h</div><div class="key">j</div><div class="key">k</div><div class="key">l</div></div>
+        <div class="row"><div class="key">↑</div><div class="key">z</div><div class="key">x</div><div class="key">c</div><div class="key">v</div><div class="key">b</div><div class="key">n</div><div class="key">m</div><div class="key">⌫</div></div>
+        <div class="row"><div class="key">?123</div><div class="key wide"></div><div class="key">.</div><div class="key" style="background:#D9008D;color:#fff;">↵</div></div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 7. NAME — ERROR: NOT UNIQUE ============== -->
+    <section class="screen" data-screen="7">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar minimal">
+        <div class="spacer-flex"></div>
+        <div class="right">
+          <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+          <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+        </div>
+      </header>
+      <div class="screen-body">
+        <div class="illust">
+          <svg width="120" height="80" viewBox="0 0 160 160" fill="none">
+            <rect x="40" y="80" width="80" height="32" rx="6" fill="#D9008D"/><circle cx="56" cy="96" r="3" fill="#fff"/><circle cx="104" cy="96" r="3" fill="#fff"/>
+            <rect x="64" y="56" width="6" height="20" fill="#D9008D"/><rect x="78" y="44" width="6" height="32" fill="#D9008D"/><rect x="92" y="32" width="6" height="44" fill="#D9008D"/>
+          </svg>
+        </div>
+        <div class="headline" style="font:var(--t-heading-md);">घर के नेट का एक अच्छा-सा नाम रख लें</div>
+        <div class="subhead">ये नाम आपके घर के नेट को पहचान देगा</div>
+        <div class="field-block">
+          <div class="label-row">
+            <div class="label">नेट का नाम</div>
+            <button class="info-icon" onclick="showDialog()" aria-label="Naming rules"><span class="ms">info</span></button>
+          </div>
+          <div class="input-shell error value-strong" onclick="goto(8)" title="Tap to retry with different chars (demo: → English-only error)">
+            <span class="pre-icon"><span class="ms">home</span></span>
+            <input value="Ramesh Ji Ka Net" readonly style="pointer-events:none;" />
+          </div>
+          <div class="input-helper error">यह नाम उपलब्ध नहीं है</div>
+        </div>
+        <div class="chip-section">
+          <div class="lbl">इनमें से कोई एक नाम चुन सकते हैं :</div>
+          <div class="chip-grid">
+            <button class="chip" onclick="goto(5)">Ramesh Ji Ka Net</button>
+            <button class="chip" onclick="goto(5)">Ramesh Ka Net</button>
+            <button class="chip" onclick="goto(5)">Ramesh Net 123</button>
+            <button class="chip" onclick="goto(5)">Rameshnet</button>
+          </div>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 8. NAME — ERROR: ENGLISH ONLY ============== -->
+    <section class="screen" data-screen="8">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar minimal">
+        <div class="spacer-flex"></div>
+        <div class="right">
+          <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+          <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+        </div>
+      </header>
+      <div class="screen-body">
+        <div class="illust">
+          <svg width="120" height="80" viewBox="0 0 160 160" fill="none">
+            <rect x="40" y="80" width="80" height="32" rx="6" fill="#D9008D"/><circle cx="56" cy="96" r="3" fill="#fff"/><circle cx="104" cy="96" r="3" fill="#fff"/>
+            <rect x="64" y="56" width="6" height="20" fill="#D9008D"/><rect x="78" y="44" width="6" height="32" fill="#D9008D"/><rect x="92" y="32" width="6" height="44" fill="#D9008D"/>
+          </svg>
+        </div>
+        <div class="headline" style="font:var(--t-heading-md);">घर के नेट का एक अच्छा-सा नाम रख लें</div>
+        <div class="subhead">ये नाम आपके घर के नेट को पहचान देगा</div>
+        <div class="field-block">
+          <div class="label-row"><div class="label">नेट का नाम</div>
+            <button class="info-icon" onclick="showDialog()"><span class="ms">info</span></button>
+          </div>
+          <div class="input-shell error value-strong">
+            <span class="pre-icon"><span class="ms">home</span></span>
+            <input value="क" />
+          </div>
+          <div class="input-helper error">अपने नेट का नाम English में ही लिखें।</div>
+        </div>
+        <div class="chip-section">
+          <div class="lbl">इनमें से कोई एक नाम चुन सकते हैं :</div>
+          <div class="chip-grid">
+            <button class="chip" onclick="goto(5)">Ramesh Ji Ka Net</button>
+            <button class="chip" onclick="goto(5)">Ramesh Ka Net</button>
+            <button class="chip" onclick="goto(5)">Ramesh Net 123</button>
+            <button class="chip" onclick="goto(5)">Rameshnet</button>
+          </div>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 9. CHAT · NAME SAVED + ADDRESS REQUEST ============== -->
+    <section class="screen" data-screen="9">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">बुकिंग अधूरी है</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <!-- Bot: previous instruction with consumed CTA -->
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble has-cta-below">
+              <div class="msg-content">
+                <div class="msg-text">बुकिंग पूरी करने के लिए सबसे पहले, अपने घर के नेट का एक अच्छा-सा नाम रख लें।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+            <div class="msg-divider"></div>
+            <div class="msg-cta muted">
+              <span class="msg-cta-text">नेट का नाम रखें</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- User: reply with quote + sent tick -->
+        <div class="msg-row user">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="reply-quote">
+                <div class="reply-quote-bar"></div>
+                <div class="reply-quote-text">
+                  <div class="reply-quote-author">Wiom</div>
+                  <div class="reply-quote-msg">बुकिंग पूरी करने के लिए सबसे पहले, अपने घर के नेट का एक अच्छा-सा नाम रख लें।</div>
+                </div>
+              </div>
+              <div class="msg-content">
+                <div class="msg-text">हो गया</div>
+                <div class="msg-time sent">10:15 AM <span class="ms">done_all</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: confirmation -->
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">आपके घर के नेट का नाम सेव हो गया है।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: next step + CTA -->
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="msg-bubble has-cta-below">
+              <div class="msg-content">
+                <div class="msg-text">बुकिंग पूरी करने के लिए अब हमें अपना <strong>पता</strong> बताइए।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+            <div class="msg-divider"></div>
+            <button class="msg-cta" onclick="goto(10)">
+              <span class="msg-cta-text">पता लिखें</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 10. ADDRESS FORM ============== -->
+    <section class="screen" data-screen="10">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="illust">
+          <svg width="160" height="120" viewBox="0 0 160 120" fill="none" stroke="#161021" stroke-width="2" stroke-linejoin="round">
+            <path d="M30 100 H 130" />
+            <path d="M40 100 V 60 L 80 30 L 120 60 V 100" />
+            <rect x="56" y="74" width="14" height="14" />
+            <rect x="90" y="74" width="14" height="14" />
+            <rect x="74" y="76" width="14" height="24" />
+            <path d="M76 30 V 18 H 86 V 24" />
+            <path d="M82 18 V 8" stroke="#D9008D" stroke-width="3" />
+            <circle cx="82" cy="14" r="6" fill="#D9008D" stroke="#D9008D" />
+          </svg>
+        </div>
+        <div class="headline">अपना पूरा पता भरें</div>
+        <div class="field-block">
+          <div class="label">मकान / फ्लैट / फ्लोर नंबर</div>
+          <div class="input-shell">
+            <input id="addr-house" placeholder="उदाहरण: #123, First Floor" oninput="checkAddrCta()" />
+          </div>
+        </div>
+        <div class="field-block">
+          <div class="label">स्ट्रीट / गली नं.</div>
+          <div class="input-shell">
+            <input id="addr-street" placeholder="उदाहरण: Galli No. 12" oninput="checkAddrCta()" />
+          </div>
+        </div>
+        <div class="field-block">
+          <div class="label">इलाका / लोकैलिटी</div>
+          <div class="input-shell value-strong">
+            <input id="addr-locality" value="Rajiv Colony, Sector 33, Gurugram, Haryana 122001" oninput="checkAddrCta()" />
+          </div>
+        </div>
+      </div>
+      <div class="sticky-bar">
+        <button class="cta primary" id="addr-confirm" onclick="goto(nextAfterAddress())" style="display:none;">सही सेट-अप के लिए पास की जगह दें</button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 11. LANDMARK · TYPE PICKER ============== -->
+    <section class="screen" data-screen="11">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto(10)"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="illust-row">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#161021" stroke-width="2"><path d="M10 50 H 46"/><path d="M14 50 V 28 L 28 18 L 42 28 V 50"/><rect x="22" y="34" width="8" height="14"/><path d="M28 18 V 10 L 38 8 V 16" stroke="#D9008D"/></svg>
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#161021" stroke-width="2"><path d="M10 50 H 46"/><path d="M14 50 V 24 L 28 14 L 42 24 V 50" /><circle cx="28" cy="20" r="3" fill="#D9008D"/><path d="M28 14 v -6" stroke="#D9008D"/></svg>
+          <svg width="80" height="56" viewBox="0 0 80 56" fill="none" stroke="#161021" stroke-width="2"><path d="M6 50 H 64"/><path d="M10 50 V 28 H 56 V 50" /><path d="M8 28 H 58 L 56 18 H 10 Z" fill="#D9008D" stroke="#D9008D"/><circle cx="68" cy="46" r="6"/><circle cx="74" cy="46" r="2" fill="#161021"/></svg>
+        </div>
+        <div class="headline">घर के पास कौन सी जगह है?</div>
+        <div class="subhead">जगह का प्रकार चुनें — फिर पास की जगहों की लिस्ट खुलेगी</div>
+        <div class="type-grid">
+          <button class="type-tile" data-t="school" onclick="pickType('school')">
+            <div class="badge"><span class="ms">school</span></div>
+            <div class="label">स्कूल</div>
+          </button>
+          <button class="type-tile" data-t="shop" onclick="pickType('shop')">
+            <div class="badge"><span class="ms">storefront</span></div>
+            <div class="label">दुकान</div>
+          </button>
+          <button class="type-tile" data-t="bank" onclick="pickType('bank')">
+            <div class="badge"><span class="ms">account_balance</span></div>
+            <div class="label">बैंक / ATM</div>
+          </button>
+          <button class="type-tile" data-t="mandir" onclick="pickType('mandir')">
+            <div class="badge"><span class="ms">temple_hindu</span></div>
+            <div class="label">मंदिर / मस्जिद</div>
+          </button>
+        </div>
+        <button class="tertiary-link" onclick="goto(19)">और कुछ नज़दीक है? खुद टाइप करें ›</button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 12. LANDMARK · BOTTOM SHEET ============== -->
+    <section class="screen" data-screen="12">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto(11)"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="illust-row">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#161021" stroke-width="2"><path d="M10 50 H 46"/><path d="M14 50 V 28 L 28 18 L 42 28 V 50"/><rect x="22" y="34" width="8" height="14"/><path d="M28 18 V 10 L 38 8 V 16" stroke="#D9008D"/></svg>
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#161021" stroke-width="2"><path d="M10 50 H 46"/><path d="M14 50 V 24 L 28 14 L 42 24 V 50" /><circle cx="28" cy="20" r="3" fill="#D9008D"/><path d="M28 14 v -6" stroke="#D9008D"/></svg>
+          <svg width="80" height="56" viewBox="0 0 80 56" fill="none" stroke="#161021" stroke-width="2"><path d="M6 50 H 64"/><path d="M10 50 V 28 H 56 V 50" /><path d="M8 28 H 58 L 56 18 H 10 Z" fill="#D9008D" stroke="#D9008D"/><circle cx="68" cy="46" r="6"/><circle cx="74" cy="46" r="2" fill="#161021"/></svg>
+        </div>
+        <div class="headline">घर के पास कौन सी जगह है?</div>
+        <div class="subhead">जगह का प्रकार चुनें — फिर पास की जगहों की लिस्ट खुलेगी</div>
+        <div class="type-grid" id="screen12-tiles">
+          <div class="type-tile" data-t="school"><div class="badge"><span class="ms">school</span></div><div class="label">स्कूल</div></div>
+          <div class="type-tile" data-t="shop"><div class="badge"><span class="ms">storefront</span></div><div class="label">दुकान</div></div>
+          <div class="type-tile" data-t="bank"><div class="badge"><span class="ms">account_balance</span></div><div class="label">बैंक / ATM</div></div>
+          <div class="type-tile" data-t="mandir"><div class="badge"><span class="ms">temple_hindu</span></div><div class="label">मंदिर / मस्जिद</div></div>
+        </div>
+      </div>
+
+      <div class="sheet-scrim lm-sheet open" id="lm-sheet-12" onclick="if(event.target===this) goto(11)">
+        <div class="sheet">
+          <div class="handle"></div>
+          <div class="sheet-head">
+            <div class="heading" id="lm-sheet-heading">पास के मंदिर / मस्जिद</div>
+            <button class="sheet-close-btn" onclick="goto(11)" aria-label="Close"><span class="ms">close</span></button>
+          </div>
+          <div class="subhead" style="margin-top:-8px;">घर के सबसे नज़दीक के</div>
+          <div class="list" id="lm-sheet-list"></div>
+          <div class="divider" style="margin:var(--s8) 0;"></div>
+          <button class="list-item custom-row" onclick="pickCustom()" style="width:100%; text-align:left; border:1px dashed var(--stroke-subtle); border-radius:var(--r-medium);">
+            <div class="leading"><span class="ms">edit</span></div>
+            <div class="body">
+              <div class="primary">मेरी जगह यहाँ नहीं है</div>
+              <div class="secondary">खुद टाइप करूँगा</div>
+            </div>
+          </button>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 13. LOADER · CONFIRMING LOCATION ============== -->
+    <section class="screen" data-screen="13">
+      <div class="brand-loader">
+        <div class="logo">
+          <svg viewBox="0 0 64 48" class="wiom-infinity">
+            <path class="track" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24"/>
+            <path class="comet" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24"/>
+          </svg>
+        </div>
+        <div class="msg">आपका पता सेव कर रहे हैं</div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 14. CHAT · ARE YOU THERE NOW? ============== -->
+    <section class="screen" data-screen="14">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">बुकिंग अधूरी है</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">आपका पता सेव हो गया है।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="msg-bubble has-cta-below">
+              <div class="msg-content">
+                <div class="msg-text">आपको जहां नेट लगवाना है, क्या <strong>अभी आप वहीं हैं</strong>?</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+            <div class="msg-divider"></div>
+            <button class="msg-cta middle" onclick="goto(16)">
+              <span class="msg-cta-text">हाँ</span>
+            </button>
+            <div class="msg-divider"></div>
+            <button class="msg-cta" onclick="goto(15)">
+              <span class="msg-cta-text">नहीं</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 15. CHAT · NOT AT HOME (after NO) ============== -->
+    <section class="screen" data-screen="15">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">बुकिंग अधूरी है</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <!-- User: replied "नहीं" with quote -->
+        <div class="msg-row user">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="reply-quote">
+                <div class="reply-quote-bar"></div>
+                <div class="reply-quote-text">
+                  <div class="reply-quote-author">Wiom</div>
+                  <div class="reply-quote-msg">क्या आपको जहां नेट लगवाना है, अभी आप वहीं हैं?</div>
+                </div>
+              </div>
+              <div class="msg-content">
+                <div class="msg-text">नहीं</div>
+                <div class="msg-time sent">10:15 AM <span class="ms">done_all</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: instruction + CTA -->
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble has-cta-below">
+              <div class="msg-content">
+                <div class="msg-text">घर पहुँच कर नीचे दिये गये बटन को दबाएँ।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+            <div class="msg-divider"></div>
+            <button class="msg-cta" onclick="goto(16)">
+              <span class="msg-cta-text">मैं घर पर हूँ</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 16. CHAT · BOOKING CONFIRMED + SAVE NUMBER ============== -->
+    <section class="screen" data-screen="16">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">बुकिंग कन्फ़र्म</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <!-- User: replied "हाँ" with quote -->
+        <div class="msg-row user">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="reply-quote">
+                <div class="reply-quote-bar"></div>
+                <div class="reply-quote-text">
+                  <div class="reply-quote-author">Wiom</div>
+                  <div class="reply-quote-msg">आपको जहां नेट लगवाना है, अभी आप वहीं हैं?</div>
+                </div>
+              </div>
+              <div class="msg-content">
+                <div class="msg-text">हाँ</div>
+                <div class="msg-time sent">10:15 AM <span class="ms">done_all</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: confirmation -->
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">बहुत बढ़िया, आपकी <strong>बुकिंग कन्फ़र्म</strong> हो गई है।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: save-number nudge -->
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">नेट लगवाने का दिन कन्फर्म करने के लिए व्योम से कॉल आएगा।</div>
+                <div class="msg-text">&nbsp;</div>
+                <div class="msg-text"><strong>नंबर को सेव कर लें</strong>, ताकि कॉल मिस ना हो।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: contact card (follow-up — no tail) -->
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="contact-card">
+              <div class="contact-card-header">
+                <div class="contact-card-avatar"><span class="ms outlined">person</span></div>
+                <div class="contact-card-info">
+                  <div class="contact-card-name">Wiom</div>
+                  <div class="contact-card-number">+91 88803 22222</div>
+                </div>
+              </div>
+              <div class="contact-card-footer">
+                <div class="contact-card-divider"></div>
+                <button class="contact-card-cta" onclick="goto(17)">नंबर सेव करें</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 17. FLOW ENDED (yellow, mirrors context screen) ============== -->
+    <section class="screen" data-screen="17">
+      <div class="yellow-screen">
+        <div class="context-content">
+
+          <div class="context-header">
+            <div class="context-user-info">
+              <div class="context-q">यहाँ Flow खत्म होता है</div>
+              <div class="context-name">रमेश जी की बुकिंग पूरी हो गई 🎉</div>
+              <div class="context-tag">अब Wiom की टीम कॉल करके सेटअप का दिन तय कर देगी।</div>
+            </div>
+            <div class="context-avatar">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="28" fill="#FFD888"/>
+                <path d="M20 33 L 28 41 L 44 25" stroke="#D9008D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="context-block">
+            <div class="context-q">रमेश जी ने क्या-क्या किया?</div>
+            <div class="context-a">
+              • घर के नेट का नाम रखा (<strong>Ramesh Ji Ka Net</strong>)<br>
+              • अपना पूरा पता भरा<br>
+              • घर के पास का मंदिर बताया (Hanuman Mandir)<br>
+              • घर पर पहुँच कर “हाँ” कह कर बुकिंग पक्की की
+            </div>
+          </div>
+
+          <div class="context-block">
+            <div class="context-q">अब आगे क्या?</div>
+            <div class="context-a">Wiom की टीम जल्दी ही रमेश जी को कॉल करेगी और सेटअप का दिन तय कर देगी। कुछ ही दिनों में रमेश जी के घर का नेट चालू हो जाएगा।</div>
+          </div>
+
+        </div>
+
+        <div class="context-cta-wrap">
+          <button class="btn-yellow-cta" onclick="goto('variants')">⟲ अगला variant देखें</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 18. CHAT · TEAM WILL CALL ============== -->
+    <section class="screen" data-screen="18">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">सेटअप बाकी है</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <div class="msg-row user">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="reply-quote">
+                <div class="reply-quote-bar"></div>
+                <div class="reply-quote-text">
+                  <div class="reply-quote-author">Wiom</div>
+                  <div class="reply-quote-msg">आपको जहां नेट लगवाना है, अभी आप वहीं हैं?</div>
+                </div>
+              </div>
+              <div class="msg-content">
+                <div class="msg-text">हाँ</div>
+                <div class="msg-time sent">10:15 AM <span class="ms">done_all</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">आपकी बुकिंग पूरी हो गई है। आगे की प्रक्रिया के लिए हमारी टीम आपको कॉल करेगी।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="msg-bubble has-cta-below">
+              <div class="msg-content">
+                <div class="msg-text">नेट लगने वाली जगह पर पहुँच कर इस बटन को दबाएँ।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+            <div class="msg-divider"></div>
+            <button class="msg-cta" onclick="goto(16)">
+              <span class="msg-cta-text">मैं अब नेट लगने वाली जगह पर हूँ</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 19. LANDMARK · INPUT + TYPE DROPDOWN ============== -->
+    <section class="screen" data-screen="19">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto(11)"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="illust" style="padding:var(--s24) 0 var(--s8);">
+          <svg width="120" height="80" viewBox="0 0 160 120" fill="none" stroke="#161021" stroke-width="2" stroke-linejoin="round">
+            <path d="M30 100 H 130" /><path d="M40 100 V 60 L 80 30 L 120 60 V 100" />
+            <rect x="56" y="74" width="14" height="14" /><rect x="90" y="74" width="14" height="14" />
+            <rect x="74" y="76" width="14" height="24" />
+            <path d="M82 18 V 8" stroke="#D9008D" stroke-width="3" />
+            <circle cx="82" cy="14" r="6" fill="#D9008D" stroke="#D9008D" />
+          </svg>
+        </div>
+        <div class="headline">जगह की पुष्टि करें</div>
+        <div class="subhead">यदि नाम सही नहीं है तो बदल सकते हैं — टेक्निशियन को इसी नाम से जगह ढूँढने में मदद मिलेगी</div>
+
+        <div class="field-block">
+          <div class="label">जगह क्या है?</div>
+          <button class="type-dropdown" onclick="goto(11)" aria-label="Change landmark type">
+            <div class="lead-icon"><span class="ms" id="td-icon">temple_hindu</span></div>
+            <div class="lbl" id="td-label">मंदिर / मस्जिद</div>
+            <div class="chev"><span class="ms">expand_more</span></div>
+          </button>
+          <div class="input-helper">बदलने के लिए ऊपर टैप करें</div>
+        </div>
+
+        <div class="field-block">
+          <div class="label">जगह का नाम</div>
+          <div class="input-shell value-strong">
+            <span class="pre-icon"><span class="ms" id="lm-input-icon">temple_hindu</span></span>
+            <input id="lm-name-input" value="Hanuman Mandir" placeholder="जगह का नाम लिखें" />
+            <button class="clear-btn" onclick="clearLm()" aria-label="Clear"><span class="ms ms-16">close</span></button>
+          </div>
+          <div class="input-helper">यदि नाम अलग है तो खुद टाइप कर सकते हैं</div>
+        </div>
+      </div>
+
+      <div class="sticky-bar">
+        <button class="cta primary" onclick="commitLandmark(); goto(nextAfterLandmark())">अगला कदम</button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 20. VOICE ROUTE GUIDE ============== -->
+    <section class="screen" data-screen="20">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto(11)"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body" style="align-items:stretch;">
+        <div class="illust" style="padding:var(--s24) 0 var(--s8);">
+          <svg width="180" height="140" viewBox="0 0 180 140" fill="none">
+            <path d="M20 110 Q 50 80, 80 90 T 140 60" stroke="#A7A1B2" stroke-width="2" stroke-dasharray="4 6" fill="none"/>
+            <circle cx="140" cy="60" r="10" fill="#FFE5F6" stroke="#D9008D" stroke-width="2"/>
+            <circle cx="140" cy="60" r="3" fill="#D9008D"/>
+            <path d="M140 70 V 78" stroke="#D9008D" stroke-width="2"/>
+            <rect x="76" y="44" width="28" height="44" rx="14" fill="#D9008D"/>
+            <rect x="84" y="52" width="12" height="20" rx="6" fill="#FAF9FC"/>
+            <path d="M68 78 Q 90 96, 112 78" stroke="#161021" stroke-width="2" fill="none"/>
+            <path d="M90 96 V 110" stroke="#161021" stroke-width="2"/>
+            <path d="M82 110 H 98" stroke="#161021" stroke-width="2"/>
+            <path d="M58 56 Q 50 66, 58 76" stroke="#D9008D" stroke-width="2" fill="none"/>
+            <path d="M50 50 Q 38 66, 50 82" stroke="#D9008D" stroke-width="2" fill="none" opacity=".6"/>
+            <path d="M122 56 Q 130 66, 122 76" stroke="#D9008D" stroke-width="2" fill="none"/>
+            <path d="M130 50 Q 142 66, 130 82" stroke="#D9008D" stroke-width="2" fill="none" opacity=".6"/>
+          </svg>
+        </div>
+
+        <div class="headline">रास्ता बताएं — अपनी आवाज़ में</div>
+        <div class="subhead">अपनी आवाज़ में रास्ता बताएं ताकि टेक्निशियन सीधे आपके घर पहुंच सके। यह ज़रूरी नहीं है — चाहें तो छोड़ भी सकते हैं।</div>
+
+        <div class="example-tip">
+          <span class="ms ms-16">format_quote</span>
+          <span>“मेन रोड से अंदर आकर पहले दाएं मुड़ें, नीला गेट है, दूसरी मंज़िल।”</span>
+        </div>
+
+        <div class="audio-section">
+          <div class="audio-rec idle" id="audio-idle">
+            <button class="rec-btn" onclick="startRec()" aria-label="Start recording"><span class="ms">mic</span></button>
+            <div class="rec-label">रिकॉर्ड करने के लिए टैप करें</div>
+          </div>
+
+          <div class="audio-rec recording" id="audio-recording" style="display:none;">
+            <div class="rec-pulse"><span class="ms">mic</span></div>
+            <div class="rec-meta">
+              <div class="time" id="rec-time">00:00</div>
+              <div class="wave"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+            <button class="stop-btn" onclick="stopRec()" aria-label="Stop"><span class="ms ms-20">stop</span></button>
+          </div>
+
+          <div class="audio-rec recorded" id="audio-recorded" style="display:none;">
+            <button class="play-btn" onclick="togglePlay(this)" aria-label="Play"><span class="ms">play_arrow</span></button>
+            <div class="rec-meta">
+              <div class="time" id="recorded-time">00:23</div>
+              <div class="wave static">
+                <span style="--h:30%"></span><span style="--h:60%"></span><span style="--h:80%"></span>
+                <span style="--h:50%"></span><span style="--h:90%"></span><span style="--h:40%"></span>
+                <span style="--h:70%"></span><span style="--h:55%"></span>
+              </div>
+            </div>
+            <button class="del-btn" onclick="deleteRec()" aria-label="Delete recording"><span class="ms ms-20">delete</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="sticky-bar stack">
+        <button class="cta primary" id="confirm-audio" onclick="goto(13)" style="display:none;">पता कन्फर्म करें</button>
+        <button class="cta tertiary" id="skip-audio" onclick="goto(13)">ऑडियो छोड़कर आगे बढ़ें</button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============ Naming-rules dialog overlay ============ -->
+    <div class="scrim" id="dialog" style="display:none;">
+      <div class="dialog">
+        <div class="head">
+          <div class="title">नेट का नाम रखने के नियम</div>
+          <ol class="body">
+            <li>नेट के नाम में अधिकतम 28 अक्षर हो सकते हैं।</li>
+            <li>सिर्फ अंकों एवं अक्षरों का ही इस्तेमाल करें।</li>
+          </ol>
+        </div>
+        <button class="cta primary" onclick="hideDialog()">ठीक है, मैं समझ गया</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ---------- Routing (string + numeric screen IDs) ---------- */
+let cur = null;
+let pendingTimer = null;
+
+const autoAdvance = {
+  1:  { to: 2,  ms: 1600 },
+  2:  { to: 3,  ms: 2200 },
+  13: { to: 14, ms: 1800 },
+};
+
+/* Layout groups — screens within a group share their chrome (top bar,
+   sticky-net, chat input / form layout / yellow surface), so we cross-fade
+   between them instead of pushing left. Group changes still slide. */
+function screenGroup(n) {
+  const k = String(n);
+  if (k === 'context' || k === 'variants' || k === '17') return 'yellow';
+  if (k === '1' || k === '13')       return 'loader';
+  if (['2','3','9','14','15','16','18'].includes(k)) return 'chat';
+  return 'form';
+}
+
+/* ---------- Variant routing ----------
+   A1, A2: address → voice (no landmark)
+   B    : address → landmark (no voice)
+   C1, C2: address → landmark → voice (full)
+   A2 + C2 fire a TTS prompt when the voice screen activates. */
+const VARIANT_LABELS = {
+  A1: 'Variant A1 · Address + Voice',
+  A2: 'Variant A2 · Address + Voice + Audio prompt',
+  B : 'Variant B · Address + Nearby place',
+  C1: 'Variant C1 · Full',
+  C2: 'Variant C2 · Full + Audio prompt',
+};
+
+function startVariant(v) {
+  state.variant = v;
+  document.body.classList.add('has-variant');
+  const badge = document.getElementById('variantBadge');
+  if (badge) badge.textContent = VARIANT_LABELS[v] || ('Variant ' + v);
+  goto(1);
+}
+
+function nextAfterAddress() {
+  return (state.variant === 'A1' || state.variant === 'A2') ? 20 : 11;
+}
+function nextAfterLandmark() {
+  return state.variant === 'B' ? 13 : 20;
+}
+
+/* Hindi TTS prompt for A2 / C2 — plays once when screen 20 activates.
+   Browsers gate autoplay; the user has already tapped through several
+   screens by this point so the gesture context is usually granted. */
+function speakVoicePrompt() {
+  if (!('speechSynthesis' in window)) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(
+      'अपनी आवाज़ में रास्ता बताने के लिए नीचे दिये गये माइक का बटन दबाइए, फिर बताइए घर तक कैसे पहुँचना है।'
+    );
+    u.lang = 'hi-IN';
+    u.rate = 0.92;
+    speechSynthesis.speak(u);
+  } catch (e) { /* swallow — prompt is best-effort */ }
+}
+
+function goto(n) {
+  if (n === undefined || n === null) return;
+  const key = String(n);
+  if (pendingTimer) { clearTimeout(pendingTimer); pendingTimer = null; }
+  hideDialog();
+
+  const sameGroup = cur !== null && screenGroup(cur) === screenGroup(n);
+  document.body.classList.toggle('same-group', sameGroup);
+
+  cur = n;
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.toggle('active', String(s.dataset.screen) === key);
+  });
+  document.querySelectorAll('.screen.active .chat-body').forEach(el => { el.scrollTop = el.scrollHeight; });
+  document.querySelectorAll('.screen.active .screen-body').forEach(el => { el.scrollTop = 0; });
+
+  if (n === 10) { checkAddrCta(); applyAddrCtaLabel(); }
+  if (n === 12) populateSheet();
+  if (n === 20 && (state.variant === 'A2' || state.variant === 'C2')) {
+    setTimeout(speakVoicePrompt, 350);
+  }
+
+  const auto = autoAdvance[n];
+  if (auto) pendingTimer = setTimeout(() => goto(auto.to), auto.ms);
+}
+
+/* On variants that skip the landmark step, the "next" CTA on the address
+   screen should NOT promise a landmark — relabel it to a generic "next". */
+function applyAddrCtaLabel() {
+  const cta = document.getElementById('addr-confirm');
+  if (!cta) return;
+  const skipsLandmark = (state.variant === 'A1' || state.variant === 'A2');
+  cta.textContent = skipsLandmark ? 'अगला कदम — आवाज़ में रास्ता' : 'सही सेट-अप के लिए पास की जगह दें';
+}
+
+/* ---------- Flow state ---------- */
+const state = { variant:null, type:'mandir', landmark:'Hanuman Mandir', landmarkShort:'मंदिर' };
+
+function showDialog() { document.getElementById('dialog').style.display = 'flex'; }
+function hideDialog() { document.getElementById('dialog').style.display = 'none'; }
+
+/* ---------- Address-flow data ---------- */
+const placesByType = {
+  school: { icon:'school',          label:'स्कूल',          short:'स्कूल',  heading:'घर के पास का स्कूल चुनें', items: [
+    {name:'Chota Bheem Play School',     addr:'131, Rajiv Colony, Sector 33, Gurugram',     dist:'500 m'},
+    {name:'Chitranshi Global School',    addr:'Gali No. 2, Rajiv Colony, Sector 33',         dist:'700 m'},
+    {name:'DAV Public School',           addr:'Sector 33, Gurugram, Haryana 122001',         dist:'1.2 km'},
+    {name:'Government Primary School',   addr:'Block C, Sector 33, Gurugram',                dist:'1.5 km'}
+  ]},
+  shop: { icon:'storefront',        label:'दुकान',          short:'दुकान', heading:'घर के पास की दुकान चुनें', items: [
+    {name:'Sharma Kirana Store',         addr:'Gali No. 2, Rajiv Colony, Sector 33',         dist:'200 m'},
+    {name:'Patel Medical Store',         addr:'Sector 33 main road',                          dist:'400 m'},
+    {name:'Apna Bazaar Supermarket',     addr:'Sector 33, Gurugram',                          dist:'700 m'},
+    {name:'Mama Mobile Repair',          addr:'Rajiv Colony market',                          dist:'900 m'}
+  ]},
+  bank: { icon:'account_balance',   label:'बैंक / ATM',     short:'बैंक',  heading:'घर के पास का बैंक चुनें',  items: [
+    {name:'SBI ATM',                     addr:'Sector 33 main road, Gurugram',                dist:'300 m'},
+    {name:'HDFC Bank',                   addr:'Sector 33, Gurugram',                          dist:'800 m'},
+    {name:'Punjab National Bank',        addr:'Sector 33 market, Gurugram',                   dist:'1.0 km'},
+    {name:'ICICI Bank ATM',              addr:'Old Sector 33',                                dist:'1.4 km'}
+  ]},
+  mandir: { icon:'temple_hindu',    label:'मंदिर / मस्जिद', short:'मंदिर', heading:'घर के पास का मंदिर / मस्जिद चुनें', items: [
+    {name:'Hanuman Mandir',              addr:'Gali No. 2, Rajiv Colony, Sector 33',          dist:'500 m'},
+    {name:'Shiv Mandir',                 addr:'Sector 33 chowk, Gurugram',                    dist:'700 m'},
+    {name:'Jama Masjid',                 addr:'Old Sector 33, Gurugram',                      dist:'1.2 km'},
+    {name:'Sai Mandir',                  addr:'Block C, Rajiv Colony',                        dist:'1.5 km'}
+  ]}
+};
+
+function applyType(t) {
+  if (!t || !placesByType[t]) return;
+  const def = placesByType[t];
+  state.type = t;
+  state.landmarkShort = def.short;
+  document.querySelectorAll('#screen12-tiles .type-tile').forEach(el => {
+    el.classList.toggle('selected', el.dataset.t === t);
+  });
+  const tdIcon  = document.getElementById('td-icon');
+  const tdLabel = document.getElementById('td-label');
+  if (tdIcon)  tdIcon.textContent = def.icon;
+  if (tdLabel) tdLabel.textContent = def.label;
+  const inputIcon = document.getElementById('lm-input-icon');
+  if (inputIcon) inputIcon.textContent = def.icon;
+}
+
+function pickType(t) {
+  applyType(t);
+  goto(12);
+}
+
+function populateSheet() {
+  const def = placesByType[state.type];
+  if (!def) return;
+  document.getElementById('lm-sheet-heading').textContent = `पास के ${def.label}`;
+  const list = document.getElementById('lm-sheet-list');
+  list.innerHTML = def.items.map(it => `
+    <div class="list-item" data-name="${it.name}">
+      <div class="leading distance"><span class="ms ms-16">location_on</span><span>${it.dist}</span></div>
+      <div class="body"><div class="primary">${it.name}</div><div class="secondary">${it.addr}</div></div>
+    </div>
+  `).join('');
+  list.querySelectorAll('.list-item').forEach(el => {
+    el.addEventListener('click', () => pickPlace(el.dataset.name));
+  });
+}
+
+function pickPlace(name) {
+  state.landmark = name;
+  const input = document.getElementById('lm-name-input');
+  if (input) input.value = name;
+  goto(19);
+}
+
+function pickCustom() {
+  state.landmark = '';
+  const input = document.getElementById('lm-name-input');
+  if (input) input.value = '';
+  goto(19);
+  setTimeout(() => input && input.focus(), 280);
+}
+
+function clearLm() {
+  const input = document.getElementById('lm-name-input');
+  if (input) { input.value = ''; input.focus(); }
+  state.landmark = '';
+}
+
+function commitLandmark() {
+  const input = document.getElementById('lm-name-input');
+  const val = (input && input.value.trim()) || 'जगह दर्ज नहीं की';
+  state.landmark = val;
+}
+
+function checkAddrCta() {
+  const house    = (document.getElementById('addr-house')    || {}).value || '';
+  const street   = (document.getElementById('addr-street')   || {}).value || '';
+  const locality = (document.getElementById('addr-locality') || {}).value || '';
+  const ready = house.trim() && street.trim() && locality.trim();
+  const cta = document.getElementById('addr-confirm');
+  if (cta) cta.style.display = ready ? '' : 'none';
+}
+
+/* ---------- Audio recorder mock ---------- */
+let recTimer = null, recSeconds = 0;
+function fmtTime(s){ const m=String(Math.floor(s/60)).padStart(2,'0'); const ss=String(s%60).padStart(2,'0'); return `${m}:${ss}`; }
+function startRec() {
+  document.getElementById('audio-idle').style.display = 'none';
+  document.getElementById('audio-recorded').style.display = 'none';
+  document.getElementById('audio-recording').style.display = 'flex';
+  document.getElementById('confirm-audio').style.display = 'none';
+  document.getElementById('skip-audio').style.display = 'none';
+  recSeconds = 0;
+  document.getElementById('rec-time').textContent = '00:00';
+  recTimer = setInterval(() => {
+    recSeconds++;
+    document.getElementById('rec-time').textContent = fmtTime(recSeconds);
+  }, 1000);
+}
+function stopRec() {
+  if (recTimer) { clearInterval(recTimer); recTimer = null; }
+  document.getElementById('audio-recording').style.display = 'none';
+  document.getElementById('audio-recorded').style.display = 'flex';
+  document.getElementById('recorded-time').textContent = recSeconds > 0 ? fmtTime(recSeconds) : '00:23';
+  document.getElementById('confirm-audio').style.display = '';
+  document.getElementById('skip-audio').style.display = 'none';
+}
+function deleteRec() {
+  document.getElementById('audio-recorded').style.display = 'none';
+  document.getElementById('audio-idle').style.display = 'flex';
+  document.getElementById('confirm-audio').style.display = 'none';
+  document.getElementById('skip-audio').style.display = '';
+  recSeconds = 0;
+}
+function togglePlay(btn) {
+  const ic = btn.querySelector('.ms');
+  ic.textContent = ic.textContent === 'play_arrow' ? 'pause' : 'play_arrow';
+}
+
+applyType(state.type);
+/* Default: open with the yellow context screen, like Rescheduling does. */
+goto('context');
+</script>
+</body>
+</html>
