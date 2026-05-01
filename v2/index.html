@@ -724,6 +724,17 @@ body.has-variant .variant-badge { display:flex; }
 .divider     { height:1px; background:var(--stroke-subtle); margin:0 var(--s16); }
 .spacer-flex { flex:1; }
 
+/* Top-right "Skip" link in the back-style top bar */
+.skip-link {
+  background:transparent; border:0; cursor:pointer;
+  height:48px; padding:0 var(--s16);
+  display:inline-flex; align-items:center; gap:var(--s4);
+  font:var(--t-label-md); color:var(--text-brand);
+  border-radius:var(--r-medium);
+}
+.skip-link:hover { background:var(--bg-brand-subtle); }
+.skip-link:disabled { color:var(--text-disabled); cursor:default; background:transparent; }
+
 /* Floating "back to scenarios" pill — only on phone screens, useful for demo navigation */
 .back-to-scenarios {
   position:absolute; right:12px; top:12px; z-index:20;
@@ -1853,10 +1864,9 @@ body.has-variant .variant-badge { display:flex; }
     <section class="screen" data-screen="20">
       <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
       <header class="topbar back">
-        <button class="back-btn" aria-label="Back" onclick="goto(11)"><span class="ms">arrow_back</span></button>
+        <button class="back-btn" aria-label="Back" onclick="goto(backFromVoice())"><span class="ms">arrow_back</span></button>
         <div class="spacer-flex"></div>
-        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
-        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+        <button class="skip-link" id="skip-link" onclick="goto(13)">छोड़ें</button>
       </header>
       <div class="screen-body" style="align-items:stretch;">
         <div class="illust" style="padding:var(--s24) 0 var(--s8);">
@@ -1914,9 +1924,8 @@ body.has-variant .variant-badge { display:flex; }
           </div>
         </div>
       </div>
-      <div class="sticky-bar stack">
+      <div class="sticky-bar">
         <button class="cta primary" id="confirm-audio" onclick="goto(13)" style="display:none;">पता कन्फर्म करें</button>
-        <button class="cta tertiary" id="skip-audio" onclick="goto(13)">ऑडियो छोड़कर आगे बढ़ें</button>
       </div>
       <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
     </section>
@@ -1987,6 +1996,29 @@ function nextAfterAddress() {
 function nextAfterLandmark() {
   return state.variant === 'B' ? 13 : 20;
 }
+/* Back from voice screen — A1/A2 came directly from address, others via landmark name. */
+function backFromVoice() {
+  return (state.variant === 'A1' || state.variant === 'A2') ? 10 : 19;
+}
+function toggleSkip(show) {
+  const sk = document.getElementById('skip-link');
+  if (sk) sk.style.display = show ? '' : 'none';
+}
+/* Reset the voice page to idle each time it activates so the reviewer
+   doesn't see leftover state from a previous variant walk. */
+function resetAudio() {
+  if (recTimer) { clearInterval(recTimer); recTimer = null; }
+  const idle = document.getElementById('audio-idle');
+  const rec  = document.getElementById('audio-recording');
+  const done = document.getElementById('audio-recorded');
+  if (idle) idle.style.display = 'flex';
+  if (rec)  rec.style.display  = 'none';
+  if (done) done.style.display = 'none';
+  const confirmBtn = document.getElementById('confirm-audio');
+  if (confirmBtn) confirmBtn.style.display = 'none';
+  toggleSkip(true);
+  recSeconds = 0;
+}
 
 /* Hindi TTS prompt for A2 / C2 — plays once when screen 20 activates.
    Browsers gate autoplay; the user has already tapped through several
@@ -2008,6 +2040,7 @@ function goto(n) {
   if (n === undefined || n === null) return;
   const key = String(n);
   if (pendingTimer) { clearTimeout(pendingTimer); pendingTimer = null; }
+  if ('speechSynthesis' in window && speechSynthesis.speaking) speechSynthesis.cancel();
   hideDialog();
 
   const sameGroup = cur !== null && screenGroup(cur) === screenGroup(n);
@@ -2022,8 +2055,11 @@ function goto(n) {
 
   if (n === 10) { checkAddrCta(); applyAddrCtaLabel(); }
   if (n === 12) populateSheet();
-  if (n === 20 && (state.variant === 'A2' || state.variant === 'C2')) {
-    setTimeout(speakVoicePrompt, 350);
+  if (n === 20) {
+    resetAudio();
+    if (state.variant === 'A2' || state.variant === 'C2') {
+      setTimeout(speakVoicePrompt, 350);
+    }
   }
 
   const auto = autoAdvance[n];
@@ -2154,7 +2190,7 @@ function startRec() {
   document.getElementById('audio-recorded').style.display = 'none';
   document.getElementById('audio-recording').style.display = 'flex';
   document.getElementById('confirm-audio').style.display = 'none';
-  document.getElementById('skip-audio').style.display = 'none';
+  toggleSkip(false);
   recSeconds = 0;
   document.getElementById('rec-time').textContent = '00:00';
   recTimer = setInterval(() => {
@@ -2168,13 +2204,13 @@ function stopRec() {
   document.getElementById('audio-recorded').style.display = 'flex';
   document.getElementById('recorded-time').textContent = recSeconds > 0 ? fmtTime(recSeconds) : '00:23';
   document.getElementById('confirm-audio').style.display = '';
-  document.getElementById('skip-audio').style.display = 'none';
+  toggleSkip(false);
 }
 function deleteRec() {
   document.getElementById('audio-recorded').style.display = 'none';
   document.getElementById('audio-idle').style.display = 'flex';
   document.getElementById('confirm-audio').style.display = 'none';
-  document.getElementById('skip-audio').style.display = '';
+  toggleSkip(true);
   recSeconds = 0;
 }
 function togglePlay(btn) {
