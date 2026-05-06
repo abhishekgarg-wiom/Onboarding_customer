@@ -788,124 +788,201 @@ body.has-variant .variant-badge { display:flex; }
 .back-to-scenarios .ms { color:#fff; font-size:14px; }
 .back-to-scenarios:hover { background:rgba(31,24,48,0.95); }
 
-/* ---------- AI verification call screen ---------- */
-.ai-screen-body {
-  flex:1; min-height:0; overflow-y:auto;
-  display:flex; flex-direction:column; gap:var(--s12);
-  padding:var(--s12) var(--s16) var(--s16);
-}
-.ai-call-surface {
-  background:#101014; border-radius:24px;
-  padding:20px 18px 16px;
-  display:flex; flex-direction:column; align-items:center; gap:12px;
+/* ---------- AI conversation screen — modern theme ---------- */
+.screen.ai-modern {
+  position:relative; overflow:hidden;
+  background:#0B0915;
   color:#FFFFFF;
 }
-.ai-title { font-size:20px; font-weight:700; line-height:28px; letter-spacing:-0.01em; }
-.ai-status { font-size:13px; font-weight:500; line-height:18px; color:rgba(255,255,255,0.72); }
-.ai-avatar { position:relative; width:96px; height:96px; display:grid; place-items:center; }
-.ai-avatar-ring {
-  position:absolute; inset:-8px; border-radius:999px;
-  background:radial-gradient(circle, rgba(217,0,141,0.55) 0%, rgba(217,0,141,0) 70%);
-  opacity:0; transition:opacity 200ms;
+.ai-bg { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+.ai-bg-blob {
+  position:absolute; width:420px; height:420px; border-radius:999px;
+  filter:blur(70px); opacity:0.55;
+  animation:ai-blob 12s ease-in-out infinite alternate;
 }
-.ai-avatar-inner {
-  width:96px; height:96px; border-radius:999px;
-  background:var(--bg-brand);
-  display:grid; place-items:center;
-  font-size:30px; font-weight:800; color:#fff; letter-spacing:0.04em;
-  box-shadow:0 8px 24px rgba(217,0,141,0.35);
+.ai-bg-blob-1 { background:#D9008D; top:-120px; left:-120px; }
+.ai-bg-blob-2 { background:#5B2EFF; bottom:-160px; right:-140px; animation-duration:16s; }
+@keyframes ai-blob {
+  0%   { transform:translate(0,0) scale(1); }
+  50%  { transform:translate(30px,40px) scale(1.08); }
+  100% { transform:translate(-20px,-30px) scale(0.95); }
 }
-.ai-call-surface.is-speaking .ai-avatar-ring,
-.ai-call-surface.is-listening .ai-avatar-ring { opacity:1; animation:ai-ring-pulse 1.4s ease-in-out infinite; }
-@keyframes ai-ring-pulse {
-  0%, 100% { transform:scale(1); opacity:0.55; }
-  50% { transform:scale(1.18); opacity:0.95; }
-}
-.ai-speaker-chip {
-  display:inline-flex; align-items:center; gap:6px;
-  padding:6px 10px; border-radius:999px;
-  background:rgba(255,255,255,0.12);
-  font-size:11px; font-weight:600; line-height:14px;
-}
-.ai-speaker-chip .ms { color:#fff; }
-.ai-waveform { display:flex; align-items:center; justify-content:center; gap:3px; height:18px; }
-.ai-waveform span {
-  width:4px; height:30%; border-radius:2px; background:rgba(255,255,255,0.55);
-  transition:height 200ms;
-}
-.ai-call-surface.is-speaking .ai-waveform span,
-.ai-call-surface.is-listening .ai-waveform span {
-  background:#fff;
-  animation:ai-wave 1.1s ease-in-out infinite;
-}
-.ai-call-surface.is-speaking .ai-waveform span:nth-child(odd) { animation-delay:0.15s; }
-.ai-call-surface.is-speaking .ai-waveform span:nth-child(3n)  { animation-delay:0.3s; }
-.ai-call-surface.is-speaking .ai-waveform span:nth-child(4n)  { animation-delay:0.45s; }
-.ai-call-surface.is-listening .ai-waveform span { animation-duration:0.8s; }
-@keyframes ai-wave {
-  0%, 100% { height:25%; }
-  50%      { height:90%; }
-}
-.ai-call-surface.is-completed .ai-waveform { display:none; }
-.ai-call-surface.is-idle      .ai-waveform { opacity:0.5; }
-.ai-call-surface.is-completed .ai-status::after { content:' ✓'; color:#5BC07A; }
 
+.ai-stage {
+  position:relative; z-index:1;
+  flex:1; display:flex; flex-direction:column;
+  height:100%;
+}
+
+.ai-topbar {
+  display:flex; align-items:center; gap:8px;
+  padding:14px 12px 10px;
+}
+.ai-topbar-center { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; }
+.ai-topbar-name   { font-size:14px; font-weight:700; color:#FFFFFF; letter-spacing:0.01em; }
+.ai-topbar-status { font-size:11px; font-weight:500; color:rgba(255,255,255,0.7); }
+.ai-icon-btn {
+  background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.08);
+  color:#FFFFFF; width:36px; height:36px; border-radius:999px;
+  display:grid; place-items:center; cursor:pointer;
+  transition:background 120ms;
+}
+.ai-icon-btn:hover { background:rgba(255,255,255,0.16); }
+.ai-icon-btn .ms { color:#FFFFFF; font-size:20px; }
+.ai-end-btn { background:rgba(255,255,255,0.04); }
+.ai-modern.is-completed .ai-end-btn { background:rgba(91,192,122,0.25); border-color:rgba(91,192,122,0.5); }
+.ai-modern.is-completed .ai-end-btn .ms { color:#92E4A6; }
+
+/* Orb / avatar */
+.ai-orb-wrap { display:flex; justify-content:center; align-items:center; padding:8px 0 4px; }
+.ai-orb { position:relative; width:140px; height:140px; }
+.ai-orb-glow {
+  position:absolute; inset:-30px; border-radius:999px;
+  background:radial-gradient(circle, rgba(217,0,141,0.55) 0%, rgba(91,46,255,0.25) 50%, rgba(0,0,0,0) 80%);
+  filter:blur(8px); opacity:0.7;
+  transition:transform 220ms, opacity 220ms;
+  animation:ai-breathe 4.5s ease-in-out infinite;
+}
+.ai-orb-core {
+  position:absolute; inset:18px; border-radius:999px;
+  background:linear-gradient(135deg, #D9008D 0%, #7C1FCF 60%, #1F0E33 100%);
+  display:grid; place-items:center;
+  box-shadow:0 12px 40px rgba(217,0,141,0.5),
+             inset 0 0 30px rgba(255,255,255,0.18);
+}
+.ai-orb-core svg { width:60px; height:60px; }
+@keyframes ai-breathe {
+  0%, 100% { transform:scale(1); }
+  50%      { transform:scale(1.12); }
+}
+.ai-modern.is-speaking  .ai-orb-glow { opacity:1; animation:ai-pulse-fast 0.9s ease-in-out infinite; }
+.ai-modern.is-listening .ai-orb-glow { opacity:0.95; animation:ai-pulse-listening 1.4s ease-in-out infinite; }
+.ai-modern.is-thinking  .ai-orb-glow { opacity:0.6; }
+@keyframes ai-pulse-fast {
+  0%, 100% { transform:scale(1);    opacity:0.7; }
+  50%      { transform:scale(1.22); opacity:1.0; }
+}
+@keyframes ai-pulse-listening {
+  0%, 100% { transform:scale(1.06); opacity:0.7;  }
+  50%      { transform:scale(1.20); opacity:1.0;  }
+}
+
+/* Live status chip near the orb */
+.ai-live { display:flex; justify-content:center; padding:6px 0 2px; }
+.ai-live-chip {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 12px; border-radius:999px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.08);
+  font-size:11px; font-weight:600; color:rgba(255,255,255,0.85);
+}
+.ai-live-dot {
+  width:7px; height:7px; border-radius:999px; background:#9AA0A6;
+  box-shadow:0 0 0 0 rgba(154,160,166,0);
+}
+.ai-modern.is-listening .ai-live-dot { background:#5BC07A; animation:ai-dot-pulse 1.0s ease-in-out infinite; }
+.ai-modern.is-speaking  .ai-live-dot { background:#D9008D; animation:ai-dot-pulse 0.6s ease-in-out infinite; }
+.ai-modern.is-thinking  .ai-live-dot { background:#FFB800; animation:ai-dot-pulse 0.8s ease-in-out infinite; }
+@keyframes ai-dot-pulse {
+  0%, 100% { box-shadow:0 0 0 0 currentColor; opacity:1; }
+  50%      { box-shadow:0 0 0 6px rgba(255,255,255,0); opacity:0.6; }
+}
+
+/* Transcript */
 .ai-transcript {
-  background:var(--bg-default);
-  border:1px solid var(--stroke-subtle);
-  border-radius:16px;
-  padding:12px;
+  flex:1; min-height:0;
+  margin:8px 14px 4px;
+  padding:8px 4px;
   display:flex; flex-direction:column; gap:8px;
-  min-height:120px; max-height:240px;
   overflow-y:auto;
+  scroll-behavior:smooth;
+  -webkit-mask-image:linear-gradient(180deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
+          mask-image:linear-gradient(180deg, transparent 0, #000 24px, #000 calc(100% - 24px), transparent 100%);
 }
-.ai-transcript-empty {
-  color:var(--text-subtle); font:var(--t-body-sm);
-  text-align:center; padding:16px 8px;
-}
-.ai-row { display:flex; }
+.ai-transcript::-webkit-scrollbar { width:0; }
+.ai-row { display:flex; max-width:100%; }
 .ai-row-bot  { justify-content:flex-start; }
 .ai-row-user { justify-content:flex-end; }
 .ai-bubble {
-  max-width:80%; padding:8px 12px; border-radius:14px;
-  font:var(--t-body-md); line-height:20px;
+  max-width:82%; padding:9px 13px; border-radius:18px;
+  font-size:13px; line-height:19px;
   animation:fadeUp 220ms ease-out;
+  word-wrap:break-word;
 }
-.ai-row-bot  .ai-bubble { background:var(--bg-subtle);  color:var(--text-default); border-bottom-left-radius:4px; }
-.ai-row-user .ai-bubble { background:var(--bg-brand-subtle); color:var(--text-brand);   border-bottom-right-radius:4px; }
+.ai-row-bot  .ai-bubble {
+  background:rgba(255,255,255,0.10);
+  border:1px solid rgba(255,255,255,0.08);
+  color:#FFFFFF;
+  border-bottom-left-radius:6px;
+}
+.ai-row-user .ai-bubble {
+  background:linear-gradient(135deg, #D9008D 0%, #B0006F 100%);
+  color:#FFFFFF;
+  border-bottom-right-radius:6px;
+  box-shadow:0 4px 14px rgba(217,0,141,0.4);
+}
+.ai-bubble.interim { opacity:0.65; font-style:italic; }
 
+/* Captured fields card — translucent on dark theme */
 .ai-captured {
-  background:var(--bg-default);
-  border:1px solid var(--stroke-subtle);
+  margin:0 14px 12px;
+  padding:10px 12px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
   border-radius:16px;
-  padding:12px;
-  display:flex; flex-direction:column; gap:8px;
+  display:none; flex-direction:column; gap:6px;
 }
-.ai-captured-title { font:var(--t-label-md); color:var(--text-subtle); }
-.ai-captured-list  { display:flex; flex-direction:column; gap:6px; }
+.ai-captured.is-shown { display:flex; }
+.ai-captured-title { font-size:11px; font-weight:600; color:rgba(255,255,255,0.6); letter-spacing:0.04em; text-transform:uppercase; }
+.ai-captured-list  { display:flex; flex-direction:column; gap:5px; }
 .ai-captured-item {
   display:flex; align-items:center; gap:10px;
-  padding:8px 10px; border-radius:12px;
-  background:var(--bg-positive-subtle, #E8F7EF);
+  padding:7px 10px; border-radius:12px;
+  background:rgba(91,192,122,0.14);
+  border:1px solid rgba(91,192,122,0.25);
   animation:fadeUp 220ms ease-out;
 }
 .ai-captured-icon {
-  width:28px; height:28px; border-radius:999px;
-  background:#fff; display:grid; place-items:center;
+  width:24px; height:24px; border-radius:999px;
+  background:rgba(91,192,122,0.25);
+  display:grid; place-items:center;
   flex-shrink:0;
 }
-.ai-captured-icon .ms { color:var(--icon-positive, #1F8B4B); }
+.ai-captured-icon .ms { color:#92E4A6; font-size:14px; }
 .ai-captured-text { display:flex; flex-direction:column; flex:1; min-width:0; }
-.ai-captured-label { font:var(--t-label-sm); color:var(--text-subtle); }
-.ai-captured-value { font:var(--t-body-md); color:var(--text-default); font-weight:600; }
-.ai-captured-tick .ms { color:var(--icon-positive, #1F8B4B); }
+.ai-captured-label { font-size:10px; color:rgba(255,255,255,0.55); letter-spacing:0.02em; text-transform:uppercase; }
+.ai-captured-value { font-size:13px; color:#FFFFFF; font-weight:600; }
+.ai-captured-tick .ms { color:#92E4A6; font-size:16px; }
 
-.ai-call-btn { display:flex; align-items:center; justify-content:center; gap:8px; }
-.ai-call-btn .ms { color:#fff; font-size:20px; }
-.ai-call-btn.is-end  { background:#D72020; }
-.ai-call-btn.is-end:hover { background:#B61A1A; }
-.ai-call-btn.is-done { background:#1F8B4B; }
-.ai-call-btn.is-done:hover { background:#16723D; }
+/* Fallback (no SpeechRecognition) */
+.ai-fallback {
+  margin:8px 14px 16px;
+  padding:12px;
+  background:rgba(255,184,0,0.10);
+  border:1px solid rgba(255,184,0,0.3);
+  border-radius:14px;
+  display:flex; flex-direction:column; gap:8px;
+}
+.ai-fallback-title { font-size:13px; font-weight:700; color:#FFD37A; }
+.ai-fallback-sub   { font-size:12px; color:rgba(255,255,255,0.75); line-height:18px; }
+.ai-fallback-row   { display:flex; gap:8px; align-items:center; }
+.ai-fallback-row input {
+  flex:1; height:40px; padding:0 12px;
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(255,255,255,0.06);
+  border-radius:10px; color:#FFFFFF;
+  font:var(--t-body-md);
+  outline:none;
+}
+.ai-fallback-row input::placeholder { color:rgba(255,255,255,0.4); }
+.ai-fallback-send {
+  width:40px; height:40px; border-radius:10px;
+  border:0; cursor:pointer;
+  background:linear-gradient(135deg, #D9008D, #B0006F);
+  color:#FFFFFF;
+  display:grid; place-items:center;
+}
+.ai-fallback-send .ms { color:#FFFFFF; font-size:20px; }
 </style>
 </head>
 <body>
@@ -1982,51 +2059,62 @@ body.has-variant .variant-badge { display:flex; }
     </section>
 
     <!-- ============== 20. VOICE ROUTE GUIDE ============== -->
-    <!-- ============== AI · Wiom Home Check call ============== -->
-    <section class="screen" data-screen="ai">
-      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
-      <header class="topbar back">
-        <button class="back-btn" aria-label="Back" onclick="goto(state.variant === 'D2' ? 10 : 19)"><span class="ms">arrow_back</span></button>
-        <div class="spacer-flex"></div>
-      </header>
+    <!-- ============== AI · Wiom booking assistant ============== -->
+    <section class="screen ai-modern" data-screen="ai">
+      <div class="ai-bg"><div class="ai-bg-blob ai-bg-blob-1"></div><div class="ai-bg-blob ai-bg-blob-2"></div></div>
 
-      <div class="ai-screen-body">
+      <div class="ai-stage">
 
-        <div class="ai-call-surface" id="ai-call-surface">
-          <div class="ai-title">Wiom Home Check</div>
-          <div class="ai-status" id="ai-status">तैयार है — कॉल शुरू कीजिए</div>
-
-          <div class="ai-avatar" id="ai-avatar">
-            <div class="ai-avatar-ring"></div>
-            <div class="ai-avatar-inner">AI</div>
+        <header class="ai-topbar">
+          <button class="ai-icon-btn" aria-label="Back" onclick="endAiCall(); goto(state.variant === 'D2' ? 10 : 19)"><span class="ms">arrow_back</span></button>
+          <div class="ai-topbar-center">
+            <div class="ai-topbar-name">Wiom Assistant</div>
+            <div class="ai-topbar-status" id="ai-status">शुरू कर रही हूँ…</div>
           </div>
+          <button class="ai-icon-btn ai-end-btn" id="ai-end-btn" aria-label="End call" onclick="endAiCall(); goto(13)"><span class="ms">close</span></button>
+        </header>
 
-          <div class="ai-speaker-chip"><span class="ms ms-16">volume_up</span><span>Speaker mode</span></div>
-
-          <div class="ai-waveform" id="ai-waveform">
-            <span></span><span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span><span></span>
+        <div class="ai-orb-wrap">
+          <div class="ai-orb" id="ai-orb">
+            <div class="ai-orb-glow"></div>
+            <div class="ai-orb-core">
+              <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="aiOrbGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+                    <stop offset="0" stop-color="#FFFFFF"/>
+                    <stop offset="1" stop-color="#FFD9F1"/>
+                  </linearGradient>
+                </defs>
+                <path d="M14 36 C 14 22, 26 22, 28 32 S 42 44, 50 28" stroke="url(#aiOrbGrad)" stroke-width="5" stroke-linecap="round" fill="none"/>
+                <circle cx="50" cy="28" r="3.5" fill="#FFFFFF"/>
+              </svg>
+            </div>
           </div>
         </div>
 
-        <div class="ai-transcript" id="ai-transcript">
-          <div class="ai-transcript-empty">कॉल शुरू होने पर बातचीत यहाँ दिखेगी</div>
+        <div class="ai-live" id="ai-live-row">
+          <div class="ai-live-chip" id="ai-live-chip"><span class="ai-live-dot"></span><span id="ai-live-text">सुन रही हूँ…</span></div>
         </div>
 
-        <div class="ai-captured" id="ai-captured" style="display:none;">
-          <div class="ai-captured-title">अब तक AI ने यह समझा है</div>
+        <div class="ai-transcript" id="ai-transcript"></div>
+
+        <div class="ai-captured" id="ai-captured">
+          <div class="ai-captured-title">कॉल से अब तक</div>
           <div class="ai-captured-list" id="ai-captured-list"></div>
         </div>
 
+        <div class="ai-fallback" id="ai-fallback" style="display:none;">
+          <div class="ai-fallback-title">माइक्रोफ़ोन उपलब्ध नहीं है</div>
+          <div class="ai-fallback-sub" id="ai-fallback-sub">यह browser voice input support नहीं करता — कृपया Chrome / Edge में खोलें, या नीचे टाइप कीजिए।</div>
+          <div class="ai-fallback-row">
+            <input id="ai-fallback-input" placeholder="यहाँ अपना जवाब टाइप करें" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();aiSubmitFallback();}"/>
+            <button class="ai-fallback-send" onclick="aiSubmitFallback()" aria-label="Send"><span class="ms">send</span></button>
+          </div>
+        </div>
+
       </div>
 
-      <div class="sticky-bar">
-        <button class="cta primary ai-call-btn" id="ai-call-btn" onclick="onAiCallBtn()">
-          <span class="ms">call</span><span id="ai-call-btn-label">कॉल शुरू करें</span>
-        </button>
-      </div>
-
-      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+      <button class="back-to-scenarios" onclick="endAiCall(); goto('variants')"><span class="ms">grid_view</span> Variants</button>
     </section>
 
     <!-- ============ Naming-rules dialog overlay ============ -->
@@ -2124,8 +2212,12 @@ function goto(n) {
   if (pendingTimer) { clearTimeout(pendingTimer); pendingTimer = null; }
   hideDialog();
 
-  const sameGroup = cur !== null && screenGroup(cur) === screenGroup(n);
+  const prev = cur;
+  const sameGroup = prev !== null && screenGroup(prev) === screenGroup(n);
   document.body.classList.toggle('same-group', sameGroup);
+
+  /* If leaving the AI screen, hang up the call to release mic + TTS. */
+  if (prev === 'ai' && n !== 'ai') endAiCall();
 
   cur = n;
   document.querySelectorAll('.screen').forEach(s => {
@@ -2371,107 +2463,241 @@ function checkAddrCta() {
   if (cta) cta.style.display = ready ? '' : 'none';
 }
 
-/* ---------- AI verification call ----------
-   Mirrors the Android prototype's Wiom Home Check flow (gpt-realtime + Hinglish).
-   Static prototype: pre-scripted turns. AI lines are spoken via SpeechSynthesis
-   when available, then a user reply bubble appears, then the next AI line — auto
-   advancing on a timer so the whole call plays out hands-free.
+/* ---------- AI conversation (Web Speech API + intent parser) ----------
+   Real interactive flow — no scripted user turns. The browser's SpeechRecognition
+   transcribes the customer's voice, a state machine routes the transcript through
+   intent parsers (yes/no, ordinal floor, color keyword, free-form direction /
+   landmark), and SpeechSynthesis voices the assistant's replies.
 
-   Captured fields appear in the side card as the AI extracts them:
-     at_home · floor · color · (D2: landmark) · direction
-   Final turn is the AI's confirmation summary. After "haan sahi", the call
-   completes and the flow advances to the loader (screen 13). */
+   Auto-starts on screen activation — no "Call start" CTA. The end-call icon
+   in the top-right hangs up at any time.
 
-const AI_SCRIPTS = {
-  D1: [
-    { who:'ai',   text:'Kya aap abhi isi ghar par hain?' },
-    { who:'user', text:'Haan, main ghar par hi hoon', captures:{ at_home:'Yes' } },
-    { who:'ai',   text:'Theek hai. Aapka floor kaunsa hai?' },
-    { who:'user', text:'Doosri manzil', captures:{ floor:'2nd floor' } },
-    { who:'ai',   text:'Building ka color kya hai?' },
-    { who:'user', text:'Neela', captures:{ color:'नीला' } },
-    { who:'ai',   text:'Hanuman Mandir se ghar tak ka rasta bataiye?' },
-    { who:'user', text:'Mandir ke saamne se right lo, dusri gali, neela gate hai',
-      captures:{ direction:'मंदिर के सामने से right, दूसरी गली, नीला गेट' } },
-    { who:'ai',   text:'Aap ghar par hain, doosri manzil, building neela hai, direction Hanuman Mandir se right, dusri gali, neela gate. Sahi?' },
-    { who:'user', text:'Haan sahi' },
-    { who:'ai',   text:'Theek hai, verification ho gaya', terminal:true },
-  ],
-  D2: [
-    { who:'ai',   text:'Kya aap abhi isi ghar par hain?' },
-    { who:'user', text:'Haan ghar par hi hoon', captures:{ at_home:'Yes' } },
-    { who:'ai',   text:'Aapke ghar ke paas koi pehchan vaali jagah batayiye — mandir, school, ya kuch aur?' },
-    { who:'user', text:'Hanuman Mandir hai paas mein', captures:{ landmark:'Hanuman Mandir' } },
-    { who:'ai',   text:'Theek hai. Aapka floor kaunsa hai?' },
-    { who:'user', text:'Doosri manzil', captures:{ floor:'2nd floor' } },
-    { who:'ai',   text:'Building ka color kya hai?' },
-    { who:'user', text:'Neela', captures:{ color:'नीला' } },
-    { who:'ai',   text:'Hanuman Mandir se ghar tak ka rasta bataiye?' },
-    { who:'user', text:'Mandir ke saamne se right lo, dusri gali, neela gate hai',
-      captures:{ direction:'मंदिर के सामने से right, दूसरी गली, नीला गेट' } },
-    { who:'ai',   text:'Aap ghar par hain, paas mein Hanuman Mandir hai, doosri manzil, building neela, direction mandir se right dusri gali. Sahi?' },
-    { who:'user', text:'Haan sahi' },
-    { who:'ai',   text:'Theek hai, verification ho gaya', terminal:true },
-  ],
-};
+   FSM states:
+     intro → ask_at_home → [ask_landmark for D2] → ask_floor →
+     ask_color → ask_direction → summary → confirm → done   (or not_at_home)
+
+   Browser support:
+     - Chrome / Edge desktop + Android: SpeechRecognition + SpeechSynthesis ✓
+     - Safari iOS 14+: SpeechRecognition partial; SpeechSynthesis ✓
+     - Firefox: SpeechRecognition behind flag — fallback text-input shown */
 
 const CAPTURE_LABELS = {
-  at_home:   { label:'घर पर हैं',   ms:'home' },
-  landmark:  { label:'पास की जगह',  ms:'place' },
-  floor:     { label:'Floor',       ms:'apartment' },
-  color:     { label:'Building color', ms:'palette' },
-  direction: { label:'रास्ता',       ms:'directions' },
+  at_home:   { label:'घर पर हैं',       ms:'home' },
+  landmark:  { label:'पास की जगह',     ms:'place' },
+  floor:     { label:'Floor',           ms:'apartment' },
+  color:     { label:'Building color',  ms:'palette' },
+  direction: { label:'रास्ता',           ms:'directions' },
 };
 
-let aiTimer = null;
-let aiTurn = 0;
-let aiActive = false;
-let aiCaptured = {};
+const aiCtx = {
+  active:    false,
+  recog:     null,
+  recogOn:   false,
+  state:     'idle',
+  captured:  {},
+  retries:   {},          // count per state to escalate clarifying prompts
+  voicesReady: false,
+  preferredVoice: null,
+};
 
-function aiSpeak(text) {
+/* ---------- Speech Synthesis (assistant voice) ---------- */
+function aiPickVoice() {
+  if (!('speechSynthesis' in window)) return null;
+  const voices = speechSynthesis.getVoices();
+  if (!voices || !voices.length) return null;
+  /* Prefer hi-IN female voices; fallback to en-IN; finally any voice. */
+  const byLang = (l) => voices.find(v => (v.lang || '').toLowerCase().startsWith(l));
+  return byLang('hi-in') || byLang('hi') || byLang('en-in') || byLang('en') || voices[0];
+}
+function aiPrimeVoices() {
   if (!('speechSynthesis' in window)) return;
+  const v = aiPickVoice();
+  if (v) { aiCtx.preferredVoice = v; aiCtx.voicesReady = true; }
+  else { speechSynthesis.onvoiceschanged = () => {
+    aiCtx.preferredVoice = aiPickVoice();
+    aiCtx.voicesReady = true;
+  }; }
+}
+aiPrimeVoices();
+
+function aiSay(text, onEnd) {
+  aiAddBubble('ai', text);
+  aiSetStage('speaking', 'AI बोल रही है…');
+  if (!('speechSynthesis' in window)) {
+    /* No TTS — hold a small read delay then continue */
+    setTimeout(() => onEnd && onEnd(), Math.min(700 + text.length * 35, 5000));
+    return;
+  }
   try {
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'hi-IN';
-    u.rate = 0.95;
+    u.rate = 0.96;
+    u.pitch = 1.05;
+    if (aiCtx.preferredVoice) u.voice = aiCtx.preferredVoice;
+    u.onend = () => { if (onEnd) onEnd(); };
+    u.onerror = () => { if (onEnd) onEnd(); };
     speechSynthesis.speak(u);
-  } catch (e) {}
+  } catch (e) { if (onEnd) onEnd(); }
 }
 
-function setAiStatus(status) {
-  const el = document.getElementById('ai-status');
-  if (el) el.textContent = status;
+/* ---------- Speech Recognition (customer voice) ---------- */
+function aiHasRecog() {
+  return !!(window.SpeechRecognition || window.webkitSpeechRecognition);
 }
-function setAiState(stateClass) {
-  /* stateClass ∈ idle | connecting | listening | speaking | completed */
-  const surface = document.getElementById('ai-call-surface');
-  if (!surface) return;
-  surface.classList.remove('is-idle','is-connecting','is-listening','is-speaking','is-completed');
-  surface.classList.add('is-' + stateClass);
+function aiNewRecog() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) return null;
+  const r = new SR();
+  r.lang = 'hi-IN';
+  r.continuous = false;
+  r.interimResults = true;
+  r.maxAlternatives = 1;
+  return r;
 }
 
-function addAiBubble(who, text) {
+function aiStartListening(onTranscript, onEmpty) {
+  if (!aiHasRecog()) {
+    aiShowFallback();
+    aiSetStage('listening', 'जवाब टाइप कीजिए');
+    aiCtx._fallbackHandler = onTranscript;
+    return;
+  }
+  if (aiCtx.recog && aiCtx.recogOn) { try { aiCtx.recog.abort(); } catch (e) {} }
+
+  const r = aiNewRecog();
+  aiCtx.recog = r;
+  aiCtx.recogOn = true;
+  let finalTxt = '';
+  let interimTxt = '';
+
+  r.onstart = () => { aiSetStage('listening', 'सुन रही हूँ…'); };
+  r.onresult = (ev) => {
+    interimTxt = '';
+    for (let i = ev.resultIndex; i < ev.results.length; i++) {
+      const res = ev.results[i];
+      if (res.isFinal) finalTxt += res[0].transcript + ' ';
+      else interimTxt += res[0].transcript;
+    }
+    aiUpdateInterim(interimTxt || finalTxt);
+  };
+  r.onerror = (ev) => {
+    aiCtx.recogOn = false;
+    aiClearInterim();
+    if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') {
+      aiShowFallback('माइक्रोफ़ोन permission नहीं मिली। आप टाइप कर सकते हैं।');
+      aiCtx._fallbackHandler = onTranscript;
+    } else if (ev.error === 'no-speech') {
+      onEmpty && onEmpty();
+    } else {
+      onEmpty && onEmpty();
+    }
+  };
+  r.onend = () => {
+    aiCtx.recogOn = false;
+    aiClearInterim();
+    const txt = finalTxt.trim();
+    if (txt) {
+      aiAddBubble('user', txt);
+      onTranscript && onTranscript(txt);
+    } else {
+      onEmpty && onEmpty();
+    }
+  };
+  try { r.start(); } catch (e) {
+    aiCtx.recogOn = false;
+    aiShowFallback('Voice शुरू नहीं हो पाया। आप टाइप कर सकते हैं।');
+    aiCtx._fallbackHandler = onTranscript;
+  }
+}
+
+function aiShowFallback(msg) {
+  const el = document.getElementById('ai-fallback');
+  const sub = document.getElementById('ai-fallback-sub');
+  if (el) el.style.display = '';
+  if (sub && msg) sub.textContent = msg;
+  const inp = document.getElementById('ai-fallback-input');
+  if (inp) { inp.value = ''; setTimeout(() => inp.focus(), 60); }
+}
+function aiHideFallback() {
+  const el = document.getElementById('ai-fallback');
+  if (el) el.style.display = 'none';
+}
+function aiSubmitFallback() {
+  const inp = document.getElementById('ai-fallback-input');
+  if (!inp) return;
+  const v = inp.value.trim();
+  if (!v) return;
+  inp.value = '';
+  aiAddBubble('user', v);
+  const h = aiCtx._fallbackHandler;
+  aiCtx._fallbackHandler = null;
+  if (h) h(v);
+}
+
+/* ---------- UI helpers ---------- */
+function aiSetStage(stage, statusText) {
+  aiCtx.state = stage;
+  const root = document.querySelector('.screen.ai-modern');
+  if (root) {
+    root.classList.remove('is-idle','is-listening','is-speaking','is-thinking','is-completed');
+    root.classList.add('is-' + stage);
+  }
+  const liveText = document.getElementById('ai-live-text');
+  if (liveText) {
+    if (stage === 'listening') liveText.textContent = 'सुन रही हूँ…';
+    else if (stage === 'speaking') liveText.textContent = 'बोल रही हूँ…';
+    else if (stage === 'thinking') liveText.textContent = 'सोच रही हूँ…';
+    else if (stage === 'completed') liveText.textContent = 'पूरा हुआ ✓';
+    else liveText.textContent = 'कनेक्ट हो रही है…';
+  }
+  const status = document.getElementById('ai-status');
+  if (status && statusText) status.textContent = statusText;
+}
+
+function aiAddBubble(who, text) {
   const el = document.getElementById('ai-transcript');
   if (!el) return;
-  const empty = el.querySelector('.ai-transcript-empty');
-  if (empty) empty.remove();
   const row = document.createElement('div');
   row.className = 'ai-row ' + (who === 'ai' ? 'ai-row-bot' : 'ai-row-user');
-  row.innerHTML = `<div class="ai-bubble">${text}</div>`;
+  row.innerHTML = `<div class="ai-bubble">${aiEscape(text)}</div>`;
   el.appendChild(row);
-  el.scrollTop = el.scrollHeight;
+  /* Defer scroll to next frame so the new node is laid out. */
+  requestAnimationFrame(() => { el.scrollTop = el.scrollHeight; });
+}
+function aiEscape(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
 }
 
-function pushCapture(key, value) {
+function aiUpdateInterim(text) {
+  const el = document.getElementById('ai-transcript');
+  if (!el) return;
+  let row = el.querySelector('.ai-row-user.interim-host');
+  if (!text) { if (row) row.remove(); return; }
+  if (!row) {
+    row = document.createElement('div');
+    row.className = 'ai-row ai-row-user interim-host';
+    row.innerHTML = '<div class="ai-bubble interim"></div>';
+    el.appendChild(row);
+  }
+  row.querySelector('.ai-bubble').textContent = text;
+  el.scrollTop = el.scrollHeight;
+}
+function aiClearInterim() {
+  const el = document.getElementById('ai-transcript');
+  if (!el) return;
+  const row = el.querySelector('.ai-row.interim-host');
+  if (row) row.remove();
+}
+
+function aiPushCapture(key, value) {
   if (!key) return;
-  aiCaptured[key] = value;
+  aiCtx.captured[key] = value;
   const card = document.getElementById('ai-captured');
   const list = document.getElementById('ai-captured-list');
   if (!card || !list) return;
-  card.style.display = '';
+  card.classList.add('is-shown');
   const meta = CAPTURE_LABELS[key];
-  /* Replace existing pill if same key, else append. */
   list.querySelectorAll(`[data-k="${key}"]`).forEach(n => n.remove());
   const item = document.createElement('div');
   item.className = 'ai-captured-item';
@@ -2480,99 +2706,304 @@ function pushCapture(key, value) {
     <span class="ai-captured-icon"><span class="ms ms-16">${meta?.ms || 'check'}</span></span>
     <span class="ai-captured-text">
       <span class="ai-captured-label">${meta?.label || key}</span>
-      <span class="ai-captured-value">${value}</span>
+      <span class="ai-captured-value">${aiEscape(value)}</span>
     </span>
     <span class="ai-captured-tick"><span class="ms ms-16">check_circle</span></span>
   `;
   list.appendChild(item);
 }
 
-function startAiCall() {
-  /* Reset state every time the screen is opened. */
-  aiTurn = 0;
-  aiActive = false;
-  aiCaptured = {};
-  const card = document.getElementById('ai-captured');
-  if (card) card.style.display = 'none';
-  const list = document.getElementById('ai-captured-list');
-  if (list) list.innerHTML = '';
-  const t = document.getElementById('ai-transcript');
-  if (t) t.innerHTML = '<div class="ai-transcript-empty">कॉल शुरू होने पर बातचीत यहाँ दिखेगी</div>';
-  setAiState('idle');
-  setAiStatus('तैयार है — कॉल शुरू कीजिए');
-  setAiCallBtn('कॉल शुरू करें', 'call');
-  if (aiTimer) { clearTimeout(aiTimer); aiTimer = null; }
-  if ('speechSynthesis' in window) speechSynthesis.cancel();
+/* ---------- Intent parsers ----------
+   Pure functions: take a free-text transcript, return a normalised value or null.
+   Devanagari + romanised Hindi keywords listed exhaustively per field. */
+function aiNormalise(t) { return (t || '').toString().toLowerCase().trim(); }
+
+function aiParseYesNo(t) {
+  const s = aiNormalise(t);
+  if (!s) return null;
+  /* Negation tokens before yes ("not yes") flip to no — check no first. */
+  const noTokens = ['nahi','nahin','no','नहीं','नहि','bilkul nahi','abhi nahi','baad mein','baad me','bahar','office','kaam par','कहीं और','baahar','baahar hu','नहीं हूँ'];
+  for (const k of noTokens) if (s.includes(k)) return 'no';
+  const yesTokens = ['haan','haa','han','yes','ji','ji haan','हाँ','हां','जी','जी हाँ','yep','yeah','sahi','correct','sure','ghar par','ghar pe','यहीं','यहां','यहीं हूँ','ghar par hi','ghar par hu','ghar par hoon','okay','ok','theek hai','sahi hai'];
+  for (const k of yesTokens) if (s.includes(k)) return 'yes';
+  return null;
 }
 
-function setAiCallBtn(label, icon) {
-  const lblEl = document.getElementById('ai-call-btn-label');
-  const btn = document.getElementById('ai-call-btn');
-  if (lblEl) lblEl.textContent = label;
-  if (btn) {
-    const msEl = btn.querySelector('.ms');
-    if (msEl && icon) msEl.textContent = icon;
-    btn.classList.toggle('is-end', icon === 'call_end');
-    btn.classList.toggle('is-done', icon === 'check');
+const FLOOR_MAP = [
+  { match:['ground','भूतल','नीचे','tale','tala','zero','0 floor','niche','ground floor','g floor','नीच','भूमि'], value:'Ground floor' },
+  { match:['pehla','pehli','first','1st','एक','1 floor','one','manzil pehli','pehli manzil'], value:'1st floor' },
+  { match:['dusra','dusri','doosra','doosri','second','2nd','दो','दूसरी','दूसरा','2 floor','two','दुसरी','dusri manzil','doosri manzil'], value:'2nd floor' },
+  { match:['tisra','tisri','third','3rd','तीन','तीसरी','तीसरा','3 floor','three'], value:'3rd floor' },
+  { match:['chautha','chauthi','fourth','4th','चार','चौथी','चौथा','4 floor','four'], value:'4th floor' },
+  { match:['paanchwa','panchwa','panchva','fifth','5th','पाँच','पांच','पाँचवीं','5 floor','five'], value:'5th floor' },
+];
+function aiParseFloor(t) {
+  const s = aiNormalise(t);
+  if (!s) return null;
+  for (const row of FLOOR_MAP) for (const k of row.match) if (s.includes(k)) return row.value;
+  /* Fallback: any single digit 0–9 with "floor" / "manzil" / "tale" nearby */
+  const num = s.match(/(\d+)\s*(floor|manzil|tale|tala)/);
+  if (num) {
+    const n = parseInt(num[1], 10);
+    if (n === 0) return 'Ground floor';
+    if (n >= 1 && n <= 12) return `${n}${['st','nd','rd'][((n+90)%100-10)%10-1] || 'th'} floor`;
   }
+  return null;
 }
 
-function onAiCallBtn() {
-  if (!aiActive) {
-    /* If completed, "Done" advances to the loader. */
-    if (aiTurn >= (AI_SCRIPTS[state.variant] || []).length) {
-      goto(13);
+const COLOR_MAP = [
+  { match:['neela','neeli','blue','नीला','नीली'], value:'नीला (Blue)' },
+  { match:['lal','laal','red','लाल'],            value:'लाल (Red)' },
+  { match:['safed','white','सफेद','सफ़ेद'],       value:'सफ़ेद (White)' },
+  { match:['pila','peela','pili','peeli','yellow','पीला','पीली'], value:'पीला (Yellow)' },
+  { match:['hara','hari','green','हरा','हरी'],   value:'हरा (Green)' },
+  { match:['gulabi','pink','गुलाबी'],            value:'गुलाबी (Pink)' },
+  { match:['kala','kaala','black','काला','काली'], value:'काला (Black)' },
+  { match:['bhura','brown','भूरा','भूरी'],        value:'भूरा (Brown)' },
+  { match:['cream','crem','क्रीम'],               value:'क्रीम (Cream)' },
+  { match:['santara','orange','नारंगी','नारंगि'], value:'नारंगी (Orange)' },
+  { match:['grey','gray','slate','ग्रे','ग्रे रंग'], value:'ग्रे (Grey)' },
+  { match:['silver','चांदी','चाँदी'],             value:'सिल्वर (Silver)' },
+  { match:['golden','gold','सुनहरा','सुनहरी'],     value:'सुनहरा (Golden)' },
+];
+function aiParseColor(t) {
+  const s = aiNormalise(t);
+  if (!s) return null;
+  for (const row of COLOR_MAP) for (const k of row.match) if (s.includes(k)) return row.value;
+  /* Free-form fallback: if the user used "color" word, capture the rest as-is. */
+  const m = s.match(/(?:color|colour|rang)\s+(?:hai\s+)?(\w[\w\s]{1,24})/);
+  if (m && m[1]) return m[1].trim();
+  return null;
+}
+
+function aiParseLandmark(t) {
+  /* Free-form: use the whole transcript, but trim filler words. */
+  const s = (t || '').trim();
+  if (!s) return null;
+  /* If it's just a yes/no, that's not a landmark. */
+  if (aiParseYesNo(s)) return null;
+  /* Strip common preamble ("haan ___", "paas mein ___", "yahan ___") */
+  return s
+    .replace(/^(haan|haa|han|ji|जी|हाँ|हां)[, ]+/i, '')
+    .replace(/^(paas|paas mein|yahan|yaha|yahaan|near|nazdeek)[, ]+/i, '')
+    .replace(/\s+hai$/i, '')
+    .trim()
+    .slice(0, 80);
+}
+
+function aiParseDirection(t) {
+  const s = (t || '').trim();
+  if (!s) return null;
+  /* Direction must be more than 2 words to be useful — else re-prompt. */
+  if (s.split(/\s+/).length < 3) return null;
+  return s.slice(0, 200);
+}
+
+/* ---------- FSM ---------- */
+function aiHello() {
+  const v = state.variant;
+  if (v === 'D2') {
+    return 'नमस्ते! मैं Wiom की booking assistant हूँ। आपने पता भर दिया है — अब घर तक पहुँचने के लिए 4-5 छोटे सवाल पूछूँगी।';
+  }
+  return 'नमस्ते! मैं Wiom की booking assistant हूँ। आपने पता और landmark चुना है — अब घर तक पहुँचने के लिए कुछ छोटे सवाल पूछूँगी।';
+}
+
+function aiNextState(after) {
+  /* Pipeline:  D2: at_home → landmark → floor → color → direction → confirm
+                D1: at_home → floor → color → direction → confirm */
+  const seq = (state.variant === 'D2')
+    ? ['at_home','landmark','floor','color','direction','summary','confirm','done']
+    : ['at_home','floor','color','direction','summary','confirm','done'];
+  const i = seq.indexOf(after);
+  return (i >= 0 && i < seq.length - 1) ? seq[i + 1] : null;
+}
+
+function aiPromptFor(stateName, attempt) {
+  const lm = aiCtx.captured.landmark || state.landmark || 'landmark';
+  switch (stateName) {
+    case 'at_home':
+      return attempt > 0
+        ? 'क्या आप अभी इसी घर पर हैं — हाँ या नहीं?'
+        : 'पहला सवाल — क्या आप अभी इसी घर पर हैं?';
+    case 'landmark':
+      return attempt > 0
+        ? 'मतलब घर के पास मंदिर, स्कूल, बैंक, पेट्रोल पंप — कोई भी पहचान वाली जगह बताइए।'
+        : 'आपके घर के पास कोई पहचान वाली जगह कौन-सी है?';
+    case 'floor':
+      return attempt > 0
+        ? 'सिर्फ़ floor बता दीजिए — ground, पहली, दूसरी, तीसरी?'
+        : 'आपका floor कौन-सा है?';
+    case 'color':
+      return attempt > 0
+        ? 'Building का color — जैसे नीला, पीला, सफ़ेद, लाल?'
+        : 'Building का color क्या है?';
+    case 'direction':
+      return attempt > 0
+        ? `थोड़ा detail में बताइए — ${lm} से किस तरफ़ मुड़ना है, गली का नाम, गेट का रंग?`
+        : `${lm} से घर तक पहुँचने का रास्ता बताइए — कौन-सी गली, किस तरफ़ मुड़ना है?`;
+    case 'summary': {
+      const c = aiCtx.captured;
+      const parts = [];
+      if (c.at_home === 'Yes') parts.push('आप घर पर हैं');
+      if (c.landmark)  parts.push(`पास में ${c.landmark}`);
+      if (c.floor)     parts.push(`${c.floor}`);
+      if (c.color)     parts.push(`building ${c.color}`);
+      if (c.direction) parts.push(`रास्ता: ${c.direction}`);
+      return `तो — ${parts.join(', ')}। क्या यह सही है?`;
+    }
+    case 'confirm':
+      return 'सिर्फ़ हाँ या नहीं बोल दीजिए।';
+    case 'not_at_home':
+      return 'यह step ghar par hokar पूरा करना ज़रूरी है। जब आप ghar par पहुँचें, तो दोबारा कोशिश कीजिए।';
+    case 'done':
+      return 'धन्यवाद! Verification हो गया, अब बुकिंग आगे बढ़ा रही हूँ।';
+  }
+  return '';
+}
+
+function aiAdvanceFrom(stateName) {
+  const handler = (txt) => aiHandleAnswer(stateName, txt);
+  const empty   = ()    => aiNudge(stateName);
+  aiStartListening(handler, empty);
+}
+
+function aiNudge(stateName) {
+  aiCtx.retries[stateName] = (aiCtx.retries[stateName] || 0) + 1;
+  if (aiCtx.retries[stateName] >= 3) {
+    /* Too many retries — skip this field and move on to keep the call humane. */
+    aiSay('कोई बात नहीं, अगला सवाल पूछती हूँ।', () => {
+      const next = aiNextState(stateName);
+      if (next) aiAskState(next); else aiCompleteCall();
+    });
+    return;
+  }
+  aiSay(aiPromptFor(stateName, aiCtx.retries[stateName]), () => aiAdvanceFrom(stateName));
+}
+
+function aiAskState(stateName) {
+  if (!stateName) { aiCompleteCall(); return; }
+  if (stateName === 'done')   { aiCompleteCall(); return; }
+  if (stateName === 'summary') {
+    /* Speak summary and move into confirm-listening. */
+    aiSay(aiPromptFor('summary'), () => aiAdvanceFrom('confirm'));
+    return;
+  }
+  aiCtx.retries[stateName] = 0;
+  aiSay(aiPromptFor(stateName, 0), () => aiAdvanceFrom(stateName));
+}
+
+function aiHandleAnswer(stateName, txt) {
+  switch (stateName) {
+    case 'at_home': {
+      const yn = aiParseYesNo(txt);
+      if (yn === 'yes') {
+        aiPushCapture('at_home', 'Yes');
+        aiAskState(aiNextState('at_home'));
+      } else if (yn === 'no') {
+        aiPushCapture('at_home', 'No');
+        aiSay(aiPromptFor('not_at_home'), () => {
+          aiSetStage('completed', 'घर पर पहुँचकर दोबारा कोशिश करें');
+        });
+      } else {
+        aiNudge('at_home');
+      }
       return;
     }
-    beginAiConversation();
-  } else {
-    /* End call mid-way — jump straight to the loader for prototype demo. */
-    endAiCall();
-    goto(13);
+    case 'landmark': {
+      const v = aiParseLandmark(txt);
+      if (v) {
+        aiPushCapture('landmark', v);
+        state.landmark = v;
+        aiAskState(aiNextState('landmark'));
+      } else aiNudge('landmark');
+      return;
+    }
+    case 'floor': {
+      const v = aiParseFloor(txt);
+      if (v) {
+        aiPushCapture('floor', v);
+        aiAskState(aiNextState('floor'));
+      } else aiNudge('floor');
+      return;
+    }
+    case 'color': {
+      const v = aiParseColor(txt);
+      if (v) {
+        aiPushCapture('color', v);
+        aiAskState(aiNextState('color'));
+      } else aiNudge('color');
+      return;
+    }
+    case 'direction': {
+      const v = aiParseDirection(txt);
+      if (v) {
+        aiPushCapture('direction', v);
+        aiAskState(aiNextState('direction'));
+      } else aiNudge('direction');
+      return;
+    }
+    case 'confirm': {
+      const yn = aiParseYesNo(txt);
+      if (yn === 'yes') {
+        aiSay('धन्यवाद! Verification पूरा हो गया।', () => aiCompleteCall());
+      } else if (yn === 'no') {
+        aiSay('ठीक है, क्या correct करना है — floor, color, या रास्ता? बताइए।', () => aiAdvanceFrom('correction'));
+      } else {
+        aiNudge('confirm');
+      }
+      return;
+    }
+    case 'correction': {
+      /* Lightweight: take the new text and try parsers in priority order. */
+      const f = aiParseFloor(txt);    if (f) { aiPushCapture('floor', f); aiAskState('summary'); return; }
+      const c = aiParseColor(txt);    if (c) { aiPushCapture('color', c); aiAskState('summary'); return; }
+      const d = aiParseDirection(txt);if (d) { aiPushCapture('direction', d); aiAskState('summary'); return; }
+      aiSay('समझ नहीं पाई — क्या आप दोबारा बता सकते हैं?', () => aiAdvanceFrom('correction'));
+      return;
+    }
   }
 }
 
-function beginAiConversation() {
-  aiActive = true;
-  setAiState('connecting');
-  setAiStatus('Calling…');
-  setAiCallBtn('कॉल बंद करें', 'call_end');
-  aiTimer = setTimeout(() => playNextTurn(), 1100);
+function aiCompleteCall() {
+  aiCtx.active = false;
+  aiSetStage('completed', 'Verification पूरा हुआ');
+  if (aiCtx.recog && aiCtx.recogOn) { try { aiCtx.recog.abort(); } catch (e) {} }
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  /* Brief pause to let the success state settle, then advance the flow. */
+  setTimeout(() => { goto(13); }, 1600);
+}
+
+/* Public API used by goto() and screen buttons */
+function startAiCall() {
+  /* Reset everything */
+  aiCtx.active = true;
+  aiCtx.captured = {};
+  aiCtx.retries = {};
+  aiHideFallback();
+  if (aiCtx.recog && aiCtx.recogOn) { try { aiCtx.recog.abort(); } catch (e) {} }
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  const list = document.getElementById('ai-captured-list');
+  if (list) list.innerHTML = '';
+  const card = document.getElementById('ai-captured');
+  if (card) card.classList.remove('is-shown');
+  const t = document.getElementById('ai-transcript');
+  if (t) t.innerHTML = '';
+  if (!aiCtx.preferredVoice) aiPrimeVoices();
+
+  aiSetStage('thinking', 'कनेक्ट हो रही है…');
+  /* Quick "thinking" pause to mimic the Realtime call connect, then greet. */
+  setTimeout(() => {
+    aiSay(aiHello(), () => aiAskState('at_home'));
+  }, 700);
 }
 
 function endAiCall() {
-  aiActive = false;
-  if (aiTimer) { clearTimeout(aiTimer); aiTimer = null; }
+  aiCtx.active = false;
+  if (aiCtx.recog && aiCtx.recogOn) { try { aiCtx.recog.abort(); } catch (e) {} }
   if ('speechSynthesis' in window) speechSynthesis.cancel();
-}
-
-function playNextTurn() {
-  const script = AI_SCRIPTS[state.variant] || AI_SCRIPTS.D1;
-  if (aiTurn >= script.length) {
-    /* End of script — show Done state. */
-    aiActive = false;
-    setAiState('completed');
-    setAiStatus('Verification complete');
-    setAiCallBtn('आगे बढ़ें', 'check');
-    return;
-  }
-  const turn = script[aiTurn++];
-  if (turn.who === 'ai') {
-    setAiState('speaking');
-    setAiStatus('AI बोल रहा है…');
-    addAiBubble('ai', turn.text);
-    aiSpeak(turn.text);
-    /* Hold the speaking state for ~3.6s, then advance. Final terminal turn waits a touch longer. */
-    aiTimer = setTimeout(() => playNextTurn(), turn.terminal ? 2600 : 3600);
-  } else {
-    setAiState('listening');
-    setAiStatus('AI सुन रहा है…');
-    addAiBubble('user', turn.text);
-    if (turn.captures) {
-      for (const [k, v] of Object.entries(turn.captures)) pushCapture(k, v);
-    }
-    aiTimer = setTimeout(() => playNextTurn(), 1700);
-  }
+  aiCtx._fallbackHandler = null;
+  aiHideFallback();
+  aiSetStage('idle', '');
 }
 
 /* Bootstrap with the default data case so the type-dropdown / sheet have
