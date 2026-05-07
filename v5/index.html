@@ -1029,6 +1029,114 @@ body.has-variant .variant-badge { display:flex; }
 .ai-modern .ai-orb-core {
   background:radial-gradient(120% 120% at 30% 25%, #FF66C9 0%, #D9008D 30%, #5B2EFF 70%, #1F0E33 110%);
 }
+
+/* ---------- BYO-key setup overlay ---------- */
+.ai-setup {
+  position:absolute; inset:0; z-index:30;
+  background:linear-gradient(180deg, rgba(11,9,21,0.86), rgba(11,9,21,0.96) 40%, #0B0915 100%);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  display:flex; align-items:center; justify-content:center;
+  padding:24px 16px;
+  overflow-y:auto;
+}
+.ai-setup-card {
+  width:100%; max-width:340px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.10);
+  border-radius:20px;
+  padding:18px 18px 16px;
+  display:flex; flex-direction:column; gap:12px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.45);
+}
+.ai-setup-eyebrow {
+  display:inline-flex; align-items:center; gap:6px;
+  align-self:flex-start;
+  padding:4px 10px; border-radius:999px;
+  background:rgba(217,0,141,0.15);
+  color:#FFD9F1;
+  font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+  border:1px solid rgba(217,0,141,0.35);
+}
+.ai-setup-eyebrow .ms { color:#FFD9F1; }
+.ai-setup-title {
+  font-size:16px; line-height:22px; font-weight:700; color:#FFFFFF;
+}
+.ai-setup-sub {
+  font-size:12px; line-height:18px; color:rgba(255,255,255,0.70);
+}
+.ai-setup-sub b { color:#FFFFFF; font-weight:700; }
+.ai-setup-steps {
+  margin:0; padding:0 0 0 18px;
+  display:flex; flex-direction:column; gap:6px;
+  font-size:12px; line-height:18px; color:rgba(255,255,255,0.85);
+}
+.ai-setup-steps li::marker { color:#D9008D; font-weight:700; }
+.ai-setup-steps a {
+  color:#FF66C9; text-decoration:underline; word-break:break-all;
+}
+.ai-setup-form {
+  display:flex; flex-direction:column; gap:8px;
+  margin-top:2px;
+}
+.ai-setup-label {
+  font-size:10px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+  color:rgba(255,255,255,0.55);
+}
+.ai-setup-input {
+  width:100%; height:42px; padding:0 12px;
+  border:1px solid rgba(255,255,255,0.18);
+  background:rgba(255,255,255,0.06);
+  border-radius:12px; color:#FFFFFF;
+  font:600 13px/1.4 'Noto Sans Mono', 'SF Mono', ui-monospace, monospace;
+  outline:none;
+  transition:border-color 120ms, background 120ms;
+}
+.ai-setup-input::placeholder { color:rgba(255,255,255,0.30); font-weight:400; }
+.ai-setup-input:focus {
+  border-color:#D9008D;
+  background:rgba(217,0,141,0.06);
+  box-shadow:0 0 0 3px rgba(217,0,141,0.18);
+}
+.ai-setup-error {
+  font-size:11px; line-height:16px;
+  color:#FFA1AC;
+  background:rgba(217,33,48,0.10);
+  border:1px solid rgba(217,33,48,0.30);
+  padding:6px 10px; border-radius:10px;
+}
+.ai-setup-cta {
+  margin-top:4px;
+  height:46px;
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  border:0; cursor:pointer;
+  background:linear-gradient(135deg, #FF66C9 0%, #D9008D 60%, #B0006F 100%);
+  color:#FFFFFF; font-size:14px; font-weight:700;
+  border-radius:12px;
+  box-shadow:0 8px 24px rgba(217,0,141,0.45);
+  transition:transform 80ms;
+}
+.ai-setup-cta:hover { transform:translateY(-1px); }
+.ai-setup-cta:active { transform:translateY(0); }
+.ai-setup-cta .ms { color:#FFFFFF; }
+.ai-setup-meta {
+  font-size:10px; line-height:16px;
+  color:rgba(255,255,255,0.55);
+  display:flex; align-items:center; gap:6px; flex-wrap:wrap;
+  margin-top:2px;
+}
+.ai-setup-meta a {
+  color:#FF99D9; text-decoration:underline;
+  margin-left:auto;
+}
+.ai-setup-meta code {
+  font-family:'Noto Sans Mono', 'SF Mono', ui-monospace, monospace;
+  font-size:10px;
+  background:rgba(255,255,255,0.08);
+  padding:1px 5px; border-radius:4px;
+  color:rgba(255,255,255,0.80);
+}
+.ai-setup-lock { color:#92E4A6 !important; }
 </style>
 </head>
 <body>
@@ -2120,6 +2228,39 @@ body.has-variant .variant-badge { display:flex; }
           <button class="ai-icon-btn ai-end-btn" id="ai-end-btn" aria-label="End call" onclick="endAiCall(); goto(13)"><span class="ms">close</span></button>
         </header>
 
+        <!-- First-run setup overlay — shown only when no key/worker URL is stored. -->
+        <div class="ai-setup" id="ai-setup" style="display:none;">
+          <div class="ai-setup-card">
+            <div class="ai-setup-eyebrow"><span class="ms ms-16">bolt</span> One-time setup</div>
+            <div class="ai-setup-title">Wiom AI को आवाज़ देने के लिए OpenAI key चाहिए</div>
+            <div class="ai-setup-sub">
+              Wiom AI customer से बात करने के लिए OpenAI Realtime API पर चलती है — paid service, इसलिए एक API key ज़रूरी है। आपकी key <b>सिर्फ़ इस browser पर</b> रहती है, Wiom servers पर नहीं जाती।
+            </div>
+
+            <ol class="ai-setup-steps">
+              <li>
+                <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener">platform.openai.com/api-keys</a> खोलें (OpenAI account ज़रूरी, $5 minimum top-up)
+              </li>
+              <li>
+                <b>Create new secret key</b> click करें, copy करें (दिखेगी सिर्फ़ एक बार)
+              </li>
+              <li>नीचे paste कीजिए → <b>Start call</b> दबाइए</li>
+            </ol>
+
+            <div class="ai-setup-form">
+              <label class="ai-setup-label" for="ai-setup-key">OpenAI API key</label>
+              <input id="ai-setup-key" class="ai-setup-input" type="password" placeholder="sk-proj-..." autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter'){event.preventDefault();aiSaveSetup();}"/>
+              <div class="ai-setup-error" id="ai-setup-error" style="display:none;"></div>
+              <button class="ai-setup-cta" onclick="aiSaveSetup()"><span class="ms ms-16">phone_in_talk</span> Save & start call</button>
+              <div class="ai-setup-meta">
+                <span class="ms ms-16 ai-setup-lock">lock</span>
+                Key is stored only in this browser (<code>localStorage</code>). Wiom कभी नहीं देखता।
+                <a href="#" onclick="event.preventDefault();aiClearSetup();return false;">Clear stored key</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="ai-orb-wrap">
           <div class="ai-orb" id="ai-orb">
             <div class="ai-orb-glow"></div>
@@ -2528,11 +2669,130 @@ function checkAddrCta() {
    prototype tells the user to use Chrome / Edge / Safari 14+.
 ============================================================================ */
 
-/* Worker URL — paste the URL `wrangler deploy` printed.
-   Falls back to localStorage so you can override per-browser without redeploying. */
-const WIOM_TOKEN_URL_DEFAULT = "https://wiom-realtime-token.<your-subdomain>.workers.dev/token";
+/* ----------------------------------------------------------------------------
+   Two modes for talking to OpenAI Realtime — page tries them in this order:
+
+     1. WORKER mode (production, shareable):
+        Cloudflare Worker holds the OPENAI_API_KEY and mints a 60s ephemeral
+        client_secret per call. Set `wiom_token_url` in localStorage or fill
+        in WIOM_TOKEN_URL_DEFAULT below. This is the path you'd want for a
+        public demo where reviewers shouldn't paste keys.
+
+     2. BYO-KEY mode (zero-deploy, default for prototyping):
+        The visitor pastes their OpenAI API key into the setup screen on
+        first visit. Key is stored ONLY in localStorage on their device,
+        never sent to Wiom servers. The page makes the WebRTC SDP request
+        directly to api.openai.com using that key.
+---------------------------------------------------------------------------- */
+
+const WIOM_TOKEN_URL_DEFAULT = ""; // optional — paste a worker URL here to skip BYO-key
+const WIOM_REALTIME_MODEL    = "gpt-4o-realtime-preview-2024-12-17";
+const WIOM_REALTIME_VOICE    = "shimmer"; // warm female; Indian-friendly tone
+
 function getTokenUrl() {
-  return localStorage.getItem('wiom_token_url') || WIOM_TOKEN_URL_DEFAULT;
+  const stored = localStorage.getItem('wiom_token_url') || '';
+  const url = stored || WIOM_TOKEN_URL_DEFAULT;
+  if (!url || url.includes('<your-subdomain>')) return '';
+  return url;
+}
+function getStoredKey() {
+  return localStorage.getItem('wiom_openai_key') || '';
+}
+function hasAnyAuth() {
+  return !!(getTokenUrl() || getStoredKey());
+}
+
+/* ---------- Tool spec — must match worker.js ---------- */
+const AI_TOOLS = [
+  {
+    type: "function",
+    name: "set_at_home",
+    description: "Record whether the customer confirms they are physically at the home address right now. Call this as soon as you know.",
+    parameters: { type: "object", properties: { at_home: { type: "boolean" } }, required: ["at_home"] },
+  },
+  {
+    type: "function",
+    name: "set_landmark",
+    description: "Record the nearby identifiable landmark the customer mentions (mandir, school, hospital, bank, petrol pump, mall, etc.). Use the customer's own words — preserve Hindi if they spoke Hindi.",
+    parameters: { type: "object", properties: { landmark: { type: "string" } }, required: ["landmark"] },
+  },
+  {
+    type: "function",
+    name: "set_floor",
+    description: "Record the floor of the customer's unit. Normalize to: 'Ground floor', '1st floor', '2nd floor', '3rd floor', '4th floor', '5th floor', or 'Nth floor' for higher floors.",
+    parameters: { type: "object", properties: { floor: { type: "string" } }, required: ["floor"] },
+  },
+  {
+    type: "function",
+    name: "set_building_color",
+    description: "Record the building or main gate color. Format as 'हिंदी (English)' when possible — e.g., 'नीला (Blue)', 'पीला (Yellow)', 'सफ़ेद (White)'.",
+    parameters: { type: "object", properties: { color: { type: "string" } }, required: ["color"] },
+  },
+  {
+    type: "function",
+    name: "set_direction",
+    description: "Record a short direction-from-landmark-to-home description in the customer's own words. Should be 5-30 words, mention turns, lane name, distinguishing markers.",
+    parameters: { type: "object", properties: { direction: { type: "string" } }, required: ["direction"] },
+  },
+  {
+    type: "function",
+    name: "complete_call",
+    description: "Call this exactly once when verification is finished — either after the customer confirms the summary, or when the customer says they are not at home and the call must end. Pass a one-line Hinglish summary.",
+    parameters: { type: "object", properties: { summary: { type: "string" } }, required: ["summary"] },
+  },
+];
+
+/* ---------- System prompt — must match worker.js ---------- */
+function aiBuildInstructions() {
+  const variant = state.variant === 'D1' ? 'D1' : 'D2';
+  const address = aiBuildAddressString();
+  const landmark = state.landmark || '';
+  const variantBlock = variant === 'D1'
+    ? `Variant: D1. The customer has ALREADY selected a nearby landmark in the form: "${landmark || '—'}". DO NOT ask for landmark again. Briefly acknowledge it ("${landmark || 'yeh landmark'} ke paas, sahi?") and move on.`
+    : `Variant: D2. The customer has NOT yet shared a landmark. You MUST ask for one — call set_landmark when you capture it.`;
+
+  return `You are "Wiom की booking assistant" — a warm, polite Indian woman doing a quick verification call before a Wiom technician visits the customer's home for broadband installation.
+
+# About Wiom
+Wiom is an unlimited home internet (broadband / WiFi) ISP for India. No daily data limits, no FUP throttling, fast install in 24-48 hours, low monthly price. You're calling because the customer just booked a Wiom plan.
+
+# Your goal — exactly 4 to 5 small details
+Collect these in order so the technician can find their home:
+1. Are they currently at home? → set_at_home(true|false)
+2. (D2 only) Nearest landmark → set_landmark(text)
+3. Floor of their unit → set_floor(text)
+4. Building / gate color → set_building_color(text)
+5. Short direction from landmark to home → set_direction(text)
+
+After all are captured: read back a one-line summary in Hinglish and ask "kya yeh sahi hai?". If yes → call complete_call. If no → ask what to fix, update, summarise again.
+
+If at step 1 they say NO (not at home): warmly tell them this step needs to be done from inside the home so the technician details are accurate, and they can re-try once they reach home. Then call complete_call with a summary like "Customer not at home, will retry later".
+
+# How to talk
+- Speak natural Hinglish like a real Indian woman — Hindi-Devanagari first, English mixed in. Examples: "Ji, batayein", "Wiom ki team", "thoda detail mein", "samjha nahi, ek baar phir bolenge?".
+- WARM, patient, concise. Customers may be elderly, first-time internet users, or speaking in a regional accent.
+- ONE question at a time. Wait for the answer. Briefly confirm what you heard before moving on ("theek hai, 2nd floor noted").
+- If you don't understand, gently rephrase — DO NOT repeat the same sentence verbatim.
+- Customer may answer in Hindi, English, Hinglish, or with regional accent (Punjabi, Bihari, Marathi, South Indian English, etc.) — accept all.
+- If they go off-topic, politely steer back: "ji, bas yeh chote sawaal complete kar lein, phir hum aapke ghar pahunch jaayenge."
+- Never sound robotic. Never list multiple questions in one turn. Never read out tool-call JSON.
+- Tool calls are SILENT — call them in the background as data arrives. Don't say "let me record that".
+
+# Capture rules
+- For floor: normalize to "Ground floor" / "1st floor" / "2nd floor" / "3rd floor" / "4th floor" / "5th floor" / "Nth floor".
+- For color: prefer "हिंदी (English)" e.g. "नीला (Blue)", "सफ़ेद (White)".
+- For landmark and direction: keep the customer's own phrasing — those exact words help the technician.
+- If customer hesitates ≥3 times on the same field, accept their best attempt and move on. Don't trap them.
+
+# Customer context (already on file)
+- Address: ${address || '(captured in app form)'}
+- ${variantBlock}
+
+# Opening turn
+Open the call yourself, immediately, without waiting for them. Say something like:
+"Namaste! Main Wiom की booking assistant बात कर रही हूँ। Aapne abhi Wiom का unlimited internet book kiya hai — installation se pehle bas 4-5 chhote sawaal hain, jisse humara technician aapke ghar आसानी से pahunch sake. Theek hai? ... Pehle ye batayein — kya aap abhi ghar par hi hain?"
+
+Speak warmly and at a relaxed pace.`;
 }
 
 const CAPTURE_LABELS = {
@@ -2741,10 +3001,25 @@ function aiBuildAddressString() {
   return parts.join(', ');
 }
 
+async function aiResolveAuth() {
+  /* Returns { auth, mode, model }. Mode is 'worker' when the worker minted
+     the secret (server already configured the session); 'direct' when the
+     visitor's own OpenAI key is used and the page must configure the session
+     itself via session.update over the data channel. */
+  const workerUrl = getTokenUrl();
+  if (workerUrl) {
+    const tok = await aiFetchEphemeralToken();
+    return { auth: tok.secret, mode: 'worker', model: tok.model };
+  }
+  const key = getStoredKey();
+  if (key) return { auth: key, mode: 'direct', model: WIOM_REALTIME_MODEL };
+  throw new Error('SETUP_REQUIRED');
+}
+
 async function aiOpenRealtime() {
   aiSetStage('connecting', 'कनेक्ट हो रही है…');
 
-  const { secret, model } = await aiFetchEphemeralToken();
+  const { auth, mode, model } = await aiResolveAuth();
 
   const pc = new RTCPeerConnection({
     iceServers: [{ urls: 'stun:stun.l.google.com:19302' }],
@@ -2790,10 +3065,29 @@ async function aiOpenRealtime() {
   const dc = pc.createDataChannel('oai-events');
   aiCtx.dc = dc;
   dc.onopen = () => {
-    /* Server-VAD already configured via /sessions; but we also nudge the
-       model to actually open the call (it sometimes waits for the first
-       user message). */
     try {
+      if (mode === 'direct') {
+        /* In direct mode the session is empty — configure it ourselves. */
+        dc.send(JSON.stringify({
+          type: 'session.update',
+          session: {
+            modalities: ['audio', 'text'],
+            voice: WIOM_REALTIME_VOICE,
+            instructions: aiBuildInstructions(),
+            input_audio_transcription: { model: 'whisper-1' },
+            turn_detection: {
+              type: 'server_vad',
+              threshold: 0.55,
+              prefix_padding_ms: 300,
+              silence_duration_ms: 700,
+            },
+            temperature: 0.7,
+            tools: AI_TOOLS,
+            tool_choice: 'auto',
+          },
+        }));
+      }
+      /* Kick off the assistant's opening turn (works in both modes). */
       dc.send(JSON.stringify({
         type: 'response.create',
         response: { modalities: ['audio', 'text'] },
@@ -2803,7 +3097,7 @@ async function aiOpenRealtime() {
   dc.onmessage = aiHandleServerEvent;
   dc.onerror = () => {};
 
-  /* SDP handshake. */
+  /* SDP handshake — works for both ephemeral secrets and regular API keys. */
   const offer = await pc.createOffer({ offerToReceiveAudio: true });
   await pc.setLocalDescription(offer);
 
@@ -2811,11 +3105,18 @@ async function aiOpenRealtime() {
     method: 'POST',
     body: offer.sdp,
     headers: {
-      Authorization: `Bearer ${secret}`,
+      Authorization: `Bearer ${auth}`,
       'Content-Type': 'application/sdp',
     },
   });
-  if (!sdpRes.ok) throw new Error(`SDP_HTTP_${sdpRes.status}`);
+  if (!sdpRes.ok) {
+    const errTxt = await sdpRes.text().catch(() => '');
+    /* 401 in direct mode → key invalid; nudge user back to setup. */
+    if (sdpRes.status === 401 && mode === 'direct') {
+      throw new Error('KEY_INVALID');
+    }
+    throw new Error(`SDP_HTTP_${sdpRes.status}: ${errTxt.slice(0,160)}`);
+  }
   const answerSdp = await sdpRes.text();
   await pc.setRemoteDescription({ type: 'answer', sdp: answerSdp });
 
@@ -2946,12 +3247,20 @@ async function startAiCall() {
   aiCtx.userPartial = '';
   aiCtx.callDoneRoutedAt = 0;
   aiHideFallback();
+  aiHideSetup();
   const list = document.getElementById('ai-captured-list');
   if (list) list.innerHTML = '';
   const card = document.getElementById('ai-captured');
   if (card) card.classList.remove('is-shown');
   const t = document.getElementById('ai-transcript');
   if (t) t.innerHTML = '';
+
+  /* Gate on setup BEFORE setting active so the setup screen reads as a
+     "first run" state, not as a connection error. */
+  if (!hasAnyAuth()) {
+    aiShowSetup();
+    return;
+  }
 
   aiCtx.active = true;
 
@@ -2960,21 +3269,64 @@ async function startAiCall() {
   } catch (e) {
     console.error('[wiom-ai] failed to open realtime', e);
     aiCtx.active = false;
-    if (e && e.message === 'TOKEN_URL_NOT_SET') {
-      aiSetStage('error', 'Worker URL not set');
-      aiAddBubble('ai',
-        'Setup pending — please paste your worker URL into the prototype. ' +
-        'Open DevTools console and run: localStorage.setItem("wiom_token_url", "https://your-worker.workers.dev/token")'
-      );
-      aiShowFallback('Realtime worker URL नहीं मिला — कृपया README देखें।');
-    } else {
-      aiSetStage('error', 'कनेक्शन में दिक़्क़त');
-      aiAddBubble('ai',
-        'Voice call connect नहीं हो पाया। आप नीचे टाइप कर सकते हैं — मैं वैसे ही जवाब दूँगी।'
-      );
-      aiShowFallback('Voice unavailable — typed मोड में जारी रखें।');
+    if (e && e.message === 'SETUP_REQUIRED') {
+      aiShowSetup();
+      return;
     }
+    if (e && e.message === 'KEY_INVALID') {
+      aiShowSetup({
+        error: 'API key invalid या expired है। एक नई key generate कर के paste कीजिए।',
+      });
+      return;
+    }
+    aiSetStage('error', 'कनेक्शन में दिक़्क़त');
+    aiAddBubble('ai',
+      'Voice call connect नहीं हो पाया। आप नीचे टाइप कर सकते हैं — मैं वैसे ही जवाब दूँगी।'
+    );
+    aiShowFallback('Voice unavailable — typed मोड में जारी रखें।');
   }
+}
+
+/* ---------- First-run setup screen (BYO-key path) ---------- */
+function aiShowSetup(opts) {
+  const el = document.getElementById('ai-setup');
+  if (!el) return;
+  el.style.display = 'flex';
+  const errBox = document.getElementById('ai-setup-error');
+  if (errBox) {
+    if (opts && opts.error) { errBox.textContent = opts.error; errBox.style.display = ''; }
+    else { errBox.textContent = ''; errBox.style.display = 'none'; }
+  }
+  const inp = document.getElementById('ai-setup-key');
+  if (inp) {
+    inp.value = getStoredKey() || '';
+    setTimeout(() => inp.focus(), 100);
+  }
+  aiSetStage('idle', 'Setup');
+}
+function aiHideSetup() {
+  const el = document.getElementById('ai-setup');
+  if (el) el.style.display = 'none';
+}
+function aiSaveSetup() {
+  const inp = document.getElementById('ai-setup-key');
+  const errBox = document.getElementById('ai-setup-error');
+  if (!inp) return;
+  const v = (inp.value || '').trim();
+  if (!v.startsWith('sk-')) {
+    if (errBox) { errBox.textContent = 'OpenAI keys आम तौर पर "sk-" से शुरू होती हैं। कृपया दोबारा check कीजिए।'; errBox.style.display = ''; }
+    return;
+  }
+  localStorage.setItem('wiom_openai_key', v);
+  aiHideSetup();
+  /* Re-trigger the call — setup gate now passes. */
+  startAiCall();
+}
+function aiClearSetup() {
+  if (!confirm('Stored OpenAI key remove कर दूँ? Next call पर फिर paste करनी होगी।')) return;
+  localStorage.removeItem('wiom_openai_key');
+  localStorage.removeItem('wiom_token_url');
+  aiShowSetup();
 }
 
 function endAiCall() {
