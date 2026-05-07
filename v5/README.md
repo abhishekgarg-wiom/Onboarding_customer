@@ -5,6 +5,27 @@ home-installation verification call for Wiom customers.
 
 > 🔗 **Live demo:** https://abhishekgarg-wiom.github.io/Onboarding_customer/v5/
 
+## Provenance — built from the reference Wiom prototype
+
+The system prompt, tool spec, voice (`alloy`), transcription model
+(`gpt-4o-mini-transcribe`, `language: "hi"`), VAD thresholds (`0.78` /
+`450` / `850`), and the AI screen UI shape (`Wiom Home Check` hero · `132 dp`
+circular `AI` avatar · waveform · dark `#101014` surface) are all sourced
+verbatim from the reference Android prototype:
+
+> https://github.com/ryangerardwilson/wiom-customer-location-prototype
+>
+> - System prompt + tool: `backend/lib/address-agent.js`
+>   (`buildAddressAgentInstructions`, `submitAddressPacketTool`)
+> - Session config:        `backend/api/realtime/session.js`
+> - Hero UI:               `frontend/.../MainActivity.kt` → `PhoneCallSurface`
+
+The only adaptations made in v5:
+1. We don't have GPS / serviceable city — only the typed address + landmark.
+2. **Variant D2** lets the AI capture the landmark during the call when the
+   form picker was skipped. One conditional rule is added to the prompt for
+   that case; everything else is verbatim.
+
 The AI:
 
 - Speaks **Hinglish** in a warm Indian voice (`shimmer`)

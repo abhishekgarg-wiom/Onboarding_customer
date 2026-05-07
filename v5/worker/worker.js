@@ -6,132 +6,179 @@
  * api.openai.com/v1/realtime. The secret expires in ~60s and grants access to
  * one session — safe to ship to the browser.
  *
+ * Voice agent prompt + tool spec are sourced verbatim from the reference
+ * Wiom prototype:
+ *   https://github.com/ryangerardwilson/wiom-customer-location-prototype
+ *   (backend/lib/address-agent.js — buildAddressAgentInstructions, submitAddressPacketTool)
+ *
  * Secrets (set via `wrangler secret put`):
  *   OPENAI_API_KEY     — sk-... (required)
  *   ALLOWED_ORIGINS    — comma-separated list of origins allowed to call this
  *                        worker. Defaults to "*". Tighten for production.
  */
 
-const MODEL = "gpt-4o-realtime-preview-2024-12-17";
-const VOICE = "shimmer"; // warm female; Indian-English/Hinglish friendly
+const MODEL = "gpt-realtime"; // Hinglish-friendly OpenAI Realtime
+const VOICE = "alloy";        // matches the reference prototype
 
-const TOOLS = [
-  {
-    type: "function",
-    name: "set_at_home",
-    description:
-      "Record whether the customer confirms they are physically at the home address right now. Call this as soon as you know.",
-    parameters: {
-      type: "object",
-      properties: { at_home: { type: "boolean", description: "True if customer says yes / haan / ji / ghar par hi hu. False if they say no / nahi / bahar / office." } },
-      required: ["at_home"],
+/* Tool spec — verbatim from address-agent.js */
+const submitAddressPacketTool = {
+  type: "function",
+  name: "submit_address_packet",
+  description: "Submit the completed install-address verification packet.",
+  parameters: {
+    type: "object",
+    additionalProperties: false,
+    properties: {
+      typed_address: {
+        type: "string",
+        description: "The full address originally provided by the app.",
+      },
+      confirmed_landmark: {
+        type: "string",
+        description:
+          "The landmark already confirmed by the app, OR the landmark captured during this voice call when the app did not pre-confirm one.",
+      },
+      is_currently_at_home: {
+        type: "boolean",
+        description:
+          "True only when the customer explicitly confirms they are currently at home.",
+      },
+      floor: {
+        type: "string",
+        enum: ["", "Ground floor", "1st floor", "2nd floor", "3rd floor+"],
+      },
+      building_color: {
+        type: "string",
+        description:
+          "Building/house/front-side color or closest useful visual description.",
+      },
+      customer_direction: {
+        type: "string",
+        description:
+          "Practical direction note from the customer to help find the home.",
+      },
+      missing_fields: {
+        type: "array",
+        items: { type: "string" },
+        description: "Any unresolved fields at submission time.",
+      },
+      confidence: {
+        type: "string",
+        enum: ["low", "medium", "high"],
+      },
     },
+    required: [
+      "typed_address",
+      "confirmed_landmark",
+      "is_currently_at_home",
+      "floor",
+      "building_color",
+      "customer_direction",
+      "missing_fields",
+      "confidence",
+    ],
   },
-  {
-    type: "function",
-    name: "set_landmark",
-    description:
-      "Record the nearby identifiable landmark the customer mentions (mandir, school, hospital, bank, petrol pump, mall, etc.). Use the customer's own words — preserve Hindi if they spoke Hindi.",
-    parameters: {
-      type: "object",
-      properties: { landmark: { type: "string" } },
-      required: ["landmark"],
-    },
-  },
-  {
-    type: "function",
-    name: "set_floor",
-    description:
-      "Record the floor of the customer's unit. Normalize to: 'Ground floor', '1st floor', '2nd floor', '3rd floor', '4th floor', '5th floor', or 'NN floor' for higher floors.",
-    parameters: {
-      type: "object",
-      properties: { floor: { type: "string" } },
-      required: ["floor"],
-    },
-  },
-  {
-    type: "function",
-    name: "set_building_color",
-    description:
-      "Record the building or main gate color. Format as 'हिंदी (English)' when possible — e.g., 'नीला (Blue)', 'पीला (Yellow)', 'सफ़ेद (White)'.",
-    parameters: {
-      type: "object",
-      properties: { color: { type: "string" } },
-      required: ["color"],
-    },
-  },
-  {
-    type: "function",
-    name: "set_direction",
-    description:
-      "Record a short direction-from-landmark-to-home description in the customer's own words. Should be 5-30 words, mention turns, lane name, distinguishing markers.",
-    parameters: {
-      type: "object",
-      properties: { direction: { type: "string" } },
-      required: ["direction"],
-    },
-  },
-  {
-    type: "function",
-    name: "complete_call",
-    description:
-      "Call this exactly once when verification is finished — either after the customer confirms the summary, or when the customer says they are not at home and the call must end. Pass a one-line Hinglish summary.",
-    parameters: {
-      type: "object",
-      properties: { summary: { type: "string" } },
-      required: ["summary"],
-    },
-  },
-];
+};
 
-function buildInstructions({ variant, address, landmark }) {
-  const variantBlock =
-    variant === "D1"
-      ? `Variant: D1. The customer has ALREADY selected a nearby landmark in the form: "${landmark || "—"}". DO NOT ask for landmark again. Briefly acknowledge it ("${landmark || "yeh landmark"} ke paas, sahi?") and move on.`
-      : `Variant: D2. The customer has NOT yet shared a landmark. You MUST ask for one — call set_landmark when you capture it.`;
+/* System prompt — adapted from buildAddressAgentInstructions() in
+   address-agent.js, with two adaptations for v5:
+   1. We don't have GPS / serviceable city — just the typed address.
+   2. We support a D2 variant where the landmark was NOT pre-confirmed by
+      the form, so the AI must capture it during the call. This adds one
+      conditional rule; everything else is verbatim. */
+function buildInstructions({ variant, typedAddress, confirmedLandmark }) {
+  const ta = typedAddress || "not provided";
+  const cl = confirmedLandmark || "not provided";
 
-  return `You are "Wiom की booking assistant" — a warm, polite Indian woman doing a quick verification call before a Wiom technician visits the customer's home for broadband installation.
+  const landmarkVariantBlock =
+    variant === "D2" || !confirmedLandmark
+      ? `Variant note: confirmed_landmark was NOT pre-confirmed by the app. Before asking for direction, ask the customer once for a nearby identifiable landmark (mandir, school, hospital, bank, petrol pump, mall etc.) and capture their words as confirmed_landmark in the final tool call.`
+      : `Variant note: confirmed_landmark is pre-confirmed by the app — do not ask the customer to restate it.`;
 
-# About Wiom
-Wiom is an unlimited home internet (broadband / WiFi) ISP for India. No daily data limits, no FUP throttling, fast install in 24-48 hours, low monthly price. You're calling because the customer just booked a Wiom plan.
+  return `
+You are Wiom's Hinglish home-verification voice agent.
 
-# Your goal — exactly 4 to 5 small details
-Collect these in order so the technician can find their home:
-1. Are they currently at home? → set_at_home(true|false)
-2. (D2 only) Nearest landmark → set_landmark(text)
-3. Floor of their unit → set_floor(text)
-4. Building / gate color → set_building_color(text)
-5. Short direction from landmark to home → set_direction(text)
+Goal:
+Verify the typed install-address packet without trying to recapture the full
+address by voice. The app already collected the precise address and landmark.
+Your call must confirm only:
+1. whether the customer is currently at home
+2. the customer's floor
+3. the building color
+4. practical directions that help a technician find the home from the landmark
+   or nearby road
 
-After all are captured: read back a one-line summary in Hinglish and ask "kya yeh sahi hai?". If yes → call complete_call. If no → ask what to fix, update, summarise again.
+Known app context:
+- Typed full address from app: ${ta}
+- Confirmed landmark from app: ${cl}
 
-If at step 1 they say NO (not at home): warmly tell them this step needs to be done from inside the home so the technician details are accurate, and they can re-try once they reach home. Then call complete_call with a summary like "Customer not at home, will retry later".
+${landmarkVariantBlock}
 
-# How to talk
-- Speak natural Hinglish like a real Indian woman — Hindi-Devanagari first, English mixed in. Examples: "Ji, batayein", "Wiom ki team", "thoda detail mein", "samjha nahi, ek baar phir bolenge?".
-- WARM, patient, concise. Customers may be elderly, first-time internet users, or speaking in a regional accent.
-- ONE question at a time. Wait for the answer. Briefly confirm what you heard before moving on ("theek hai, ${"" /* placeholder */}2nd floor noted").
-- If you don't understand, gently rephrase — DO NOT repeat the same sentence verbatim.
-- Customer may answer in Hindi, English, Hinglish, or with regional accent (Punjabi, Bihari, Marathi, South Indian English, etc.) — accept all.
-- If they go off-topic, politely steer back: "ji, bas yeh chote sawaal complete kar lein, phir hum aapke ghar pahunch jaayenge."
-- Never sound robotic. Never list multiple questions in one turn. Never read out tool-call JSON.
-- Tool calls are SILENT — call them in the background as data arrives. Don't say "let me record that".
+Required verification fields:
+- is_currently_at_home: true only after the customer explicitly says they are
+  currently at home / wahi ghar par hain
+- floor: ground floor, 1st floor, 2nd floor, or 3rd floor+
+- building_color: color of the building/house/front side, in the customer's own words
+- customer_direction: a practical direction note from a road/turn/landmark to
+  the home, in the customer's own words
 
-# Capture rules
-- For floor: normalize to "Ground floor" / "1st floor" / "2nd floor" / "3rd floor" / "4th floor" / "5th floor" / "Nth floor".
-- For color: prefer "हिंदी (English)" e.g. "नीला (Blue)", "सफ़ेद (White)".
-- For landmark and direction: keep the customer's own phrasing — those exact words help the technician.
-- If customer hesitates ≥3 times on the same field, accept their best attempt and move on. Don't trap them.
+Conversation rules:
+- Speak in simple Hinglish.
+- Speak loudly, slowly, and clearly, like a phone support agent.
+- Opening line must be exactly: "Kya aap abhi isi ghar par hain?"
+- Do not say any prefix before the opening line. Never start with "Bilkul",
+  "Theek hai", "Namaste", "Hello", or "Haan".
+- If the customer is not currently at home, this is a blocker. Do not ask floor
+  or directions. Say: "Ye step ghar par hoke complete karna zaroori hai." Then
+  call the tool with is_currently_at_home=false and missing_fields containing
+  "currently_at_home".
+- Never ask the customer to repeat the full address.
+- Never replace, rewrite, or infer the typed full address from speech.
+- Never ask them to restate the confirmed landmark unless you need to phrase the
+  direction question around it.
+- If the customer is currently at home, ask for floor if not already provided
+  in the answer.
+- Ask for building color as a short nudge: "Building ka color kya hai?"
+- If the user says the color is mixed, faded, or not sure, capture the closest
+  useful description in their own words.
+- Then ask for a practical direction note. The direction must help a technician
+  find the door, e.g. "Jharsa Road se pehle right lo, mandir dikhega, mera ghar
+  mandir ke bagal mein hai."
+- If the customer gives a vague direction like "landmark ke paas hai", ask once
+  for more specific turn/gali/door-facing detail.
+- Ask one short follow-up at a time.
+- Do not explain the process unless the customer asks.
+- Match the customer's spoken language/register. If the customer speaks mostly
+  Hindi, answer in Hindi/Hinglish. If the customer speaks English, answer in
+  English. If they mix, mirror the mix.
+- Speak numbers in the same language/register the customer is using. Examples:
+  if the customer says "sector saintis" or "sector saintees", say "saintis";
+  if they say "sector thirty seven", say "thirty seven"; if they say "plot
+  pandrah sau chauvan", say the number back that way, not as English digits.
+- Do not ask for fields already provided in this call.
+- Floor is required if and only if is_currently_at_home=true.
+- Building color is required if and only if is_currently_at_home=true.
+- Customer direction is required if and only if is_currently_at_home=true.
+- When required verification fields are complete, summarize only the verification
+  facts, not the full address: "Aap abhi ghar par hain, floor ___ hai, building
+  color ___ hai, aur direction ___ hai. Sahi?"
+- Do not call the submit_address_packet tool until the customer confirms by
+  voice with a clear yes/haan/sahi/confirm/ok.
+- If the customer corrects floor, building color, or direction during
+  confirmation, update it, summarize again, and ask for confirmation again.
+- After confirmation, say one short closing line like "Theek hai, verification
+  ho gaya" and then call the submit_address_packet tool.
 
-# Customer context (already on file)
-- Address: ${address || "(captured in app form)"}
-- ${variantBlock}
+Completion criteria:
+- If customer is not currently at home: immediately submit blocker result with
+  is_currently_at_home=false.
+- If customer is currently at home: floor is present, building_color is present,
+  customer_direction is present, and customer has explicitly confirmed the
+  spoken verification summary.
 
-# Opening turn
-Open the call yourself, immediately, without waiting for them. Say something like:
-"Namaste! Main Wiom की booking assistant बात कर रही हूँ। Aapne abhi Wiom का unlimited internet book kiya hai — installation se pehle bas 4–5 chhote sawaal hain, jisse humara technician aapke ghar आसानी से pahunch sake. Theek hai? ... Pehle ye batayein — kya aap abhi ghar par hi hain?"
-
-Speak warmly and at a relaxed pace.`;
+Do not claim serviceability is approved. Only say that details are ready for
+serviceability check.
+`.trim();
 }
 
 function corsHeaders(origin, allowed) {
@@ -176,10 +223,32 @@ export default {
     let body = {};
     try { body = await req.json(); } catch (_) {}
     const variant = body.variant === "D1" ? "D1" : "D2";
-    const address = typeof body.address === "string" ? body.address.slice(0, 240) : "";
-    const landmark = typeof body.landmark === "string" ? body.landmark.slice(0, 120) : "";
+    const typedAddress = typeof body.address === "string" ? body.address.slice(0, 240) : "";
+    const confirmedLandmark = typeof body.landmark === "string" ? body.landmark.slice(0, 120) : "";
 
-    const instructions = buildInstructions({ variant, address, landmark });
+    const instructions = buildInstructions({ variant, typedAddress, confirmedLandmark });
+
+    /* Session config — values mirror address-agent.js buildRealtimeSessionConfig. */
+    const sessionConfig = {
+      model: MODEL,
+      voice: VOICE,
+      instructions,
+      modalities: ["audio", "text"],
+      input_audio_transcription: {
+        model: "gpt-4o-mini-transcribe",
+        language: "hi",
+      },
+      turn_detection: {
+        type: "server_vad",
+        threshold: 0.78,
+        prefix_padding_ms: 450,
+        silence_duration_ms: 850,
+        interrupt_response: false,
+        create_response: true,
+      },
+      tools: [submitAddressPacketTool],
+      tool_choice: "auto",
+    };
 
     const r = await fetch("https://api.openai.com/v1/realtime/sessions", {
       method: "POST",
@@ -187,22 +256,7 @@ export default {
         Authorization: `Bearer ${env.OPENAI_API_KEY}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        model: MODEL,
-        voice: VOICE,
-        instructions,
-        modalities: ["audio", "text"],
-        input_audio_transcription: { model: "whisper-1" },
-        turn_detection: {
-          type: "server_vad",
-          threshold: 0.55,
-          prefix_padding_ms: 300,
-          silence_duration_ms: 700,
-        },
-        temperature: 0.7,
-        tools: TOOLS,
-        tool_choice: "auto",
-      }),
+      body: JSON.stringify(sessionConfig),
     });
 
     const text = await r.text();

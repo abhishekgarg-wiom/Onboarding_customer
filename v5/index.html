@@ -1030,6 +1030,114 @@ body.has-variant .variant-badge { display:flex; }
   background:radial-gradient(120% 120% at 30% 25%, #FF66C9 0%, #D9008D 30%, #5B2EFF 70%, #1F0E33 110%);
 }
 
+/* ---------- Hero card (Wiom Home Check) — mirrors PhoneCallSurface ----------
+   Reference: frontend/.../MainActivity.kt PhoneCallSurface composable
+     · RoundedCornerShape(34.dp)
+     · Color(0xFF101014) surface
+     · padding 22.dp x 26.dp, 18.dp gap
+     · 132.dp circular accent avatar with bold "AI" text
+     · status text + waveform                                                  */
+.ai-hero {
+  margin:8px 14px 10px;
+  padding:24px 22px 22px;
+  background:#101014;
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:34px;
+  display:flex; flex-direction:column; align-items:center;
+  gap:14px;
+  box-shadow:0 10px 40px rgba(0,0,0,0.45);
+}
+.ai-hero-title {
+  font-size:24px; line-height:30px; font-weight:700; color:#FFFFFF;
+  letter-spacing:-0.01em;
+}
+.ai-hero-status {
+  font-size:14px; line-height:20px; color:rgba(255,255,255,0.72);
+}
+.ai-avatar {
+  position:relative;
+  width:132px; height:132px;
+  display:grid; place-items:center;
+  margin:2px 0 4px;
+}
+.ai-avatar-glow {
+  position:absolute; inset:-18px; border-radius:999px;
+  background:radial-gradient(circle, rgba(217,0,141,0.55) 0%, rgba(91,46,255,0.20) 50%, rgba(0,0,0,0) 80%);
+  filter:blur(6px); opacity:0.55;
+  transition:opacity 200ms;
+}
+.ai-avatar-core {
+  position:relative;
+  width:132px; height:132px;
+  border-radius:999px;
+  background:linear-gradient(135deg, #FF66C9 0%, #D9008D 50%, #B0006F 100%);
+  display:grid; place-items:center;
+  font-size:36px; font-weight:800; color:#FFFFFF;
+  letter-spacing:0.02em;
+  box-shadow:0 14px 40px rgba(217,0,141,0.45),
+             inset 0 0 30px rgba(255,255,255,0.10);
+}
+.ai-modern.is-speaking  .ai-avatar-glow { opacity:1; animation:ai-pulse-fast 0.9s ease-in-out infinite; }
+.ai-modern.is-listening .ai-avatar-glow { opacity:0.85; animation:ai-pulse-listening 1.4s ease-in-out infinite; }
+.ai-modern.is-connecting .ai-avatar-glow { opacity:0.5; }
+.ai-modern.is-completed  .ai-avatar-core { background:linear-gradient(135deg, #5BC07A 0%, #008043 100%); }
+.ai-modern.is-error      .ai-avatar-core { background:linear-gradient(135deg, #D92130 0%, #7A1119 100%); }
+
+/* Speaker chip under the avatar — small status pill, reference's SpeakerChip */
+.ai-speaker-chip {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 14px; border-radius:999px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.08);
+  font-size:12px; font-weight:600; color:rgba(255,255,255,0.85);
+}
+
+/* Waveform — 15 bars that ripple while listening or speaking.
+   Reference uses CallWaveform composable at the same anatomy point. */
+.ai-waveform {
+  display:flex; align-items:flex-end; justify-content:center; gap:4px;
+  height:28px;
+  margin-top:4px;
+}
+.ai-waveform span {
+  display:block;
+  width:3px; height:6px;
+  background:linear-gradient(180deg, #FF66C9 0%, #D9008D 100%);
+  border-radius:2px;
+  opacity:0.6;
+  transform-origin:center bottom;
+  transition:height 80ms;
+}
+.ai-modern.is-listening .ai-waveform span,
+.ai-modern.is-speaking  .ai-waveform span {
+  animation:ai-wave 1.0s ease-in-out infinite;
+}
+.ai-waveform span:nth-child(1)  { animation-delay:0.00s; }
+.ai-waveform span:nth-child(2)  { animation-delay:0.05s; }
+.ai-waveform span:nth-child(3)  { animation-delay:0.10s; }
+.ai-waveform span:nth-child(4)  { animation-delay:0.15s; }
+.ai-waveform span:nth-child(5)  { animation-delay:0.20s; }
+.ai-waveform span:nth-child(6)  { animation-delay:0.25s; }
+.ai-waveform span:nth-child(7)  { animation-delay:0.30s; }
+.ai-waveform span:nth-child(8)  { animation-delay:0.35s; }
+.ai-waveform span:nth-child(9)  { animation-delay:0.40s; }
+.ai-waveform span:nth-child(10) { animation-delay:0.45s; }
+.ai-waveform span:nth-child(11) { animation-delay:0.50s; }
+.ai-waveform span:nth-child(12) { animation-delay:0.55s; }
+.ai-waveform span:nth-child(13) { animation-delay:0.60s; }
+.ai-waveform span:nth-child(14) { animation-delay:0.65s; }
+.ai-waveform span:nth-child(15) { animation-delay:0.70s; }
+@keyframes ai-wave {
+  0%, 100% { height:6px;  opacity:0.45; }
+  50%      { height:24px; opacity:1.00; }
+}
+.ai-modern.is-speaking  .ai-waveform span { background:linear-gradient(180deg, #FFFFFF 0%, #FFD9F1 100%); }
+.ai-modern.is-completed .ai-waveform span { background:#5BC07A; height:8px !important; opacity:0.6; animation:none; }
+.ai-modern.is-error     .ai-waveform span { background:#D92130; height:8px !important; opacity:0.6; animation:none; }
+
+/* Hide the legacy orb-wrap / live-chip — hero replaces them. */
+.ai-modern .ai-orb-wrap, .ai-modern .ai-live { display:none; }
+
 /* ---------- BYO-key setup overlay ---------- */
 .ai-setup {
   position:absolute; inset:0; z-index:30;
@@ -2222,7 +2330,7 @@ body.has-variant .variant-badge { display:flex; }
         <header class="ai-topbar">
           <button class="ai-icon-btn" aria-label="Back" onclick="endAiCall(); goto(state.variant === 'D2' ? 10 : 19)"><span class="ms">arrow_back</span></button>
           <div class="ai-topbar-center">
-            <div class="ai-topbar-name"><span class="ai-brand-dot"></span>Wiom · Booking Assistant</div>
+            <div class="ai-topbar-name"><span class="ai-brand-dot"></span>Wiom · Voice agent</div>
             <div class="ai-topbar-status" id="ai-status">कनेक्ट हो रही हूँ…</div>
           </div>
           <button class="ai-icon-btn ai-end-btn" id="ai-end-btn" aria-label="End call" onclick="endAiCall(); goto(13)"><span class="ms">close</span></button>
@@ -2261,26 +2369,28 @@ body.has-variant .variant-badge { display:flex; }
           </div>
         </div>
 
-        <div class="ai-orb-wrap">
-          <div class="ai-orb" id="ai-orb">
-            <div class="ai-orb-glow"></div>
-            <div class="ai-orb-core">
-              <svg viewBox="0 0 64 64" fill="none" aria-hidden="true">
-                <defs>
-                  <linearGradient id="aiOrbGrad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-                    <stop offset="0" stop-color="#FFFFFF"/>
-                    <stop offset="1" stop-color="#FFD9F1"/>
-                  </linearGradient>
-                </defs>
-                <path d="M14 36 C 14 22, 26 22, 28 32 S 42 44, 50 28" stroke="url(#aiOrbGrad)" stroke-width="5" stroke-linecap="round" fill="none"/>
-                <circle cx="50" cy="28" r="3.5" fill="#FFFFFF"/>
-              </svg>
-            </div>
-          </div>
-        </div>
+        <!-- Hero card — mirrors PhoneCallSurface from the reference Android app
+             (frontend/.../MainActivity.kt → PhoneCallSurface composable).
+             Title "Wiom Home Check", status text, 132dp circular AI avatar, waveform. -->
+        <div class="ai-hero">
+          <div class="ai-hero-title">Wiom Home Check</div>
+          <div class="ai-hero-status" id="ai-hero-status">Calling...</div>
 
-        <div class="ai-live" id="ai-live-row">
-          <div class="ai-live-chip" id="ai-live-chip"><span class="ai-live-dot"></span><span id="ai-live-text">सुन रही हूँ…</span></div>
+          <div class="ai-avatar" id="ai-avatar">
+            <div class="ai-avatar-glow"></div>
+            <div class="ai-avatar-core">AI</div>
+          </div>
+
+          <div class="ai-speaker-chip">
+            <span class="ai-live-dot"></span>
+            <span id="ai-live-text">सुन रही हूँ…</span>
+          </div>
+
+          <div class="ai-waveform" id="ai-waveform" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
         </div>
 
         <div class="ai-transcript" id="ai-transcript"></div>
@@ -2301,7 +2411,7 @@ body.has-variant .variant-badge { display:flex; }
 
       </div>
 
-      <div class="ai-powered">Realtime · Hinglish · gpt-4o-realtime</div>
+      <div class="ai-powered">Realtime · Hinglish · gpt-realtime · alloy</div>
       <button class="back-to-scenarios" onclick="endAiCall(); goto('variants')"><span class="ms">grid_view</span> Variants</button>
     </section>
 
@@ -2686,8 +2796,8 @@ function checkAddrCta() {
 ---------------------------------------------------------------------------- */
 
 const WIOM_TOKEN_URL_DEFAULT = ""; // optional — paste a worker URL here to skip BYO-key
-const WIOM_REALTIME_MODEL    = "gpt-4o-realtime-preview-2024-12-17";
-const WIOM_REALTIME_VOICE    = "shimmer"; // warm female; Indian-friendly tone
+const WIOM_REALTIME_MODEL    = "gpt-realtime"; // matches reference prototype
+const WIOM_REALTIME_VOICE    = "alloy";        // matches reference prototype
 
 function getTokenUrl() {
   const stored = localStorage.getItem('wiom_token_url') || '';
@@ -2702,97 +2812,162 @@ function hasAnyAuth() {
   return !!(getTokenUrl() || getStoredKey());
 }
 
-/* ---------- Tool spec — must match worker.js ---------- */
+/* ---------- Tool spec — verbatim from address-agent.js (reference repo) ---------- */
 const AI_TOOLS = [
   {
     type: "function",
-    name: "set_at_home",
-    description: "Record whether the customer confirms they are physically at the home address right now. Call this as soon as you know.",
-    parameters: { type: "object", properties: { at_home: { type: "boolean" } }, required: ["at_home"] },
-  },
-  {
-    type: "function",
-    name: "set_landmark",
-    description: "Record the nearby identifiable landmark the customer mentions (mandir, school, hospital, bank, petrol pump, mall, etc.). Use the customer's own words — preserve Hindi if they spoke Hindi.",
-    parameters: { type: "object", properties: { landmark: { type: "string" } }, required: ["landmark"] },
-  },
-  {
-    type: "function",
-    name: "set_floor",
-    description: "Record the floor of the customer's unit. Normalize to: 'Ground floor', '1st floor', '2nd floor', '3rd floor', '4th floor', '5th floor', or 'Nth floor' for higher floors.",
-    parameters: { type: "object", properties: { floor: { type: "string" } }, required: ["floor"] },
-  },
-  {
-    type: "function",
-    name: "set_building_color",
-    description: "Record the building or main gate color. Format as 'हिंदी (English)' when possible — e.g., 'नीला (Blue)', 'पीला (Yellow)', 'सफ़ेद (White)'.",
-    parameters: { type: "object", properties: { color: { type: "string" } }, required: ["color"] },
-  },
-  {
-    type: "function",
-    name: "set_direction",
-    description: "Record a short direction-from-landmark-to-home description in the customer's own words. Should be 5-30 words, mention turns, lane name, distinguishing markers.",
-    parameters: { type: "object", properties: { direction: { type: "string" } }, required: ["direction"] },
-  },
-  {
-    type: "function",
-    name: "complete_call",
-    description: "Call this exactly once when verification is finished — either after the customer confirms the summary, or when the customer says they are not at home and the call must end. Pass a one-line Hinglish summary.",
-    parameters: { type: "object", properties: { summary: { type: "string" } }, required: ["summary"] },
+    name: "submit_address_packet",
+    description: "Submit the completed install-address verification packet.",
+    parameters: {
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        typed_address: {
+          type: "string",
+          description: "The full address originally provided by the app.",
+        },
+        confirmed_landmark: {
+          type: "string",
+          description: "The landmark already confirmed by the app, OR the landmark captured during this voice call when the app did not pre-confirm one.",
+        },
+        is_currently_at_home: {
+          type: "boolean",
+          description: "True only when the customer explicitly confirms they are currently at home.",
+        },
+        floor: {
+          type: "string",
+          enum: ["", "Ground floor", "1st floor", "2nd floor", "3rd floor+"],
+        },
+        building_color: {
+          type: "string",
+          description: "Building/house/front-side color or closest useful visual description.",
+        },
+        customer_direction: {
+          type: "string",
+          description: "Practical direction note from the customer to help find the home.",
+        },
+        missing_fields: {
+          type: "array",
+          items: { type: "string" },
+          description: "Any unresolved fields at submission time.",
+        },
+        confidence: {
+          type: "string",
+          enum: ["low", "medium", "high"],
+        },
+      },
+      required: [
+        "typed_address",
+        "confirmed_landmark",
+        "is_currently_at_home",
+        "floor",
+        "building_color",
+        "customer_direction",
+        "missing_fields",
+        "confidence",
+      ],
+    },
   },
 ];
 
-/* ---------- System prompt — must match worker.js ---------- */
+/* ---------- System prompt — adapted from buildAddressAgentInstructions()
+   in /tmp/wiom-ref/backend/lib/address-agent.js. Two adaptations:
+     1. We don't have GPS / serviceable city — only typed address + landmark.
+     2. D2 variant: landmark NOT pre-confirmed by form, so AI must capture it.
+   Everything else is verbatim. */
 function aiBuildInstructions() {
-  const variant = state.variant === 'D1' ? 'D1' : 'D2';
-  const address = aiBuildAddressString();
-  const landmark = state.landmark || '';
-  const variantBlock = variant === 'D1'
-    ? `Variant: D1. The customer has ALREADY selected a nearby landmark in the form: "${landmark || '—'}". DO NOT ask for landmark again. Briefly acknowledge it ("${landmark || 'yeh landmark'} ke paas, sahi?") and move on.`
-    : `Variant: D2. The customer has NOT yet shared a landmark. You MUST ask for one — call set_landmark when you capture it.`;
+  const variant  = state.variant === 'D1' ? 'D1' : 'D2';
+  const ta       = aiBuildAddressString() || 'not provided';
+  const cl       = state.variant === 'D1' && state.landmark ? state.landmark : '';
 
-  return `You are "Wiom की booking assistant" — a warm, polite Indian woman doing a quick verification call before a Wiom technician visits the customer's home for broadband installation.
+  const landmarkVariantBlock = (variant === 'D2' || !cl)
+    ? `Variant note: confirmed_landmark was NOT pre-confirmed by the app. Before asking for direction, ask the customer once for a nearby identifiable landmark (mandir, school, hospital, bank, petrol pump, mall etc.) and capture their words as confirmed_landmark in the final tool call.`
+    : `Variant note: confirmed_landmark is pre-confirmed by the app — do not ask the customer to restate it.`;
 
-# About Wiom
-Wiom is an unlimited home internet (broadband / WiFi) ISP for India. No daily data limits, no FUP throttling, fast install in 24-48 hours, low monthly price. You're calling because the customer just booked a Wiom plan.
+  return `
+You are Wiom's Hinglish home-verification voice agent.
 
-# Your goal — exactly 4 to 5 small details
-Collect these in order so the technician can find their home:
-1. Are they currently at home? → set_at_home(true|false)
-2. (D2 only) Nearest landmark → set_landmark(text)
-3. Floor of their unit → set_floor(text)
-4. Building / gate color → set_building_color(text)
-5. Short direction from landmark to home → set_direction(text)
+Goal:
+Verify the typed install-address packet without trying to recapture the full
+address by voice. The app already collected the precise address and landmark.
+Your call must confirm only:
+1. whether the customer is currently at home
+2. the customer's floor
+3. the building color
+4. practical directions that help a technician find the home from the landmark
+   or nearby road
 
-After all are captured: read back a one-line summary in Hinglish and ask "kya yeh sahi hai?". If yes → call complete_call. If no → ask what to fix, update, summarise again.
+Known app context:
+- Typed full address from app: ${ta}
+- Confirmed landmark from app: ${cl || 'not provided'}
 
-If at step 1 they say NO (not at home): warmly tell them this step needs to be done from inside the home so the technician details are accurate, and they can re-try once they reach home. Then call complete_call with a summary like "Customer not at home, will retry later".
+${landmarkVariantBlock}
 
-# How to talk
-- Speak natural Hinglish like a real Indian woman — Hindi-Devanagari first, English mixed in. Examples: "Ji, batayein", "Wiom ki team", "thoda detail mein", "samjha nahi, ek baar phir bolenge?".
-- WARM, patient, concise. Customers may be elderly, first-time internet users, or speaking in a regional accent.
-- ONE question at a time. Wait for the answer. Briefly confirm what you heard before moving on ("theek hai, 2nd floor noted").
-- If you don't understand, gently rephrase — DO NOT repeat the same sentence verbatim.
-- Customer may answer in Hindi, English, Hinglish, or with regional accent (Punjabi, Bihari, Marathi, South Indian English, etc.) — accept all.
-- If they go off-topic, politely steer back: "ji, bas yeh chote sawaal complete kar lein, phir hum aapke ghar pahunch jaayenge."
-- Never sound robotic. Never list multiple questions in one turn. Never read out tool-call JSON.
-- Tool calls are SILENT — call them in the background as data arrives. Don't say "let me record that".
+Required verification fields:
+- is_currently_at_home: true only after the customer explicitly says they are
+  currently at home / wahi ghar par hain
+- floor: ground floor, 1st floor, 2nd floor, or 3rd floor+
+- building_color: color of the building/house/front side, in the customer's own words
+- customer_direction: a practical direction note from a road/turn/landmark to
+  the home, in the customer's own words
 
-# Capture rules
-- For floor: normalize to "Ground floor" / "1st floor" / "2nd floor" / "3rd floor" / "4th floor" / "5th floor" / "Nth floor".
-- For color: prefer "हिंदी (English)" e.g. "नीला (Blue)", "सफ़ेद (White)".
-- For landmark and direction: keep the customer's own phrasing — those exact words help the technician.
-- If customer hesitates ≥3 times on the same field, accept their best attempt and move on. Don't trap them.
+Conversation rules:
+- Speak in simple Hinglish.
+- Speak loudly, slowly, and clearly, like a phone support agent.
+- Opening line must be exactly: "Kya aap abhi isi ghar par hain?"
+- Do not say any prefix before the opening line. Never start with "Bilkul",
+  "Theek hai", "Namaste", "Hello", or "Haan".
+- If the customer is not currently at home, this is a blocker. Do not ask floor
+  or directions. Say: "Ye step ghar par hoke complete karna zaroori hai." Then
+  call the tool with is_currently_at_home=false and missing_fields containing
+  "currently_at_home".
+- Never ask the customer to repeat the full address.
+- Never replace, rewrite, or infer the typed full address from speech.
+- Never ask them to restate the confirmed landmark unless you need to phrase the
+  direction question around it.
+- If the customer is currently at home, ask for floor if not already provided
+  in the answer.
+- Ask for building color as a short nudge: "Building ka color kya hai?"
+- If the user says the color is mixed, faded, or not sure, capture the closest
+  useful description in their own words.
+- Then ask for a practical direction note. The direction must help a technician
+  find the door, e.g. "Jharsa Road se pehle right lo, mandir dikhega, mera ghar
+  mandir ke bagal mein hai."
+- If the customer gives a vague direction like "landmark ke paas hai", ask once
+  for more specific turn/gali/door-facing detail.
+- Ask one short follow-up at a time.
+- Do not explain the process unless the customer asks.
+- Match the customer's spoken language/register. If the customer speaks mostly
+  Hindi, answer in Hindi/Hinglish. If the customer speaks English, answer in
+  English. If they mix, mirror the mix.
+- Speak numbers in the same language/register the customer is using. Examples:
+  if the customer says "sector saintis" or "sector saintees", say "saintis";
+  if they say "sector thirty seven", say "thirty seven"; if they say "plot
+  pandrah sau chauvan", say the number back that way, not as English digits.
+- Do not ask for fields already provided in this call.
+- Floor is required if and only if is_currently_at_home=true.
+- Building color is required if and only if is_currently_at_home=true.
+- Customer direction is required if and only if is_currently_at_home=true.
+- When required verification fields are complete, summarize only the verification
+  facts, not the full address: "Aap abhi ghar par hain, floor ___ hai, building
+  color ___ hai, aur direction ___ hai. Sahi?"
+- Do not call the submit_address_packet tool until the customer confirms by
+  voice with a clear yes/haan/sahi/confirm/ok.
+- If the customer corrects floor, building color, or direction during
+  confirmation, update it, summarize again, and ask for confirmation again.
+- After confirmation, say one short closing line like "Theek hai, verification
+  ho gaya" and then call the submit_address_packet tool.
 
-# Customer context (already on file)
-- Address: ${address || '(captured in app form)'}
-- ${variantBlock}
+Completion criteria:
+- If customer is not currently at home: immediately submit blocker result with
+  is_currently_at_home=false.
+- If customer is currently at home: floor is present, building_color is present,
+  customer_direction is present, and customer has explicitly confirmed the
+  spoken verification summary.
 
-# Opening turn
-Open the call yourself, immediately, without waiting for them. Say something like:
-"Namaste! Main Wiom की booking assistant बात कर रही हूँ। Aapne abhi Wiom का unlimited internet book kiya hai — installation se pehle bas 4-5 chhote sawaal hain, jisse humara technician aapke ghar आसानी से pahunch sake. Theek hai? ... Pehle ye batayein — kya aap abhi ghar par hi hain?"
-
-Speak warmly and at a relaxed pace.`;
+Do not claim serviceability is approved. Only say that details are ready for
+serviceability check.
+`.trim();
 }
 
 const CAPTURE_LABELS = {
@@ -2825,16 +3000,20 @@ function aiSetStage(stage, statusText) {
     root.classList.remove('is-idle','is-connecting','is-listening','is-speaking','is-thinking','is-completed','is-error');
     root.classList.add('is-' + stage);
   }
+  /* Speaker-chip text mirrors the reference Android app's RealtimeVoiceState→string mapping */
   const liveText = document.getElementById('ai-live-text');
   if (liveText) {
-    if      (stage === 'listening')  liveText.textContent = 'सुन रही हूँ…';
-    else if (stage === 'speaking')   liveText.textContent = 'बोल रही हूँ…';
-    else if (stage === 'thinking')   liveText.textContent = 'सोच रही हूँ…';
-    else if (stage === 'connecting') liveText.textContent = 'कनेक्ट हो रही है…';
-    else if (stage === 'completed')  liveText.textContent = 'पूरा हुआ ✓';
-    else if (stage === 'error')      liveText.textContent = 'कनेक्शन में दिक़्क़त है';
-    else                              liveText.textContent = '…';
+    if      (stage === 'listening')  liveText.textContent = 'AI sun raha hai';
+    else if (stage === 'speaking')   liveText.textContent = 'AI bol raha hai';
+    else if (stage === 'thinking')   liveText.textContent = 'सोच रही है…';
+    else if (stage === 'connecting') liveText.textContent = 'Calling…';
+    else if (stage === 'completed')  liveText.textContent = 'Verification complete';
+    else if (stage === 'error')      liveText.textContent = 'Call fail hua';
+    else                              liveText.textContent = 'Idle';
   }
+  /* Hero status — same mapping, for the bigger text under "Wiom Home Check". */
+  const heroStatus = document.getElementById('ai-hero-status');
+  if (heroStatus) heroStatus.textContent = liveText ? liveText.textContent : '';
   const status = document.getElementById('ai-status');
   if (status && statusText) status.textContent = statusText;
 }
@@ -2929,34 +3108,41 @@ function aiSubmitFallback() {
   }
 }
 
-/* ---------- Tool-call dispatch ---------- */
+/* ---------- Tool-call dispatch ----------
+   The reference prompt commits to ONE tool — submit_address_packet — fired
+   exactly once at the end of the call. We fan its fields out into the
+   captured-card all at once and route forward. */
 function aiOnToolCall(name, args, callId) {
-  let displayValue = null;
-  switch (name) {
-    case 'set_at_home':
-      displayValue = args.at_home ? 'Yes' : 'No';
-      aiPushCapture('at_home', displayValue);
-      break;
-    case 'set_landmark':
-      if (args.landmark) {
-        aiPushCapture('landmark', args.landmark);
-        state.landmark = args.landmark;
-      }
-      break;
-    case 'set_floor':
-      if (args.floor) aiPushCapture('floor', args.floor);
-      break;
-    case 'set_building_color':
-      if (args.color) aiPushCapture('color', args.color);
-      break;
-    case 'set_direction':
-      if (args.direction) aiPushCapture('direction', args.direction);
-      break;
-    case 'complete_call':
-      aiCompleteCall(args.summary || 'पूरा हुआ');
-      break;
+  if (name === 'submit_address_packet') {
+    aiPushCapture('at_home', args.is_currently_at_home ? 'Yes' : 'No');
+    if (args.confirmed_landmark) {
+      aiPushCapture('landmark', args.confirmed_landmark);
+      state.landmark = args.confirmed_landmark;
+    }
+    if (args.is_currently_at_home) {
+      if (args.floor)              aiPushCapture('floor', args.floor);
+      if (args.building_color)     aiPushCapture('color', args.building_color);
+      if (args.customer_direction) aiPushCapture('direction', args.customer_direction);
+    }
+    /* Acknowledge tool call so the model can finish its closing line. */
+    if (aiCtx.dc && aiCtx.dc.readyState === 'open' && callId) {
+      aiCtx.dc.send(JSON.stringify({
+        type: 'conversation.item.create',
+        item: {
+          type: 'function_call_output',
+          call_id: callId,
+          output: JSON.stringify({ ok: true, received: true }),
+        },
+      }));
+    }
+    const summary = args.is_currently_at_home
+      ? 'Verification पूरा हुआ'
+      : 'घर पर पहुँचकर दोबारा कोशिश करें';
+    aiCompleteCall(summary);
+    return;
   }
-  /* Acknowledge the tool call so the model can continue the spoken turn. */
+
+  /* Unknown tool — acknowledge and ignore. */
   if (aiCtx.dc && aiCtx.dc.readyState === 'open' && callId) {
     aiCtx.dc.send(JSON.stringify({
       type: 'conversation.item.create',
@@ -3067,21 +3253,27 @@ async function aiOpenRealtime() {
   dc.onopen = () => {
     try {
       if (mode === 'direct') {
-        /* In direct mode the session is empty — configure it ourselves. */
+        /* Direct mode: session is empty until we configure it.
+           Values mirror buildRealtimeSessionConfig() in
+           backend/lib/address-agent.js of the reference repo. */
         dc.send(JSON.stringify({
           type: 'session.update',
           session: {
             modalities: ['audio', 'text'],
             voice: WIOM_REALTIME_VOICE,
             instructions: aiBuildInstructions(),
-            input_audio_transcription: { model: 'whisper-1' },
+            input_audio_transcription: {
+              model: 'gpt-4o-mini-transcribe',
+              language: 'hi',
+            },
             turn_detection: {
               type: 'server_vad',
-              threshold: 0.55,
-              prefix_padding_ms: 300,
-              silence_duration_ms: 700,
+              threshold: 0.78,
+              prefix_padding_ms: 450,
+              silence_duration_ms: 850,
+              interrupt_response: false,
+              create_response: true,
             },
-            temperature: 0.7,
             tools: AI_TOOLS,
             tool_choice: 'auto',
           },
