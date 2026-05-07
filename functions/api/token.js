@@ -17,6 +17,7 @@
 
 const MODEL = "gpt-realtime";
 const VOICE = "alloy";
+/* deploy-canary: v5.3 — Pages auto-deploy verification */
 
 const submitAddressPacketTool = {
   type: "function",
