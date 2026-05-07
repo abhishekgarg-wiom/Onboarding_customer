@@ -1889,154 +1889,6 @@ body.has-variant .variant-badge { display:flex; }
       <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
     </section>
 
-    <!-- ============== 14. CHAT · ARE YOU THERE NOW? ============== -->
-    <section class="screen" data-screen="14">
-      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
-      <header class="chat-top-bar">
-        <div class="chat-top-bar-left">
-          <div class="wiom-avatar">
-            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-          </div>
-          <div class="chat-top-text">
-            <div class="chat-top-name">व्योम</div>
-            <div class="chat-top-status">ऑनलाइन</div>
-          </div>
-        </div>
-        <div class="chat-top-actions">
-          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
-          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
-        </div>
-      </header>
-      <div class="sticky-net">
-        <div class="net-card">
-          <div class="net-card-icon"><span class="ms outlined">home</span></div>
-          <div class="net-card-text">
-            <div class="net-card-heading">घर का नेट: रमेश</div>
-            <div class="net-card-status">
-              <span class="net-card-status-label">स्थिति:</span>
-              <span class="net-card-status-value">बुकिंग अधूरी है</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="chat-body">
-
-        <div class="msg-row bot">
-          <div class="msg-wrap">
-            <div class="msg-tail"></div>
-            <div class="msg-bubble">
-              <div class="msg-content">
-                <div class="msg-text">आपका पता सेव हो गया है।</div>
-                <div class="msg-time">10:15 AM</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="msg-row bot follow-up">
-          <div class="msg-wrap">
-            <div class="msg-bubble has-cta-below">
-              <div class="msg-content">
-                <div class="msg-text">आपको जहां नेट लगवाना है, क्या <strong>अभी आप वहीं हैं</strong>?</div>
-                <div class="msg-time">10:15 AM</div>
-              </div>
-            </div>
-            <div class="msg-divider"></div>
-            <button class="msg-cta middle" onclick="goto(16)">
-              <span class="msg-cta-text">हाँ</span>
-            </button>
-            <div class="msg-divider"></div>
-            <button class="msg-cta" onclick="goto(15)">
-              <span class="msg-cta-text">नहीं</span>
-            </button>
-          </div>
-        </div>
-
-      </div>
-      <div class="chat-input">
-        <div class="input-field placeholder">यहाँ पूछें....</div>
-        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
-      </div>
-      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
-    </section>
-
-    <!-- ============== 15. CHAT · NOT AT HOME (after NO) ============== -->
-    <section class="screen" data-screen="15">
-      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
-      <header class="chat-top-bar">
-        <div class="chat-top-bar-left">
-          <div class="wiom-avatar">
-            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-          </div>
-          <div class="chat-top-text">
-            <div class="chat-top-name">व्योम</div>
-            <div class="chat-top-status">ऑनलाइन</div>
-          </div>
-        </div>
-        <div class="chat-top-actions">
-          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
-          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
-        </div>
-      </header>
-      <div class="sticky-net">
-        <div class="net-card">
-          <div class="net-card-icon"><span class="ms outlined">home</span></div>
-          <div class="net-card-text">
-            <div class="net-card-heading">घर का नेट: रमेश</div>
-            <div class="net-card-status">
-              <span class="net-card-status-label">स्थिति:</span>
-              <span class="net-card-status-value">बुकिंग अधूरी है</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="chat-body">
-
-        <!-- User: replied "नहीं" with quote -->
-        <div class="msg-row user">
-          <div class="msg-wrap">
-            <div class="msg-tail"></div>
-            <div class="msg-bubble">
-              <div class="reply-quote">
-                <div class="reply-quote-bar"></div>
-                <div class="reply-quote-text">
-                  <div class="reply-quote-author">Wiom</div>
-                  <div class="reply-quote-msg">क्या आपको जहां नेट लगवाना है, अभी आप वहीं हैं?</div>
-                </div>
-              </div>
-              <div class="msg-content">
-                <div class="msg-text">नहीं</div>
-                <div class="msg-time sent">10:15 AM <span class="ms">done_all</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Bot: instruction + CTA -->
-        <div class="msg-row bot">
-          <div class="msg-wrap">
-            <div class="msg-tail"></div>
-            <div class="msg-bubble has-cta-below">
-              <div class="msg-content">
-                <div class="msg-text">घर पहुँच कर नीचे दिये गये बटन को दबाएँ।</div>
-                <div class="msg-time">10:15 AM</div>
-              </div>
-            </div>
-            <div class="msg-divider"></div>
-            <button class="msg-cta" onclick="goto(16)">
-              <span class="msg-cta-text">मैं घर पर हूँ</span>
-            </button>
-          </div>
-        </div>
-
-      </div>
-      <div class="chat-input">
-        <div class="input-field placeholder">यहाँ पूछें....</div>
-        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
-      </div>
-      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
-    </section>
-
     <!-- ============== 16. CHAT · BOOKING CONFIRMED + SAVE NUMBER ============== -->
     <section class="screen" data-screen="16">
       <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
@@ -2421,7 +2273,7 @@ let pendingTimer = null;
 const autoAdvance = {
   1:  { to: 2,  ms: 1600 },
   2:  { to: 3,  ms: 2200 },
-  13: { to: 14, ms: 1800 },
+  13: { to: 16, ms: 1800 },
 };
 
 /* Layout groups — screens within a group share their chrome (top bar,
@@ -2431,7 +2283,7 @@ function screenGroup(n) {
   const k = String(n);
   if (k === 'context' || k === 'variants' || k === '17') return 'yellow';
   if (k === '1' || k === '13')       return 'loader';
-  if (['2','3','9','14','15','16','18'].includes(k)) return 'chat';
+  if (['2','3','9','16','18'].includes(k)) return 'chat';
   if (k === 'ai') return 'ai';
   return 'form';
 }
