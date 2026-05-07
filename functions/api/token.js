@@ -234,7 +234,7 @@ export async function onRequestPost(context) {
 export async function onRequestGet(context) {
   const origin = context.request.headers.get("Origin") || "";
   const cors = corsHeaders(origin, context.env.ALLOWED_ORIGINS);
-  return new Response(JSON.stringify({ ok: true, model: MODEL }), {
+  return new Response(JSON.stringify({ ok: true, model: MODEL, build: "v5.3-canary-1" }), {
     headers: { "Content-Type": "application/json", ...cors },
   });
 }
