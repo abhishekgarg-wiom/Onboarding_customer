@@ -571,6 +571,22 @@ body.has-variant .variant-badge { display:flex; }
   font-size:88px;
   font-variation-settings:'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 48;
 }
+.pay-icon.fail {
+  background:var(--bg-critical-subtle);
+  animation:pay-icon-rise 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  position:relative;
+}
+.pay-icon.fail::before {
+  content:""; position:absolute; inset:38px;
+  border-radius:50%;
+  background:var(--bg-critical);
+}
+.pay-icon.fail .ms {
+  position:relative;
+  color:#FFFFFF;
+  font-size:48px;
+  font-variation-settings:'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 48;
+}
 @keyframes pay-icon-rise {
   from { transform:scale(0.7); opacity:0; }
   to   { transform:scale(1);   opacity:1; }
@@ -591,6 +607,45 @@ body.has-variant .variant-badge { display:flex; }
   color:var(--text-disabled);
   background:var(--bg-default);
 }
+
+/* Failed screen — icon visible immediately, text + CTA fade in after 1s */
+.pay-fail-screen {
+  position:absolute; inset:0;
+  background:var(--bg-default);
+  display:flex; flex-direction:column;
+}
+.pay-fail-head {
+  display:flex; flex-direction:column; align-items:center; gap:var(--s24);
+  width:328px; max-width:100%; margin:212px auto 0;
+  text-align:center;
+}
+.pay-fail-head .pay-title { font:500 20px/28px var(--ff); color:var(--text-default); }
+.pay-fail-head .pay-sub   { font:400 16px/24px var(--ff); color:var(--text-default); }
+
+/* Title + description + CTA appear together 1s after screen activates.
+   Scoped to .active so the animation re-fires every time the user returns. */
+.screen[data-screen="pay-fail"] .pay-fail-reveal {
+  opacity:0;
+}
+.screen[data-screen="pay-fail"].active .pay-fail-reveal {
+  animation:pay-fail-reveal 320ms ease-out 1000ms forwards;
+}
+@keyframes pay-fail-reveal {
+  from { opacity:0; transform:translateY(6px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.pay-fail-action {
+  position:absolute; left:0; right:0; bottom:0;
+  padding:var(--s16); background:var(--bg-default);
+}
+.pay-fail-action button {
+  width:100%; padding:var(--s12) var(--s16);
+  background:var(--bg-brand-accent); color:var(--text-default);
+  border:0; border-radius:var(--r-large);
+  font:500 16px/24px var(--ff); cursor:pointer;
+}
+.pay-fail-action button:active { transform:scale(0.99); }
 
 .wiom-infinity .track {
   fill:none; stroke:rgba(255,255,255,0.18);
@@ -914,15 +969,22 @@ body.has-variant .variant-badge { display:flex; }
     <section class="screen" data-screen="variants">
       <div class="yellow-screen">
         <div class="scenario-content">
-          <div class="scenario-title">v7 · Payment → Chat → Setup</div>
-          <div class="scenario-subtitle">Booking fee paid → success → chat 3-step list → नेट का नाम → पता → landmark → आवाज़ → confirmed.</div>
+          <div class="scenario-title">v7 · Seamless success — चैट में ही</div>
+          <div class="scenario-subtitle">Processing के तुरंत बाद चैट खुल जाती है। कोई full-screen success नहीं — भुगतान सफल का message चैट के पहले बबल में आता है। Failed flow वही है।</div>
 
-          <div class="scenario-section-title">C1 · नेट का नाम + पता → बुकिंग कन्फर्म</div>
+          <div class="scenario-section-title">Payment outcomes</div>
 
-          <div class="scenario-card" onclick="startVariant('C1','default')">
-            <div class="scenario-card-num">C1 · Default</div>
-            <div class="scenario-card-title">Payment → 2 info chat → name → address → confirmed</div>
-            <div class="scenario-card-desc">₹100 paid → status चेक → भुगतान सफल → व्योम चैट खुलती है। 2 जानकारी (नेट का नाम + पता) ली जाती है, और बुकिंग कन्फर्म हो जाती है।</div>
+          <div class="scenario-card" onclick="startVariant('C1','success')">
+            <div class="scenario-card-num">Case 1 — Payment Success (seamless)</div>
+            <div class="scenario-card-title">Processing → चैट में success bubble</div>
+            <div class="scenario-card-desc">₹100 status चेक → directly व्योम चैट खुलती है। पहला बबल: "भुगतान सफल हो गया है" + typing → फिर 2-info onboarding आता है। कोई पूरी-स्क्रीन success नहीं।</div>
+            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
+          </div>
+
+          <div class="scenario-card" onclick="startVariant('C1','failed')">
+            <div class="scenario-card-num">Case 2 — Payment Failed</div>
+            <div class="scenario-card-title">Processing → failed screen → retry</div>
+            <div class="scenario-card-desc">₹100 status चेक → भुगतान असफल। डेबिट 4-7 दिनों में वापस; रिफंड timeline card दिखता है। "दोबारा प्रयास करें" → वापस यहाँ।</div>
             <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
           </div>
 
@@ -955,6 +1017,23 @@ body.has-variant .variant-badge { display:flex; }
             <div class="pay-title success">भुगतान सफल रहा!</div>
             <div class="pay-sub">अमाउंट: <b>₹100</b></div>
           </div>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== PAY · FAIL (v9 — icon now, text + CTA fade in after 1s) ============== -->
+    <section class="screen" data-screen="pay-fail">
+      <div class="pay-fail-screen">
+        <div class="pay-fail-head">
+          <div class="pay-icon fail"><span class="ms">close</span></div>
+          <div class="pay-text pay-fail-reveal">
+            <div class="pay-title">भुगतान असफल रहा!</div>
+            <div class="pay-sub">डेबिट की गई कोई भी राशि 4-7 दिनों के अंदर वापस आ जाएगी।</div>
+          </div>
+        </div>
+        <div class="pay-fail-action pay-fail-reveal">
+          <button onclick="goto('variants')">दोबारा प्रयास करें</button>
         </div>
       </div>
       <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
@@ -1013,12 +1092,7 @@ body.has-variant .variant-badge { display:flex; }
             <div class="msg-tail"></div>
             <div class="msg-bubble">
               <div class="msg-content">
-                <div class="msg-text">नमस्ते रमेश जी,</div>
-                <div class="msg-text">आपकी बुकिंग की प्रक्रिया अभी अधूरी है।</div>
-                <div class="msg-text">अब 2 और जानकारी चाहिए :</div>
-                <div class="msg-text">1. नेट का नाम</div>
-                <div class="msg-text">2. आपका पता</div>
-                <div class="msg-text">बस <strong>2-3 मिनट</strong> में पूरा हो जाएगा।</div>
+                <div class="msg-text">बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>भुगतान सफल</strong> हो गया है।</div>
                 <div class="msg-time">10:15 AM</div>
               </div>
             </div>
@@ -1079,6 +1153,17 @@ body.has-variant .variant-badge { display:flex; }
         <div class="msg-row bot">
           <div class="msg-wrap">
             <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>भुगतान सफल</strong> हो गया है।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
             <div class="msg-bubble">
               <div class="msg-content">
                 <div class="msg-text">नमस्ते रमेश जी,</div>
@@ -2046,11 +2131,9 @@ let cur = null;
 let pendingTimer = null;
 
 const autoAdvance = {
-  'pay-proc': { to: 'pay-ok',   ms: 2200 },
-  'pay-ok':   { to: 1,          ms: 1600 },
-  1:          { to: 2,          ms: 1600 },
-  2:          { to: 3,          ms: 2600 },
-  13:         { to: 16, ms: 1800 },
+  'pay-proc': { to: () => state.paymentCase === 'failed' ? 'pay-fail' : 2, ms: 2200 },
+  2:          { to: 3,                                                     ms: 2000 },
+  13:         { to: 16,                                                    ms: 1800 },
 };
 
 /* Layout groups — screens within a group share their chrome (top bar,
@@ -2059,7 +2142,8 @@ const autoAdvance = {
 function screenGroup(n) {
   const k = String(n);
   if (k === 'context' || k === 'variants' || k === '17') return 'yellow';
-  if (k === 'pay-proc' || k === 'pay-ok')                return 'pay';
+  if (k === 'pay-proc' || k === 'pay-ok') return 'pay';
+  if (k === 'pay-fail')                   return 'pay-fail';
   if (k === '1' || k === '13')       return 'loader';
   if (['2','3','9','14','15','16','18'].includes(k)) return 'chat';
   return 'form';
@@ -2073,26 +2157,26 @@ function screenGroup(n) {
      sparse     — 2 named types empty (rows hide)
      other-only — all 5 named empty; only "अन्य" remains, custom typing forced */
 const VARIANT_LABELS = {
-  'C1|default' : 'C1 · Default',
+  'C1|success' : 'Case 1 · Payment Success',
+  'C1|failed'  : 'Case 2 · Payment Failed',
 };
 
-function startVariant(v, dataCase) {
+function startVariant(v, paymentCase) {
   state.variant = v;
-  applyDataCase(dataCase || 'default');
+  state.paymentCase = (paymentCase === 'failed') ? 'failed' : 'success';
+  applyDataCase('default');
   document.body.classList.add('has-variant');
   const badge = document.getElementById('variantBadge');
-  const key = v + '|' + state.dataCase;
+  const key = v + '|' + state.paymentCase;
   if (badge) badge.textContent = VARIANT_LABELS[key] || ('Variant ' + v);
   goto('pay-proc');
 }
 
 function nextAfterAddress() {
-  /* v7 — address is the last step. Show a brief loader, then confirmation chat. */
-  return 13;
+  /* v8 — address-step bundles address + landmark + voice. */
+  return 11;
 }
 function nextAfterLandmark() {
-  /* v7 doesn't use the landmark/voice flow. Kept so the legacy screens still navigate
-     if reached via direct goto(). */
   return 20;
 }
 function toggleSkip(show) {
@@ -2122,8 +2206,11 @@ function goto(n) {
   if (pendingTimer) { clearTimeout(pendingTimer); pendingTimer = null; }
   hideDialog();
 
+  /* v9 — pay-proc → first chat screen should be a soft cross-fade, not a slide,
+     so the chat materialises out of the white processing surface. */
+  const seamlessPair = String(cur) === 'pay-proc' && String(n) === '2';
   const sameGroup = cur !== null && screenGroup(cur) === screenGroup(n);
-  document.body.classList.toggle('same-group', sameGroup);
+  document.body.classList.toggle('same-group', sameGroup || seamlessPair);
 
   cur = n;
   document.querySelectorAll('.screen').forEach(s => {
@@ -2140,18 +2227,18 @@ function goto(n) {
   }
 
   const auto = autoAdvance[n];
-  if (auto) pendingTimer = setTimeout(() => goto(auto.to), auto.ms);
+  if (auto) pendingTimer = setTimeout(() => goto(typeof auto.to === 'function' ? auto.to() : auto.to), auto.ms);
 }
 
-/* v7 — address is the last step, so the CTA promises booking completion. */
+/* v8 — address-step is address + landmark + voice; CTA promises the next sub-step. */
 function applyAddrCtaLabel() {
   const cta = document.getElementById('addr-confirm');
   if (!cta) return;
-  cta.textContent = 'पता सेव करें और बुकिंग पक्की करें';
+  cta.textContent = 'सही सेट-अप के लिए पास की जगह दें';
 }
 
 /* ---------- Flow state ---------- */
-const state = { variant:null, dataCase:'default', type:'mandir', landmark:'Hanuman Mandir', landmarkShort:'मंदिर' };
+const state = { variant:null, dataCase:'default', paymentCase:'success', type:'mandir', landmark:'Hanuman Mandir', landmarkShort:'मंदिर' };
 
 function showDialog() { document.getElementById('dialog').style.display = 'flex'; }
 function hideDialog() { document.getElementById('dialog').style.display = 'none'; }
