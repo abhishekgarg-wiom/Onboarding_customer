@@ -915,7 +915,7 @@ body.has-variant .variant-badge { display:flex; }
       <div class="yellow-screen">
         <div class="scenario-content">
           <div class="scenario-title">v7 · Payment → Chat → Setup</div>
-          <div class="scenario-subtitle">Booking fee paid → success → chat 3-step list → नेट का नाम → पता → landmark → आवाज़ → confirmed। C1 / C2 के 3-3 edge-case data scenarios।</div>
+          <div class="scenario-subtitle">Booking fee paid → success → chat 3-step list → नेट का नाम → पता → landmark → आवाज़ → confirmed.</div>
 
           <div class="scenario-section-title">C1 · पता + पास की जगह + आवाज़</div>
 
@@ -926,40 +926,12 @@ body.has-variant .variant-badge { display:flex; }
             <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
           </div>
 
-          <div class="scenario-card" onclick="startVariant('C1','sparse')">
-            <div class="scenario-card-num">C1 · Case 2 — Partial data</div>
-            <div class="scenario-card-title">कुछ types खाली हैं</div>
-            <div class="scenario-card-desc">अस्पताल और पेट्रोल पंप पास में नहीं हैं — वो rows hide हो जाते हैं। बाकी types + “अन्य” दिखते हैं।</div>
-            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
-          </div>
-
-          <div class="scenario-card" onclick="startVariant('C1','other-only')">
-            <div class="scenario-card-num">C1 · Case 3 — Only “अन्य”</div>
-            <div class="scenario-card-title">कोई named type पास में नहीं</div>
-            <div class="scenario-card-desc">पाँचों named types खाली। सिर्फ़ “अन्य” row दिखता है — और कस्टमर को सीधे खुद टाइप करने का path मिलता है।</div>
-            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
-          </div>
-
           <div class="scenario-section-title">C2 · same as C1, with Hindi audio prompt on voice screen</div>
 
           <div class="scenario-card" onclick="startVariant('C2','default')">
             <div class="scenario-card-num">C2 · Case 1 — Default</div>
             <div class="scenario-card-title">सब types में data है</div>
             <div class="scenario-card-desc">C1·Default जैसा landmark UX। Voice screen खुलते ही Hindi में audio prompt चलता है।</div>
-            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
-          </div>
-
-          <div class="scenario-card" onclick="startVariant('C2','sparse')">
-            <div class="scenario-card-num">C2 · Case 2 — Partial data</div>
-            <div class="scenario-card-title">कुछ types खाली हैं</div>
-            <div class="scenario-card-desc">C1·Partial जैसा। Voice screen पर Hindi audio prompt भी।</div>
-            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
-          </div>
-
-          <div class="scenario-card" onclick="startVariant('C2','other-only')">
-            <div class="scenario-card-num">C2 · Case 3 — Only “अन्य”</div>
-            <div class="scenario-card-title">कोई named type पास में नहीं</div>
-            <div class="scenario-card-desc">सिर्फ़ “अन्य” + खुद टाइप करने का path। Voice screen पर Hindi audio prompt।</div>
             <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
           </div>
 
@@ -2130,12 +2102,8 @@ function screenGroup(n) {
      sparse     — 2 named types empty (rows hide)
      other-only — all 5 named empty; only "अन्य" remains, custom typing forced */
 const VARIANT_LABELS = {
-  'C1|default'    : 'C1 · Default',
-  'C1|sparse'     : 'C1 · Partial data',
-  'C1|other-only' : 'C1 · Only “अन्य”',
-  'C2|default'    : 'C2 · Default + audio prompt',
-  'C2|sparse'     : 'C2 · Partial data + audio prompt',
-  'C2|other-only' : 'C2 · Only “अन्य” + audio prompt',
+  'C1|default' : 'C1 · Default',
+  'C2|default' : 'C2 · Default + audio prompt',
 };
 
 function startVariant(v, dataCase) {
