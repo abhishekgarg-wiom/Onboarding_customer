@@ -608,62 +608,33 @@ body.has-variant .variant-badge { display:flex; }
   background:var(--bg-default);
 }
 
-/* Failed screen — full layout with progress card + retry CTA */
+/* Failed screen — icon visible immediately, text + CTA fade in after 1s */
 .pay-fail-screen {
   position:absolute; inset:0;
   background:var(--bg-default);
   display:flex; flex-direction:column;
-  overflow-y:auto; scrollbar-width:none;
 }
-.pay-fail-screen::-webkit-scrollbar { display:none; }
 .pay-fail-head {
   display:flex; flex-direction:column; align-items:center; gap:var(--s24);
-  width:328px; max-width:100%; margin:104px auto 0;
+  width:328px; max-width:100%; margin:212px auto 0;
   text-align:center;
 }
 .pay-fail-head .pay-title { font:500 20px/28px var(--ff); color:var(--text-default); }
 .pay-fail-head .pay-sub   { font:400 16px/24px var(--ff); color:var(--text-default); }
-.pay-fail-card {
-  width:328px; max-width:calc(100% - 32px);
-  margin:32px auto 120px;
-  background:var(--bg-default);
-  border-radius:var(--r-large);
-  padding:var(--s24) var(--s16);
-  box-shadow:0 2px 6px rgba(0,0,0,0.15);
-  display:flex; flex-direction:column; gap:0;
-  position:relative;
+
+/* Title + description + CTA appear together 1s after screen activates.
+   Scoped to .active so the animation re-fires every time the user returns. */
+.screen[data-screen="pay-fail"] .pay-fail-reveal {
+  opacity:0;
 }
-.pay-fail-step {
-  display:flex; gap:var(--s12); align-items:flex-start;
-  position:relative; padding-bottom:var(--s24);
+.screen[data-screen="pay-fail"].active .pay-fail-reveal {
+  animation:pay-fail-reveal 320ms ease-out 1000ms forwards;
 }
-.pay-fail-step:last-child { padding-bottom:0; }
-.pay-fail-step-icon {
-  width:24px; height:24px; flex:0 0 24px;
-  display:grid; place-items:center;
-  z-index:1; background:var(--bg-default);
+@keyframes pay-fail-reveal {
+  from { opacity:0; transform:translateY(6px); }
+  to   { opacity:1; transform:translateY(0); }
 }
-.pay-fail-step-icon .ms { font-size:24px; }
-.pay-fail-step-icon.done .ms { color:var(--icon-positive); }
-.pay-fail-step-icon.info .ms { color:var(--icon-nonAction); }
-.pay-fail-step-icon.now .ms  { color:var(--icon-brand); }
-.pay-fail-step::before {
-  content:""; position:absolute; left:11px; top:24px; bottom:0; width:2px;
-  background:var(--bg-strong);
-}
-.pay-fail-step:last-child::before { display:none; }
-.pay-fail-step.future::before    { background:var(--bg-disabled); }
-.pay-fail-step-text {
-  flex:1 1 auto; display:flex; flex-direction:column; gap:var(--s4);
-}
-.pay-fail-step-title { font:400 16px/24px var(--ff); color:var(--text-subtle); }
-.pay-fail-step.now .pay-fail-step-title { font-weight:700; color:var(--text-default); }
-.pay-fail-step-sub   { font:400 14px/20px var(--ff); color:var(--text-subtle); }
-.pay-fail-step-link  {
-  font:400 14px/20px var(--ff);
-  color:var(--text-brand); text-align:center;
-  background:transparent; border:0; padding:var(--s8) 0; cursor:pointer; width:100%;
-}
+
 .pay-fail-action {
   position:absolute; left:0; right:0; bottom:0;
   padding:var(--s16); background:var(--bg-default);
@@ -675,15 +646,6 @@ body.has-variant .variant-badge { display:flex; }
   font:500 16px/24px var(--ff); cursor:pointer;
 }
 .pay-fail-action button:active { transform:scale(0.99); }
-.pay-fail-topbar {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:var(--s8) var(--s16);
-  background:var(--bg-default);
-  position:absolute; left:0; right:0; top:0; height:48px; z-index:5;
-}
-.pay-fail-topbar .actions { display:flex; gap:var(--s8); }
-.pay-fail-topbar .actions .ms { color:var(--icon-action); font-size:24px; }
-.pay-fail-topbar button { background:transparent; border:0; padding:var(--s8); cursor:pointer; display:grid; place-items:center; }
 
 .wiom-infinity .track {
   fill:none; stroke:rgba(255,255,255,0.18);
@@ -1060,57 +1022,17 @@ body.has-variant .variant-badge { display:flex; }
       <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
     </section>
 
-    <!-- ============== PAY · FAIL TRANSITION (v8 — brief red X reveal) ============== -->
-    <section class="screen" data-screen="pay-fail-trans">
-      <div class="pay-screen">
-        <div class="pay-head">
-          <div class="pay-icon fail"><span class="ms">close</span></div>
-        </div>
-        <div class="pay-foot">भुगतान पूरा होने तक इस स्क्रीन को बंद न करें</div>
-      </div>
-      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
-    </section>
-
-    <!-- ============== PAY · FAIL FULL SCREEN (v8) ============== -->
+    <!-- ============== PAY · FAIL (v9 — icon now, text + CTA fade in after 1s) ============== -->
     <section class="screen" data-screen="pay-fail">
       <div class="pay-fail-screen">
-        <div class="pay-fail-topbar">
-          <span></span>
-          <div class="actions">
-            <button aria-label="Support"><span class="ms outlined">support_agent</span></button>
-            <button aria-label="Translate"><span class="ms outlined">translate</span></button>
-          </div>
-        </div>
         <div class="pay-fail-head">
           <div class="pay-icon fail"><span class="ms">close</span></div>
-          <div class="pay-text">
+          <div class="pay-text pay-fail-reveal">
             <div class="pay-title">भुगतान असफल रहा!</div>
             <div class="pay-sub">डेबिट की गई कोई भी राशि 4-7 दिनों के अंदर वापस आ जाएगी।</div>
           </div>
         </div>
-        <div class="pay-fail-card">
-          <div class="pay-fail-step">
-            <div class="pay-fail-step-icon done"><span class="ms">check_circle</span></div>
-            <div class="pay-fail-step-text">
-              <div class="pay-fail-step-title">Payment Started</div>
-            </div>
-          </div>
-          <div class="pay-fail-step">
-            <div class="pay-fail-step-icon info"><span class="ms outlined">info</span></div>
-            <div class="pay-fail-step-text">
-              <div class="pay-fail-step-title">Payment Processing by partner bank</div>
-            </div>
-          </div>
-          <div class="pay-fail-step now">
-            <div class="pay-fail-step-icon now"><span class="ms">radio_button_checked</span></div>
-            <div class="pay-fail-step-text">
-              <div class="pay-fail-step-title">रिफंड प्रक्रिया शुरू कर दी गई है</div>
-              <div class="pay-fail-step-sub">रिफंड 3-5 दिनों के अंदर आपके अकाउंट में आ जाएगा</div>
-              <button class="pay-fail-step-link">किसी भी समस्या के लिए कॉल करें</button>
-            </div>
-          </div>
-        </div>
-        <div class="pay-fail-action">
+        <div class="pay-fail-action pay-fail-reveal">
           <button onclick="goto('variants')">दोबारा प्रयास करें</button>
         </div>
       </div>
@@ -2209,10 +2131,9 @@ let cur = null;
 let pendingTimer = null;
 
 const autoAdvance = {
-  'pay-proc':       { to: () => state.paymentCase === 'failed' ? 'pay-fail-trans' : 2, ms: 2200 },
-  'pay-fail-trans': { to: 'pay-fail',                                                  ms: 700  },
-  2:                { to: 3,                                                           ms: 2000 },
-  13:               { to: 16,                                                          ms: 1800 },
+  'pay-proc': { to: () => state.paymentCase === 'failed' ? 'pay-fail' : 2, ms: 2200 },
+  2:          { to: 3,                                                     ms: 2000 },
+  13:         { to: 16,                                                    ms: 1800 },
 };
 
 /* Layout groups — screens within a group share their chrome (top bar,
@@ -2221,8 +2142,8 @@ const autoAdvance = {
 function screenGroup(n) {
   const k = String(n);
   if (k === 'context' || k === 'variants' || k === '17') return 'yellow';
-  if (k === 'pay-proc' || k === 'pay-ok' || k === 'pay-fail-trans') return 'pay';
-  if (k === 'pay-fail')              return 'pay-fail';
+  if (k === 'pay-proc' || k === 'pay-ok') return 'pay';
+  if (k === 'pay-fail')                   return 'pay-fail';
   if (k === '1' || k === '13')       return 'loader';
   if (['2','3','9','14','15','16','18'].includes(k)) return 'chat';
   return 'form';
