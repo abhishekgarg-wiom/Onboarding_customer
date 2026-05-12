@@ -2270,12 +2270,10 @@ function startVariant(v, paymentCase) {
 }
 
 function nextAfterAddress() {
-  /* v7 — address is the last step. Show a brief loader, then confirmation chat. */
-  return 13;
+  /* v8 — address-step bundles address + landmark + voice. */
+  return 11;
 }
 function nextAfterLandmark() {
-  /* v7 doesn't use the landmark/voice flow. Kept so the legacy screens still navigate
-     if reached via direct goto(). */
   return 20;
 }
 function toggleSkip(show) {
@@ -2326,11 +2324,11 @@ function goto(n) {
   if (auto) pendingTimer = setTimeout(() => goto(typeof auto.to === 'function' ? auto.to() : auto.to), auto.ms);
 }
 
-/* v7 — address is the last step, so the CTA promises booking completion. */
+/* v8 — address-step is address + landmark + voice; CTA promises the next sub-step. */
 function applyAddrCtaLabel() {
   const cta = document.getElementById('addr-confirm');
   if (!cta) return;
-  cta.textContent = 'पता सेव करें और बुकिंग पक्की करें';
+  cta.textContent = 'सही सेट-अप के लिए पास की जगह दें';
 }
 
 /* ---------- Flow state ---------- */
