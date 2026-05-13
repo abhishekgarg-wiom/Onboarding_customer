@@ -387,32 +387,23 @@ body.has-variant .variant-badge { display:flex; }
 .reply-quote-author { font-size:12px; line-height:16px; font-weight:600; color:var(--text-default); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .reply-quote-msg    { font-size:12px; line-height:16px; font-weight:400; color:var(--text-subtle); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 
-/* Prominent success bubble — celebratory greeting for the payment-confirmed
-   moment. Mint background, brand-positive accent, embossed check badge. */
-.msg-row.bot .msg-bubble.success {
+/* Payment-success message: standard chat bubble + inline celebratory
+   graphic. Bubble UI stays identical to other incoming messages so the
+   moment feels chat-native rather than dressed-up. */
+.pay-success-graphic {
+  width:100%; max-width:228px;
   background:var(--bg-positive-subtle);
-  border:1px solid rgba(0,128,67,0.14);
-  box-shadow:0 2px 10px rgba(0,128,67,0.10);
-  padding:var(--s8);
+  border-radius:var(--r-small);
+  padding:var(--s12) var(--s16);
+  display:flex; align-items:center; gap:var(--s12);
+  align-self:stretch;
 }
-.msg-row.bot .msg-bubble.success .msg-content { padding:0; gap:var(--s8); align-items:flex-start; }
-.msg-row.bot.success-row .msg-tail { background:var(--bg-positive-subtle); }
-.success-badge {
-  width:36px; height:36px; border-radius:50%;
-  background:var(--bg-positive);
-  display:inline-flex; align-items:center; justify-content:center;
-  box-shadow:0 4px 12px rgba(0,128,67,0.25);
-  animation:success-badge-pop 480ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
+.pay-success-graphic svg { display:block; flex:0 0 auto; }
+.pay-success-graphic .ps-text {
+  display:flex; flex-direction:column; gap:2px; flex:1; min-width:0;
 }
-.success-badge .ms {
-  color:#fff; font-size:22px;
-  font-variation-settings:'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 24;
-}
-@keyframes success-badge-pop {
-  from { transform:scale(0.4) rotate(-30deg); opacity:0; }
-  to   { transform:scale(1)   rotate(0);      opacity:1; }
-}
-.msg-bubble.success .msg-text { font-weight:500; }
+.pay-success-graphic .ps-amount { font:700 16px/20px var(--ff); color:var(--text-positive); }
+.pay-success-graphic .ps-label  { font:400 11px/14px var(--ff); color:var(--text-subtle); }
 .msg-bubble.success .msg-text strong { color:var(--text-positive); font-weight:700; }
 
 /* Progressive chat stream — bubbles arrive one by one, swapping in for typing dots */
@@ -1140,8 +1131,21 @@ body.has-variant .variant-badge { display:flex; }
           <div class="msg-wrap">
             <div class="msg-tail"></div>
             <div class="msg-bubble success">
-              <div class="success-badge"><span class="ms">check_circle</span></div>
               <div class="msg-content">
+                <div class="pay-success-graphic">
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="24" cy="24" r="20" fill="#008043"/>
+                    <path d="M14 24 L 21 31 L 34 17" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <circle cx="6"  cy="10" r="1.6" fill="#FF66C9"/>
+                    <circle cx="42" cy="40" r="1.6" fill="#D9008D"/>
+                    <circle cx="44" cy="12" r="1.4" fill="#FFD83D"/>
+                    <circle cx="4"  cy="38" r="1.4" fill="#6D17CE"/>
+                  </svg>
+                  <div class="ps-text">
+                    <div class="ps-amount">₹100</div>
+                    <div class="ps-label">भुगतान सफल · विज़िट कन्फर्म</div>
+                  </div>
+                </div>
                 <div class="msg-text">बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>भुगतान सफल</strong> हो गया है।</div>
                 <div class="msg-time">10:15 AM</div>
               </div>
@@ -1206,8 +1210,21 @@ body.has-variant .variant-badge { display:flex; }
           <div class="msg-wrap">
             <div class="msg-tail"></div>
             <div class="msg-bubble success">
-              <div class="success-badge"><span class="ms">check_circle</span></div>
               <div class="msg-content">
+                <div class="pay-success-graphic">
+                  <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <circle cx="24" cy="24" r="20" fill="#008043"/>
+                    <path d="M14 24 L 21 31 L 34 17" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                    <circle cx="6"  cy="10" r="1.6" fill="#FF66C9"/>
+                    <circle cx="42" cy="40" r="1.6" fill="#D9008D"/>
+                    <circle cx="44" cy="12" r="1.4" fill="#FFD83D"/>
+                    <circle cx="4"  cy="38" r="1.4" fill="#6D17CE"/>
+                  </svg>
+                  <div class="ps-text">
+                    <div class="ps-amount">₹100</div>
+                    <div class="ps-label">भुगतान सफल · विज़िट कन्फर्म</div>
+                  </div>
+                </div>
                 <div class="msg-text">बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>भुगतान सफल</strong> हो गया है।</div>
                 <div class="msg-time">10:15 AM</div>
               </div>
