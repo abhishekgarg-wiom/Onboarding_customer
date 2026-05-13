@@ -1133,7 +1133,7 @@ body.has-variant .variant-badge { display:flex; }
                 </svg>
               </div>
               <div class="msg-content">
-                <div class="msg-text">बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>भुगतान सफल</strong> हो गया है।</div>
+                <div class="msg-text">बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>₹100</strong> का <strong>भुगतान सफल</strong> हो गया है।</div>
                 <div class="msg-time">10:15 AM</div>
               </div>
             </div>
@@ -1204,7 +1204,7 @@ body.has-variant .variant-badge { display:flex; }
                 </svg>
               </div>
               <div class="msg-content">
-                <div class="msg-text">बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>भुगतान सफल</strong> हो गया है।</div>
+                <div class="msg-text">बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>₹100</strong> का <strong>भुगतान सफल</strong> हो गया है।</div>
                 <div class="msg-time">10:15 AM</div>
               </div>
             </div>
@@ -2194,10 +2194,11 @@ let pendingTimer = null;
 
 const autoAdvance = {
   'pay-proc': { to: () => state.paymentCase === 'failed' ? 'pay-fail' : 2, ms: 2200 },
-  /* screen 2 runs its own internal reveal sequence (~3.6s) before handing
-     off to screen 3, where the step-1 message + CTA appear after one more
-     beat of typing. */
-  2:          { to: 3,                                                     ms: 3600 },
+  /* Screen 2 runs its own staged reveal (~5.4s) before handing off to
+     screen 3, where the step-1 message + CTA appear after one more
+     beat of typing. The intervals are deliberately generous so each
+     message has time to be read before the next one arrives. */
+  2:          { to: 3,                                                     ms: 5400 },
   13:         { to: 16,                                                    ms: 1800 },
 };
 
@@ -2338,11 +2339,11 @@ function animateChat2() {
   chatStreamTimers.push(setTimeout(() => {
     streamHide(sec, 'typing-1');
     streamReveal(sec, 'success', true);
-  }, 1400));
+  }, 1800));
 
   chatStreamTimers.push(setTimeout(() => {
     streamReveal(sec, 'typing-2', true);
-  }, 2600));
+  }, 3800));
 }
 
 function animateChat3() {
@@ -2355,7 +2356,7 @@ function animateChat3() {
   chatStreamTimers.push(setTimeout(() => {
     streamHide(sec, 'typing-3');
     streamReveal(sec, 'step1', true);
-  }, 1500));
+  }, 2200));
 }
 
 /* v8 — address-step is address + landmark + voice; CTA promises the next sub-step. */
