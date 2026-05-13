@@ -399,7 +399,7 @@ body.has-variant .variant-badge { display:flex; }
   align-self:stretch;
 }
 .pay-success-graphic svg { display:block; }
-.msg-bubble.success .msg-text strong { color:var(--text-positive); font-weight:700; }
+.msg-bubble.success .msg-text strong { font-weight:700; }
 
 /* Progressive chat stream — bubbles arrive one by one, swapping in for typing dots */
 .chat-stream-hidden { display:none !important; }
@@ -992,7 +992,7 @@ body.has-variant .variant-badge { display:flex; }
       <div class="yellow-screen">
         <div class="scenario-content">
           <div class="scenario-title">v10 · WiFi save → address direct</div>
-          <div class="scenario-subtitle">WiFi name saved होते ही address screen सीधे खुलती है — बीच का चैट acknowledgment skip, और बाद में बुकिंग कन्फर्म screen पर पूरी history दिखती है। App kill के बाद resume का case भी।</div>
+          <div class="scenario-subtitle">WiFi name saved होते ही address screen सीधे खुलती है — बीच का चैट acknowledgment skip, और बाद में बुकिंग कन्फर्म screen पर पूरी history दिखती है।</div>
 
           <div class="scenario-section-title">Payment outcomes</div>
 
@@ -1007,13 +1007,6 @@ body.has-variant .variant-badge { display:flex; }
             <div class="scenario-card-num">Case 2 — Payment Failed</div>
             <div class="scenario-card-title">Processing → failed screen → retry</div>
             <div class="scenario-card-desc">₹100 status चेक → भुगतान असफल। डेबिट 4-7 दिनों में वापस; "दोबारा प्रयास करें" → वापस यहाँ।</div>
-            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
-          </div>
-
-          <div class="scenario-card" onclick="startVariant('C1','resumed')">
-            <div class="scenario-card-num">Case 3 — App killed after WiFi saved</div>
-            <div class="scenario-card-title">Re-open → chat with "पता लिखें" CTA visible</div>
-            <div class="scenario-card-desc">User ने WiFi save किया, फिर app बंद कर दिया। अब वापस खोला तो directly chat screen खुलती है जहाँ "स्टेप 2: अब अपना पता बताएं — पता लिखें" CTA पहले से visible है। Tap → address form। Back → वापस chat (WiFi नहीं)।</div>
             <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
           </div>
 
@@ -2261,33 +2254,23 @@ function screenGroup(n) {
 const VARIANT_LABELS = {
   'C1|success' : 'Case 1 · Payment Success',
   'C1|failed'  : 'Case 2 · Payment Failed',
-  'C1|resumed' : 'Case 3 · Resumed after WiFi save',
 };
 
 function startVariant(v, paymentCase) {
   state.variant = v;
-  const pc = (paymentCase === 'failed') ? 'failed'
-           : (paymentCase === 'resumed') ? 'resumed'
-           : 'success';
-  state.paymentCase = pc;
-  state.entryPath   = (pc === 'resumed') ? 'wifi-saved' : 'fresh';
+  state.paymentCase = (paymentCase === 'failed') ? 'failed' : 'success';
   applyDataCase('default');
   document.body.classList.add('has-variant');
   const badge = document.getElementById('variantBadge');
-  const key = v + '|' + pc;
+  const key = v + '|' + state.paymentCase;
   if (badge) badge.textContent = VARIANT_LABELS[key] || ('Variant ' + v);
-  /* Resume case skips payment + onboarding chat entirely — lands directly
-     on the address-prompt chat screen so the user can confirm पता बताएं. */
-  if (pc === 'resumed') goto(9);
-  else goto('pay-proc');
+  goto('pay-proc');
 }
 
-/* Back button on the address screen (10). In the default flow, "back"
-   means "edit the WiFi name", so we return to the WiFi-saved screen (8).
-   In the resume flow, the user entered address from the chat (9), so
-   back returns there. */
+/* Back button on the address screen (10) returns to the WiFi-saved
+   confirmation screen so the user can edit the WiFi name if needed. */
 function backFromAddress() {
-  goto(state.entryPath === 'wifi-saved' ? 9 : 8);
+  goto(8);
 }
 
 function nextAfterAddress() {
@@ -2419,7 +2402,7 @@ function applyAddrCtaLabel() {
 }
 
 /* ---------- Flow state ---------- */
-const state = { variant:null, dataCase:'default', paymentCase:'success', entryPath:'fresh', type:'mandir', landmark:'Hanuman Mandir', landmarkShort:'मंदिर' };
+const state = { variant:null, dataCase:'default', paymentCase:'success', type:'mandir', landmark:'Hanuman Mandir', landmarkShort:'मंदिर' };
 
 function showDialog() { document.getElementById('dialog').style.display = 'flex'; }
 function hideDialog() { document.getElementById('dialog').style.display = 'none'; }
