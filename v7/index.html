@@ -387,6 +387,42 @@ body.has-variant .variant-badge { display:flex; }
 .reply-quote-author { font-size:12px; line-height:16px; font-weight:600; color:var(--text-default); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .reply-quote-msg    { font-size:12px; line-height:16px; font-weight:400; color:var(--text-subtle); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 
+/* Prominent success bubble — celebratory greeting for the payment-confirmed
+   moment. Mint background, brand-positive accent, embossed check badge. */
+.msg-row.bot .msg-bubble.success {
+  background:var(--bg-positive-subtle);
+  border:1px solid rgba(0,128,67,0.14);
+  box-shadow:0 2px 10px rgba(0,128,67,0.10);
+  padding:var(--s8);
+}
+.msg-row.bot .msg-bubble.success .msg-content { padding:0; gap:var(--s8); align-items:flex-start; }
+.msg-row.bot.success-row .msg-tail { background:var(--bg-positive-subtle); }
+.success-badge {
+  width:36px; height:36px; border-radius:50%;
+  background:var(--bg-positive);
+  display:inline-flex; align-items:center; justify-content:center;
+  box-shadow:0 4px 12px rgba(0,128,67,0.25);
+  animation:success-badge-pop 480ms cubic-bezier(0.16, 1, 0.3, 1) 80ms both;
+}
+.success-badge .ms {
+  color:#fff; font-size:22px;
+  font-variation-settings:'FILL' 1, 'wght' 700, 'GRAD' 0, 'opsz' 24;
+}
+@keyframes success-badge-pop {
+  from { transform:scale(0.4) rotate(-30deg); opacity:0; }
+  to   { transform:scale(1)   rotate(0);      opacity:1; }
+}
+.msg-bubble.success .msg-text { font-weight:500; }
+.msg-bubble.success .msg-text strong { color:var(--text-positive); font-weight:700; }
+
+/* Progressive chat stream — bubbles arrive one by one, swapping in for typing dots */
+.chat-stream-hidden { display:none !important; }
+.chat-stream-enter  { animation:chat-stream-in 360ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes chat-stream-in {
+  from { opacity:0; transform:translateY(10px) scale(0.96); }
+  to   { opacity:1; transform:translateY(0)    scale(1);    }
+}
+
 /* Typing bubble */
 .waiting-bubble {
   padding:var(--s12); display:flex; align-items:center; gap:var(--s8);
@@ -1087,10 +1123,24 @@ body.has-variant .variant-badge { display:flex; }
       </div>
       <div class="chat-body">
 
-        <div class="msg-row bot">
+        <!-- Stage 1: typing dots — bot is composing the success message -->
+        <div class="msg-row bot" data-step="typing-1">
           <div class="msg-wrap">
             <div class="msg-tail"></div>
-            <div class="msg-bubble">
+            <div class="waiting-bubble">
+              <div class="waiting-dots">
+                <span class="waiting-dot"></span><span class="waiting-dot"></span><span class="waiting-dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 2: success bubble appears -->
+        <div class="msg-row bot success-row chat-stream-hidden" data-step="success">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble success">
+              <div class="success-badge"><span class="ms">check_circle</span></div>
               <div class="msg-content">
                 <div class="msg-text">बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>भुगतान सफल</strong> हो गया है।</div>
                 <div class="msg-time">10:15 AM</div>
@@ -1099,7 +1149,8 @@ body.has-variant .variant-badge { display:flex; }
           </div>
         </div>
 
-        <div class="msg-row bot">
+        <!-- Stage 3: typing dots again — next message coming -->
+        <div class="msg-row bot chat-stream-hidden" data-step="typing-2">
           <div class="msg-wrap">
             <div class="msg-tail"></div>
             <div class="waiting-bubble">
@@ -1150,10 +1201,12 @@ body.has-variant .variant-badge { display:flex; }
       </div>
       <div class="chat-body">
 
-        <div class="msg-row bot">
+        <!-- Success bubble — carries over from screen 2, already prominent -->
+        <div class="msg-row bot success-row">
           <div class="msg-wrap">
             <div class="msg-tail"></div>
-            <div class="msg-bubble">
+            <div class="msg-bubble success">
+              <div class="success-badge"><span class="ms">check_circle</span></div>
               <div class="msg-content">
                 <div class="msg-text">बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>भुगतान सफल</strong> हो गया है।</div>
                 <div class="msg-time">10:15 AM</div>
@@ -1162,6 +1215,7 @@ body.has-variant .variant-badge { display:flex; }
           </div>
         </div>
 
+        <!-- 2-info onboarding — arrived from screen 2's typing -->
         <div class="msg-row bot follow-up">
           <div class="msg-wrap">
             <div class="msg-bubble">
@@ -1178,7 +1232,19 @@ body.has-variant .variant-badge { display:flex; }
           </div>
         </div>
 
-        <div class="msg-row bot follow-up">
+        <!-- Stage 4: typing dots — step1 message is composing -->
+        <div class="msg-row bot follow-up" data-step="typing-3">
+          <div class="msg-wrap">
+            <div class="waiting-bubble">
+              <div class="waiting-dots">
+                <span class="waiting-dot"></span><span class="waiting-dot"></span><span class="waiting-dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 5: step 1 message + CTA -->
+        <div class="msg-row bot follow-up chat-stream-hidden" data-step="step1">
           <div class="msg-wrap">
             <div class="msg-bubble has-cta-below">
               <div class="msg-content">
@@ -2132,7 +2198,10 @@ let pendingTimer = null;
 
 const autoAdvance = {
   'pay-proc': { to: () => state.paymentCase === 'failed' ? 'pay-fail' : 2, ms: 2200 },
-  2:          { to: 3,                                                     ms: 2000 },
+  /* screen 2 runs its own internal reveal sequence (~3.6s) before handing
+     off to screen 3, where the step-1 message + CTA appear after one more
+     beat of typing. */
+  2:          { to: 3,                                                     ms: 3600 },
   13:         { to: 16,                                                    ms: 1800 },
 };
 
@@ -2219,6 +2288,12 @@ function goto(n) {
   document.querySelectorAll('.screen.active .chat-body').forEach(el => { el.scrollTop = el.scrollHeight; });
   document.querySelectorAll('.screen.active .screen-body').forEach(el => { el.scrollTop = 0; });
 
+  /* Cancel any in-flight chat-stream timers from the previous screen so revisits
+     don't fire stale reveals. */
+  if (chatStreamTimers.length) { chatStreamTimers.forEach(clearTimeout); chatStreamTimers = []; }
+
+  if (n === 2)  animateChat2();
+  if (n === 3)  animateChat3();
   if (n === 10) { checkAddrCta(); applyAddrCtaLabel(); }
   if (n === 11) renderTypeList('screen11-list');
   if (n === 12) { renderTypeList('screen12-list'); populateSheet(); }
@@ -2228,6 +2303,63 @@ function goto(n) {
 
   const auto = autoAdvance[n];
   if (auto) pendingTimer = setTimeout(() => goto(typeof auto.to === 'function' ? auto.to() : auto.to), auto.ms);
+}
+
+/* ---------- Chat-stream reveal (success path) ----------
+   Screen 2: typing → success bubble → typing.   Then goto(3).
+   Screen 3: typing → step-1 + CTA.
+   Each call resets the screen's hidden/visible state so back-and-forth
+   navigation always replays the animation cleanly. */
+let chatStreamTimers = [];
+
+function streamReveal(sec, stepName, withEnter) {
+  const el = sec.querySelector('[data-step="' + stepName + '"]');
+  if (!el) return;
+  el.classList.remove('chat-stream-hidden');
+  if (withEnter) {
+    el.classList.remove('chat-stream-enter');
+    /* re-trigger the keyframe by forcing reflow */
+    void el.offsetWidth;
+    el.classList.add('chat-stream-enter');
+  }
+  const body = sec.querySelector('.chat-body');
+  if (body) body.scrollTop = body.scrollHeight;
+}
+
+function streamHide(sec, stepName) {
+  const el = sec.querySelector('[data-step="' + stepName + '"]');
+  if (el) el.classList.add('chat-stream-hidden');
+}
+
+function animateChat2() {
+  const sec = document.querySelector('.screen[data-screen="2"]');
+  if (!sec) return;
+  /* Reset: only typing-1 visible */
+  streamReveal(sec, 'typing-1', false);
+  streamHide(sec, 'success');
+  streamHide(sec, 'typing-2');
+
+  chatStreamTimers.push(setTimeout(() => {
+    streamHide(sec, 'typing-1');
+    streamReveal(sec, 'success', true);
+  }, 1400));
+
+  chatStreamTimers.push(setTimeout(() => {
+    streamReveal(sec, 'typing-2', true);
+  }, 2600));
+}
+
+function animateChat3() {
+  const sec = document.querySelector('.screen[data-screen="3"]');
+  if (!sec) return;
+  /* Reset: typing-3 visible, step1 hidden */
+  streamReveal(sec, 'typing-3', false);
+  streamHide(sec, 'step1');
+
+  chatStreamTimers.push(setTimeout(() => {
+    streamHide(sec, 'typing-3');
+    streamReveal(sec, 'step1', true);
+  }, 1500));
 }
 
 /* v8 — address-step is address + landmark + voice; CTA promises the next sub-step. */
