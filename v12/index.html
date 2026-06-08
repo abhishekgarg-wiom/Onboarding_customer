@@ -1072,6 +1072,9 @@ body.has-variant .variant-badge { display:inline-flex; }
 .coupon-apply:active { background:var(--bg-brand-pressed); }
 .coupon-msg { font:var(--t-body-sm); color:var(--text-positive); min-height:16px; }
 .coupon-msg.err { color:var(--text-critical); }
+.coupon-row .pos { color:var(--text-positive); }
+.coupon-remove { align-self:flex-start; background:transparent; border:0; cursor:pointer;
+  color:var(--text-brand); font:var(--t-label-md); padding:var(--s4) 0; text-decoration:underline; }
 </style>
 </head>
 <body>
@@ -1328,26 +1331,7 @@ body.has-variant .variant-badge { display:inline-flex; }
             <div class="cost-pill">नेट बॉक्स वापस → पैसे वापस</div>
           </div>
         </div>
-        <div class="coupon-card" id="coupon-card" style="display:none;">
-          <div class="coupon-head"><span class="ms">sell</span><span>स्पेशल ऑफर लागू है</span></div>
-          <div class="coupon-applied">
-            <div class="coupon-code"><span class="ms">confirmation_number</span><span id="coupon-code-label">WIOM75</span></div>
-            <div class="coupon-off">₹75 OFF</div>
-          </div>
-          <div class="coupon-summary">
-            <div class="coupon-row"><span>बुकिंग फीस</span><span>₹100</span></div>
-            <div class="coupon-row"><span>कूपन छूट (<span id="coupon-code-label2">WIOM75</span>)</span><span style="color:var(--text-positive);">−₹75</span></div>
-            <div class="coupon-row total"><span>देना होगा</span><span>₹25</span></div>
-          </div>
-          <div class="coupon-own">
-            <div class="coupon-own-label">अपना कूपन है? (किसी से मिला हो तो यहाँ डालें)</div>
-            <div class="coupon-input-row">
-              <input id="coupon-input" placeholder="कूपन कोड" />
-              <button class="coupon-apply" onclick="applyCoupon()">लगाएं</button>
-            </div>
-            <div class="coupon-msg" id="coupon-msg">स्पेशल ऑफर अपने आप लगा है</div>
-          </div>
-        </div>
+        <div class="coupon-card" id="coupon-card" style="display:none;"></div>
       </div>
       <div class="sticky-bar flush">
         <button class="cta accent pill" id="p8-cta" onclick="goto('p9')">₹100 देकर विज़िट कन्फर्म करें</button>
@@ -2973,6 +2957,8 @@ function applyAddrCtaLabel() {
 /* ---------- Flow state ---------- */
 const state = { variant:null, dataCase:'default', paymentCase:'success', type:'mandir', landmark:'Hanuman Mandir', landmarkShort:'मंदिर' };
 state.exp = 'A1';
+state.couponApplied = true;
+state.couponCode = 'WIOM75';
 
 /* ---------- v12 · Phase-1 experiment variants ----------
    Booking fee + framing. Deposit held at ₹300 across all.
@@ -3012,22 +2998,14 @@ function applyExperiment(v){
   document.body.classList.add('has-variant');
   setTxt('variantBadgeText', d.badge);
   const up = document.getElementById('exp-upfront');
-  if (up) {
-    if (d.coupon) {
-      up.innerHTML =
-        '<div class="cost-badge">पहले · बुकिंग फीस</div>' +
-        '<div class="cost-line"><span class="cost-amt"><span class="strike-amt">₹100</span>₹25</span><span>-&nbsp;&nbsp;विज़िट कन्फर्म करने के लिए</span></div>' +
-        '<div class="cost-pill">स्पेशल ऑफर · ₹75 की छूट लागू</div>';
-    } else {
-      up.innerHTML =
-        '<div class="cost-badge">पहले</div>' +
-        '<div class="cost-line"><span class="cost-amt">' + d.upAmt + '</span><span>-&nbsp;&nbsp;' + d.upLabel + '</span></div>' +
-        (d.upPill ? '<div class="cost-pill">' + d.upPill + '</div>' : '');
-    }
-  }
+  if (up && !d.coupon)
+    up.innerHTML =
+      '<div class="cost-badge">पहले</div>' +
+      '<div class="cost-line"><span class="cost-amt">' + d.upAmt + '</span><span>-&nbsp;&nbsp;' + d.upLabel + '</span></div>' +
+      (d.upPill ? '<div class="cost-pill">' + d.upPill + '</div>' : '');
   const cc = document.getElementById('coupon-card');
   if (cc) cc.style.display = d.coupon ? 'flex' : 'none';
-  resetCoupon();
+  if (d.coupon) { state.couponApplied = true; state.couponCode = 'WIOM75'; renderCoupon(); }
   setTxt('p8-cta', d.p8cta);
   setTxt('p9-cta', d.p9cta);
   setTxt('p10-title', d.p10title);
@@ -3042,21 +3020,62 @@ function startExp(v){
   goto('p1');
 }
 
-/* D1 coupon card — special offer WIOM75 auto-applied; customer may enter their own. */
-function resetCoupon(){
-  setTxt('coupon-code-label', 'WIOM75');
-  setTxt('coupon-code-label2', 'WIOM75');
-  const inp = document.getElementById('coupon-input'); if (inp) inp.value = '';
-  const m = document.getElementById('coupon-msg'); if (m) { m.textContent = 'स्पेशल ऑफर अपने आप लगा है'; m.classList.remove('err'); }
+/* D1 coupon card. Special offer WIOM75 is auto-applied; the apply input only
+   appears when NO coupon is applied, so the screen stays uncluttered. */
+function renderCoupon(){
+  const cc = document.getElementById('coupon-card'); if (!cc) return;
+  const on = state.couponApplied;
+  const pay = on ? '₹25' : '₹100';
+  const up = document.getElementById('exp-upfront');
+  if (up) up.innerHTML = on
+    ? '<div class="cost-badge">पहले · बुकिंग फीस</div>' +
+      '<div class="cost-line"><span class="cost-amt"><span class="strike-amt">₹100</span>₹25</span><span>-&nbsp;&nbsp;विज़िट कन्फर्म करने के लिए</span></div>' +
+      '<div class="cost-pill">स्पेशल ऑफर · ₹75 की छूट लागू</div>'
+    : '<div class="cost-badge">पहले · बुकिंग फीस</div>' +
+      '<div class="cost-line"><span class="cost-amt">₹100</span><span>-&nbsp;&nbsp;विज़िट कन्फर्म करने के लिए</span></div>';
+  setTxt('p8-cta', pay + ' देकर विज़िट कन्फर्म करें');
+  setTxt('p9-cta', pay + ' का भुगतान करें');
+  setTxt('p12-title', pay + ' के भुगतान का तरीका चुनें');
+  setTxt('p13-amt', pay);
+  document.querySelectorAll('.exp-success-text').forEach(function(el){
+    el.innerHTML = on
+      ? 'बहुत बढ़िया! ₹75 की छूट के साथ <strong>₹25</strong> का <strong>भुगतान सफल</strong> हो गया है। (आपने <strong>₹75 बचाए</strong>!)'
+      : 'बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>₹100</strong> का <strong>भुगतान सफल</strong> हो गया है।';
+  });
+  if (on) {
+    cc.innerHTML =
+      '<div class="coupon-head"><span class="ms">sell</span><span>स्पेशल ऑफर लागू है</span></div>' +
+      '<div class="coupon-applied">' +
+        '<div class="coupon-code"><span class="ms">confirmation_number</span><span>' + state.couponCode + '</span></div>' +
+        '<div class="coupon-off">₹75 OFF</div>' +
+      '</div>' +
+      '<div class="coupon-summary">' +
+        '<div class="coupon-row"><span>बुकिंग फीस</span><span>₹100</span></div>' +
+        '<div class="coupon-row"><span>कूपन छूट (' + state.couponCode + ')</span><span class="pos">−₹75</span></div>' +
+        '<div class="coupon-row total"><span>देना होगा</span><span>₹25</span></div>' +
+      '</div>' +
+      '<button class="coupon-remove" onclick="removeCoupon()">कूपन हटाएं</button>';
+  } else {
+    cc.innerHTML =
+      '<div class="coupon-head"><span class="ms">sell</span><span>कूपन / ऑफर</span></div>' +
+      '<div class="coupon-summary"><div class="coupon-row total"><span>देना होगा</span><span>₹100</span></div></div>' +
+      '<div class="coupon-own">' +
+        '<div class="coupon-own-label">कूपन कोड हो तो यहाँ डालें</div>' +
+        '<div class="coupon-input-row">' +
+          '<input id="coupon-input" placeholder="कूपन कोड" />' +
+          '<button class="coupon-apply" onclick="applyCoupon()">लगाएं</button>' +
+        '</div>' +
+        '<div class="coupon-msg" id="coupon-msg">WIOM75 लगाने पर ₹75 की छूट</div>' +
+      '</div>';
+  }
 }
+function removeCoupon(){ state.couponApplied = false; renderCoupon(); }
 function applyCoupon(){
   const inp = document.getElementById('coupon-input');
   const m = document.getElementById('coupon-msg');
   const code = (inp && inp.value.trim().toUpperCase()) || '';
   if (!code) { if (m) { m.textContent = 'कूपन कोड डालें'; m.classList.add('err'); } return; }
-  setTxt('coupon-code-label', code);
-  setTxt('coupon-code-label2', code);
-  if (m) { m.textContent = 'कूपन लागू · ₹75 की छूट'; m.classList.remove('err'); }
+  state.couponApplied = true; state.couponCode = code; renderCoupon();
 }
 
 function showDialog() { document.getElementById('dialog').style.display = 'flex'; }
