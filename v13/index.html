@@ -1127,8 +1127,8 @@ body.has-variant .variant-badge { display:inline-flex; }
     <section class="screen active" data-screen="exp-home">
       <div class="yellow-screen">
         <div class="scenario-content">
-          <div class="scenario-title">“2 दिन का रिचार्ज” intro · कैसे दिखाएं</div>
-          <div class="scenario-subtitle">“घर का नेट लग सकता है” स्क्रीन वैसी ही रहती है। उसके बाद ग्राहक को बताएं कि ₹45 के 2 दिन के रिचार्ज से शुरू कर सकते हैं — bottom sheet, dialog या नई screen के ज़रिए। Variant B (₹45) v12 जैसा ही।</div>
+          <div class="scenario-title">Onboarding · 2 approaches</div>
+          <div class="scenario-subtitle">दो अलग approach चुनें: (1) Version B: ₹45 बुकिंग फीस, v12 जैसा। (2) “2 दिन के रिचार्ज से शुरू”: serviceability के बाद bottom sheet / dialog / नई screen से बताएं। दोनों का cost screen ₹45 + ₹300।</div>
           <div id="intro-chooser-list"></div>
                 </div>
         <div class="context-cta-wrap" style="background:transparent; box-shadow:none;"></div>
@@ -1221,7 +1221,7 @@ body.has-variant .variant-badge { display:inline-flex; }
         <div class="spacer-flex"></div>
       </div>
       <div class="sticky-bar flush">
-        <button class="cta accent pill" onclick="openIntro()">इसे कैसे चलाना है?</button>
+        <button class="cta accent pill" onclick="introNext()">इसे कैसे चलाना है?</button>
       </div>
     </section>
 
@@ -1298,7 +1298,7 @@ body.has-variant .variant-badge { display:inline-flex; }
         <div class="pre-banner">रिचार्ज बाद में होता है, जब आप नेट चलाना चाहें।</div>
       </div>
       <div class="sticky-bar flush">
-        <button class="cta accent pill" onclick="goto('p8')">खर्चा कितना होगा?</button>
+        <button class="cta accent pill" onclick="costNext()">खर्चा कितना होगा?</button>
       </div>
     </section>
 
@@ -3001,6 +3001,7 @@ function applyAddrCtaLabel() {
 /* ---------- Flow state ---------- */
 const state = { variant:null, dataCase:'default', paymentCase:'success', type:'mandir', landmark:'Hanuman Mandir', landmarkShort:'मंदिर' };
 state.exp = 'A1';
+state.mode = 'B';
 state.couponApplied = true;
 state.couponCode = 'WIOM75';
 
@@ -3141,18 +3142,29 @@ function introCore(f){
 
 function renderIntroChooser(){
   const c = document.getElementById('intro-chooser-list'); if (!c) return;
-  c.innerHTML = INTRO_VARIANTS.map(function(v){
-    return '<div class="scenario-card" onclick="startIntroVariant(\'' + v.id + '\')">' +
+  var html = '<div class="scenario-section-title">Approach 1 · Version B (v12)</div>' +
+    '<div class="scenario-card" onclick="startVersionB()">' +
+      '<div class="scenario-card-num">Version B</div>' +
+      '<div class="scenario-card-title">₹45 बुकिंग फीस</div>' +
+      '<div class="scenario-card-desc">v12 जैसा: ₹45 बुकिंग फीस (2 din ka starting recharge included). Serviceability ke baad seedha explainer, "kharcha kitna hoga" pe pricing sheet, fir cost screen.</div>' +
+      '<div class="scenario-card-cta">देखें <span class="ms">arrow_forward</span></div>' +
+    '</div>';
+  html += '<div class="scenario-section-title">Approach 2 · 2 दिन के रिचार्ज से शुरू</div>';
+  html += INTRO_VARIANTS.map(function(v){
+    return '<div class="scenario-card" data-iv="' + v.id + '">' +
       '<div class="scenario-card-num">' + v.kind + '</div>' +
       '<div class="scenario-card-title">' + v.title + ' · ₹45 का 2 दिन का रिचार्ज</div>' +
       '<div class="scenario-card-desc">' + v.note + '</div>' +
       '<div class="scenario-card-cta">देखें <span class="ms">arrow_forward</span></div>' +
     '</div>';
   }).join('');
+  c.innerHTML = html;
+  c.querySelectorAll('[data-iv]').forEach(function(el){ el.onclick = function(){ startIntroVariant(el.dataset.iv); }; });
 }
 
 function startIntroVariant(id){
   state.introVariant = id;
+  state.mode = 'recharge';
   state.paymentCase = 'success';
   applyExperiment('B1');
   const v = INTRO_VARIANTS.find(function(x){ return x.id === id; });
@@ -3180,6 +3192,18 @@ function closeIntro(){
   const dl = document.getElementById('introDialog'); if (dl) dl.style.display = 'none';
 }
 function introContinue(){ closeIntro(); goto('p5'); }
+
+/* Approach routing: Version B keeps v12 flow (explainer, pricing sheet); the
+   2-day-recharge approach inserts the intro presentation and skips the pricing sheet. */
+function introNext(){ if (state.mode === 'B') goto('p5'); else openIntro(); }
+function costNext(){ if (state.mode === 'B') goto('p7'); else goto('p8'); }
+function startVersionB(){
+  state.mode = 'B';
+  state.paymentCase = 'success';
+  applyExperiment('B1');
+  setTxt('variantBadgeText', 'Version B · ₹45');
+  goto('p1');
+}
 
 function showDialog() { document.getElementById('dialog').style.display = 'flex'; }
 function hideDialog() { document.getElementById('dialog').style.display = 'none'; }
