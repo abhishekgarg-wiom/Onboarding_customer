@@ -1044,6 +1044,34 @@ body.has-variant .variant-badge { display:inline-flex; }
 
 /* Location-confirm loader (matches Figma grey wait screen) */
 .brand-loader.grey { background:#5C5C5C; }
+
+/* D1 coupon / special-offer card */
+.strike-amt { text-decoration:line-through; color:var(--text-disabled); font-weight:400; margin-right:8px; }
+.coupon-card { background:var(--bg-default); border:1px dashed var(--stroke-brand-focus);
+  border-radius:var(--r-large); padding:var(--s16); display:flex; flex-direction:column; gap:var(--s12); }
+.coupon-head { display:flex; align-items:center; gap:var(--s8); font:var(--t-label-lg); color:var(--text-brand); }
+.coupon-head .ms { color:var(--icon-brand); }
+.coupon-applied { display:flex; align-items:center; justify-content:space-between;
+  background:var(--bg-brand-subtle); border-radius:var(--r-medium); padding:var(--s12); }
+.coupon-code { display:flex; align-items:center; gap:var(--s8); font:var(--t-label-md); color:var(--text-brand); }
+.coupon-code .ms { color:var(--icon-brand); }
+.coupon-off { font:var(--t-label-md); color:var(--text-positive); }
+.coupon-summary { display:flex; flex-direction:column; gap:var(--s4); }
+.coupon-row { display:flex; justify-content:space-between; font:var(--t-body-md); color:var(--text-subtle); }
+.coupon-row.total { font:var(--t-label-lg); color:var(--text-default);
+  padding-top:var(--s8); border-top:1px solid var(--stroke-subtle); margin-top:var(--s4); }
+.coupon-own { display:flex; flex-direction:column; gap:var(--s8); }
+.coupon-own-label { font:var(--t-body-sm); color:var(--text-subtle); }
+.coupon-input-row { display:flex; gap:var(--s8); }
+.coupon-input-row input { flex:1; min-width:0; border:1px solid var(--stroke-subtle);
+  border-radius:var(--r-medium); padding:var(--s12); font:var(--t-body-md); color:var(--text-default);
+  background:var(--bg-default); outline:0; text-transform:uppercase; font-family:var(--ff); }
+.coupon-input-row input:focus { border-color:var(--stroke-brand-focus); }
+.coupon-apply { background:var(--bg-brand); color:var(--text-onBrand); border:0;
+  border-radius:var(--r-medium); padding:0 var(--s16); font:var(--t-label-md); cursor:pointer; flex:0 0 auto; }
+.coupon-apply:active { background:var(--bg-brand-pressed); }
+.coupon-msg { font:var(--t-body-sm); color:var(--text-positive); min-height:16px; }
+.coupon-msg.err { color:var(--text-critical); }
 </style>
 </head>
 <body>
@@ -1089,9 +1117,9 @@ body.has-variant .variant-badge { display:inline-flex; }
           </div>
 
           <div class="scenario-card" onclick="startExp('D1')">
-            <div class="scenario-card-num">D · Gated zero</div>
-            <div class="scenario-card-title">₹0 · “No booking fee, confirmed by your details”</div>
-            <div class="scenario-card-desc">High-score users only (rule-based gate). No payment step; booking confirms straight from the gate.</div>
+            <div class="scenario-card-num">D · Coupon offer</div>
+            <div class="scenario-card-title">₹25 · ₹100 booking, ₹75-off coupon</div>
+            <div class="scenario-card-desc">Special offer auto-applied (WIOM75): the ₹100 booking is discounted to ₹25. Customer can also enter their own coupon.</div>
             <div class="scenario-card-cta">Walk D1 <span class="ms">arrow_forward</span></div>
           </div>
 
@@ -1298,6 +1326,26 @@ body.has-variant .variant-badge { display:inline-flex; }
             <div class="cost-line"><span class="cost-amt">₹300</span><span>-&nbsp;&nbsp;नेट बॉक्स के लिए सिक्योरिटी</span></div>
             <div class="cost-note">लौटाने पर यह रकम वापस मिल जाती है।</div>
             <div class="cost-pill">नेट बॉक्स वापस → पैसे वापस</div>
+          </div>
+        </div>
+        <div class="coupon-card" id="coupon-card" style="display:none;">
+          <div class="coupon-head"><span class="ms">sell</span><span>स्पेशल ऑफर लागू है</span></div>
+          <div class="coupon-applied">
+            <div class="coupon-code"><span class="ms">confirmation_number</span><span id="coupon-code-label">WIOM75</span></div>
+            <div class="coupon-off">₹75 OFF</div>
+          </div>
+          <div class="coupon-summary">
+            <div class="coupon-row"><span>बुकिंग फीस</span><span>₹100</span></div>
+            <div class="coupon-row"><span>कूपन छूट (<span id="coupon-code-label2">WIOM75</span>)</span><span style="color:var(--text-positive);">−₹75</span></div>
+            <div class="coupon-row total"><span>देना होगा</span><span>₹25</span></div>
+          </div>
+          <div class="coupon-own">
+            <div class="coupon-own-label">अपना कूपन है? (किसी से मिला हो तो यहाँ डालें)</div>
+            <div class="coupon-input-row">
+              <input id="coupon-input" placeholder="कूपन कोड" />
+              <button class="coupon-apply" onclick="applyCoupon()">लगाएं</button>
+            </div>
+            <div class="coupon-msg" id="coupon-msg">स्पेशल ऑफर अपने आप लगा है</div>
           </div>
         </div>
       </div>
@@ -2739,7 +2787,7 @@ const autoAdvance = {
   /* v11 pre-payment loaders */
   'p1':  { to: 'p2',  ms: 1500 },
   'p3':  { to: 'p4',  ms: 1900 },
-  'p11': { to: () => state.exp === 'D1' ? 2 : 'p12', ms: 1900 },
+  'p11': { to: 'p12', ms: 1900 },
   'pay-proc': { to: () => state.paymentCase === 'failed' ? 'pay-fail' : 2, ms: 2200 },
   /* Screen 2 runs its own staged reveal (~5.4s) before handing off to
      screen 3, where the step-1 message + CTA appear after one more
@@ -2948,12 +2996,12 @@ const VARIANTS = {
         p10title:'पेमेंट से पहले नेट लगवाने की लोकेशन कन्फर्म करें',
         p12title:'₹25 के भुगतान का तरीका चुनें',
         success:'बहुत बढ़िया! <strong>₹25</strong> का <strong>भुगतान सफल</strong>। इसमें आपका <strong>शुरुआती रिचार्ज</strong> शामिल है।' },
-  D1: { badge:'D1 · ₹0', fee:'₹0', hasPay:false,
-        upAmt:'₹0', upLabel:'कोई बुकिंग फीस नहीं · आपकी जानकारी से कन्फर्म', upPill:'',
-        p8cta:'बिना फीस विज़िट कन्फर्म करें', p9cta:'बुकिंग कन्फर्म करें',
-        p10title:'नेट लगवाने की लोकेशन कन्फर्म करें',
-        p12title:'',
-        success:'बहुत बढ़िया! आपकी जानकारी से <strong>बुकिंग कन्फर्म</strong> हो गई है। <strong>कोई बुकिंग फीस</strong> नहीं ली गई।' },
+  D1: { badge:'D1 · ₹25 कूपन', fee:'₹25', hasPay:true, coupon:true,
+        upAmt:'₹25', upLabel:'विज़िट कन्फर्म करने के लिए', upPill:'',
+        p8cta:'₹25 देकर विज़िट कन्फर्म करें', p9cta:'₹25 का भुगतान करें',
+        p10title:'पेमेंट से पहले नेट लगवाने की लोकेशन कन्फर्म करें',
+        p12title:'₹25 के भुगतान का तरीका चुनें',
+        success:'बहुत बढ़िया! ₹75 की छूट के साथ <strong>₹25</strong> का <strong>भुगतान सफल</strong> हो गया है। (आपने <strong>₹75 बचाए</strong>!)' },
 };
 
 function setTxt(id, t){ const e = document.getElementById(id); if (e) e.textContent = t; }
@@ -2964,10 +3012,22 @@ function applyExperiment(v){
   document.body.classList.add('has-variant');
   setTxt('variantBadgeText', d.badge);
   const up = document.getElementById('exp-upfront');
-  if (up) up.innerHTML =
-    '<div class="cost-badge">पहले</div>' +
-    '<div class="cost-line"><span class="cost-amt">' + d.upAmt + '</span><span>-&nbsp;&nbsp;' + d.upLabel + '</span></div>' +
-    (d.upPill ? '<div class="cost-pill">' + d.upPill + '</div>' : '');
+  if (up) {
+    if (d.coupon) {
+      up.innerHTML =
+        '<div class="cost-badge">पहले · बुकिंग फीस</div>' +
+        '<div class="cost-line"><span class="cost-amt"><span class="strike-amt">₹100</span>₹25</span><span>-&nbsp;&nbsp;विज़िट कन्फर्म करने के लिए</span></div>' +
+        '<div class="cost-pill">स्पेशल ऑफर · ₹75 की छूट लागू</div>';
+    } else {
+      up.innerHTML =
+        '<div class="cost-badge">पहले</div>' +
+        '<div class="cost-line"><span class="cost-amt">' + d.upAmt + '</span><span>-&nbsp;&nbsp;' + d.upLabel + '</span></div>' +
+        (d.upPill ? '<div class="cost-pill">' + d.upPill + '</div>' : '');
+    }
+  }
+  const cc = document.getElementById('coupon-card');
+  if (cc) cc.style.display = d.coupon ? 'flex' : 'none';
+  resetCoupon();
   setTxt('p8-cta', d.p8cta);
   setTxt('p9-cta', d.p9cta);
   setTxt('p10-title', d.p10title);
@@ -2980,6 +3040,23 @@ function startExp(v){
   state.paymentCase = 'success';
   applyExperiment(v);
   goto('p1');
+}
+
+/* D1 coupon card — special offer WIOM75 auto-applied; customer may enter their own. */
+function resetCoupon(){
+  setTxt('coupon-code-label', 'WIOM75');
+  setTxt('coupon-code-label2', 'WIOM75');
+  const inp = document.getElementById('coupon-input'); if (inp) inp.value = '';
+  const m = document.getElementById('coupon-msg'); if (m) { m.textContent = 'स्पेशल ऑफर अपने आप लगा है'; m.classList.remove('err'); }
+}
+function applyCoupon(){
+  const inp = document.getElementById('coupon-input');
+  const m = document.getElementById('coupon-msg');
+  const code = (inp && inp.value.trim().toUpperCase()) || '';
+  if (!code) { if (m) { m.textContent = 'कूपन कोड डालें'; m.classList.add('err'); } return; }
+  setTxt('coupon-code-label', code);
+  setTxt('coupon-code-label2', code);
+  if (m) { m.textContent = 'कूपन लागू · ₹75 की छूट'; m.classList.remove('err'); }
 }
 
 function showDialog() { document.getElementById('dialog').style.display = 'flex'; }
