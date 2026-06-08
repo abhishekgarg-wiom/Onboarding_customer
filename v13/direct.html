@@ -1,0 +1,3382 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#D9008D" />
+<title>नेट सेटअप — व्योम · Onboarding (v10)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,300..700,0..1,-50..200" rel="stylesheet">
+<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+
+<style>
+/* ---------- Wiom Foundations · element-first tokens ---------- */
+:root {
+  /* Color · bg.* */
+  --bg-default:#FAF9FC; --bg-subtle:#F1EDF7; --bg-strong:#E8E4F0; --bg-disabled:#D7D3E0;
+  --bg-brand:#D9008D; --bg-brand-pressed:#B5007A; --bg-brand-subtle:#FFE5F6; --bg-brand-accent:#FF66C9; --bg-brand-bold:#443152;
+  --bg-selected:#FFCCED;
+  --bg-positive:#008043; --bg-positive-subtle:#E1FAED;
+  --bg-warning:#FFD83D; --bg-warning-subtle:#FFE9A1;
+  --bg-critical:#D92130; --bg-critical-subtle:#FFE5E7;
+  --bg-info:#6D17CE; --bg-info-subtle:#F1E5FF;
+  --bg-overlay:rgba(22,16,33,0.50);
+  --bg-chat-incoming:#EFEEF1; --bg-chat-outgoing:#FFFFFF;
+
+  --text-default:#161021; --text-subtle:#5C5468; --text-disabled:#A7A1B2;
+  --text-brand:#D9008D; --text-onBrand:#FAF9FC; --text-selected:#D9008D;
+  --text-onWarning:#372902; --text-critical:#D92130; --text-positive:#008043; --text-info:#6D17CE;
+  --text-onCritical:#FFFFFF; --text-inverse:#FFFFFF; --text-onBrandAccent:#161021;
+
+  --stroke-subtle:#D7D3E0; --stroke-default:#E8E4F0; --stroke-strong:#473F55;
+  --stroke-brand-focus:#D9008D; --stroke-critical-focus:#D92130; --stroke-selected:#D9008D;
+
+  --icon-action:#352D42; --icon-nonAction:#898296; --icon-disabled:#A7A1B2;
+  --icon-brand:#D9008D; --icon-inverse:#FAF9FC;
+  --icon-positive:#008043; --icon-critical:#D92130; --icon-warning:#E2B203; --icon-info:#6D17CE;
+
+  --s4:4px; --s8:8px; --s12:12px; --s16:16px; --s24:24px; --s32:32px; --s40:40px; --s48:48px; --s64:64px;
+
+  --r-tiny:4px; --r-small:8px; --r-medium:12px; --r-large:16px; --r-xlarge:24px; --r-full:9999px;
+
+  --sh-sm:0 1px 3px 0 rgba(0,0,0,.15);
+  --sh-md:0 2px 6px 0 rgba(0,0,0,.15);
+  --sh-lg:0 4px 12px 0 rgba(0,0,0,.15);
+  --sh-xl:0 8px 24px 0 rgba(0,0,0,.15);
+
+  --ff:'Noto Sans','Noto Sans Devanagari',sans-serif;
+  --t-display-lg:700 48px/64px var(--ff);
+  --t-heading-xl:700 32px/44px var(--ff);
+  --t-heading-lg:700 24px/32px var(--ff);
+  --t-heading-md:700 20px/28px var(--ff);
+  --t-title-lg:500 20px/28px var(--ff);
+  --t-title-sm:700 16px/24px var(--ff);
+  --t-body-lg:400 16px/24px var(--ff);
+  --t-body-md:400 14px/20px var(--ff);
+  --t-body-sm:400 12px/16px var(--ff);
+  --t-label-lg:600 16px/24px var(--ff);
+  --t-label-md:600 14px/20px var(--ff);
+  --t-label-sm:600 12px/16px var(--ff);
+  --t-meta-xs:400 10px/16px var(--ff);
+}
+
+/* ---------- Material Symbols Rounded ---------- */
+.ms {
+  font-family:'Material Symbols Rounded'; font-weight:normal; font-style:normal;
+  font-size:24px; line-height:1; letter-spacing:normal; text-transform:none;
+  display:inline-block; white-space:nowrap; word-wrap:normal; direction:ltr;
+  -webkit-font-feature-settings:'liga'; -webkit-font-smoothing:antialiased;
+  font-variation-settings:'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  user-select:none;
+}
+.ms.outlined { font-variation-settings:'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.ms-16 { font-size:16px; font-variation-settings:'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
+.ms.ms-20 { font-size:20px; font-variation-settings:'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
+.ms.ms-32 { font-size:32px; font-variation-settings:'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.ms.ms-48 { font-size:48px; font-variation-settings:'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 48; }
+
+/* ---------- Page chrome ---------- */
+* { box-sizing:border-box; margin:0; padding:0; }
+html, body { height:100%; }
+body {
+  font:var(--t-body-lg); color:var(--text-default);
+  background:#1f1830;
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+}
+button { font-family:inherit; cursor:pointer; }
+
+/* ===== Stage + Device (Rescheduling-style) ===== */
+.stage {
+  height:100vh; height:100dvh; width:100vw;
+  display:flex; align-items:center; justify-content:center;
+  padding:0;
+}
+.device {
+  width:100%; height:100%;
+  background:var(--bg-default);
+  overflow:hidden;
+  position:relative;
+  display:flex; flex-direction:column;
+}
+@media (min-width:768px) {
+  .stage { padding:var(--s32); }
+  .device {
+    width:390px; height:min(844px, 100%);
+    max-height:844px; border-radius:40px;
+    box-shadow:var(--sh-xl), 0 0 0 8px #1f1830, 0 0 0 10px #2a2238;
+  }
+}
+
+/* ===== Screens — slide between layout groups, cross-fade within a group ===== */
+.screen {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  background:var(--bg-default);
+  transform:translateX(100%);
+  opacity:0;
+  pointer-events:none;
+  transition:transform 280ms cubic-bezier(0.32, 0.72, 0, 1), opacity 200ms ease;
+  will-change:transform, opacity;
+  z-index:1;
+}
+.screen.active {
+  transform:translateX(0);
+  opacity:1;
+  pointer-events:auto;
+  z-index:2;
+}
+.screen > * { flex-shrink:0; }
+
+/* Same-group transition: kill the slide, cross-fade the changed parts only.
+   Persistent chrome (top bar, sticky-net, chat-input) is pixel-identical
+   between sibling chat/form screens, so the user perceives it as static —
+   only the body content fades through. */
+body.same-group .screen {
+  transform:none;
+  transition:opacity 160ms ease;
+}
+body.same-group .screen.active {
+  transform:none;
+}
+
+/* ===== Yellow context + scenario screens (Rescheduling pattern) ===== */
+.yellow-screen {
+  background:#FFD888;
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  overflow-y:auto; scrollbar-width:none;
+}
+.yellow-screen::-webkit-scrollbar { display:none; }
+
+.context-content {
+  padding:32px 24px 0;
+  display:flex; flex-direction:column;
+  gap:20px; flex:1;
+}
+.context-header {
+  display:flex; justify-content:space-between; align-items:flex-start; gap:16px;
+}
+.context-user-info {
+  display:flex; flex-direction:column; gap:4px; flex:1;
+}
+.context-avatar {
+  width:100px; height:100px; border-radius:50%; overflow:hidden;
+  flex:0 0 auto; box-shadow:0 2px 8px rgba(0,0,0,0.15);
+  background:#D9008D; display:grid; place-items:center;
+}
+.context-avatar svg { width:64px; height:64px; }
+.context-q {
+  font-weight:800; font-size:14px; line-height:20px; color:#565656;
+}
+.context-a {
+  font-weight:500; font-size:14px; line-height:20px; color:#D92B90;
+}
+.context-block { display:flex; flex-direction:column; gap:4px; }
+.context-block ul { margin:0; padding-left:18px; color:#D92B90; font-size:14px; font-weight:500; line-height:22px; }
+.context-block ul li::marker { color:#D92B90; }
+.context-name { font-size:20px; font-weight:500; color:#D92B90; line-height:28px; }
+.context-tag  { font-size:12px; font-weight:500; color:#000000; line-height:16px; }
+
+.context-cta-wrap {
+  flex:0 0 auto; padding:24px 24px 24px;
+  position:sticky; bottom:0; background:#FFD888;
+  box-shadow:0 -6px 20px 0 #FFD888;
+}
+.btn-yellow-cta {
+  background:#444444; color:#FFD888; border:none; border-radius:16px;
+  padding:14px 32px; font-size:16px; font-weight:600; line-height:24px;
+  width:100%; box-shadow:0 2px 6px rgba(0,0,0,0.17); cursor:pointer;
+}
+.btn-yellow-cta:active { transform:scale(0.98); }
+
+/* Scenario / variant chooser */
+.scenario-content {
+  padding:40px 24px 0;
+  display:flex; flex-direction:column; gap:16px; flex:1;
+}
+.scenario-title {
+  font-size:22px; font-weight:700; line-height:30px; color:#161021; text-align:center;
+}
+.scenario-subtitle {
+  font-size:14px; font-weight:400; line-height:20px; color:#565656;
+  text-align:center; margin-top:-8px;
+}
+.scenario-card {
+  background:#FFFFFF; border-radius:16px; padding:16px;
+  display:flex; flex-direction:column; gap:6px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1); cursor:pointer;
+  border:2px solid transparent; transition:transform 120ms;
+}
+.scenario-card:hover { transform:translateY(-2px); }
+.scenario-card-num {
+  font-size:11px; font-weight:700; color:#D92B90;
+  text-transform:uppercase; letter-spacing:0.04em;
+}
+.scenario-card-title { font-size:15px; font-weight:700; color:#161021; line-height:22px; }
+.scenario-card-desc  { font-size:13px; font-weight:400; color:#565656; line-height:18px; }
+.scenario-card-cta   {
+  font-size:13px; font-weight:600; color:#D9008D; margin-top:4px;
+  display:flex; align-items:center; gap:4px;
+}
+.scenario-card-cta .ms { font-size:16px; }
+.scenario-section-title {
+  font-size:12px; font-weight:700; color:#161021;
+  text-transform:uppercase; letter-spacing:0.06em;
+  margin-top:8px; padding:0 4px;
+}
+
+/* Floating variant badge — tells the reviewer which variant they are walking */
+.variant-badge {
+  position:absolute; left:12px; top:12px; z-index:20;
+  background:rgba(217,0,141,0.95); color:#fff; border:0;
+  padding:4px 10px; border-radius:var(--r-full);
+  font:600 11px/16px var(--ff);
+  display:none; gap:4px; align-items:center;
+  pointer-events:none;
+}
+body.has-variant .variant-badge { display:flex; }
+
+/* ---------- Status bar ---------- */
+.statusbar {
+  height:24px; padding:0 var(--s16);
+  display:flex; align-items:center; justify-content:space-between;
+  font:var(--t-body-sm); color:var(--text-default);
+  position:relative; z-index:5;
+}
+.statusbar .right { display:flex; gap:var(--s4); align-items:center; opacity:.85; }
+
+/* ---------- Top app bar (chat) ---------- */
+.topbar {
+  height:56px; padding:0 var(--s16);
+  display:flex; align-items:center; gap:var(--s12);
+  background:var(--bg-default); border-bottom:1px solid var(--stroke-subtle);
+}
+.topbar .vyom-logo {
+  width:32px; height:32px; border-radius:var(--r-full);
+  display:grid; place-items:center; background:var(--bg-default);
+}
+.topbar .vyom-logo svg { width:24px; height:24px; }
+.topbar .title-block { flex:1; min-width:0; }
+.topbar .title-block .name   { font:var(--t-title-lg); color:var(--text-default); }
+.topbar .title-block .status { font:var(--t-body-sm); color:var(--text-subtle); }
+.topbar .icon-btn {
+  width:48px; height:48px; display:grid; place-items:center;
+  border:0; background:transparent; cursor:pointer; color:var(--icon-action);
+}
+.topbar .icon-btn svg, .topbar .icon-btn .ms { color:var(--icon-action); }
+
+.topbar.minimal { border-bottom:0; }
+.topbar.minimal .right { margin-left:auto; display:flex; gap:var(--s8); }
+.topbar.back { padding-left:var(--s8); }
+.topbar.back .back-btn {
+  width:48px; height:48px; display:grid; place-items:center;
+  border:0; background:transparent; cursor:pointer; color:var(--icon-action);
+}
+.topbar.back .back-btn .ms { color:var(--icon-action); }
+
+/* ---------- Chat (Rescheduling-style) ---------- */
+:root {
+  --chat-bg-pri:#FFFFFF;
+  --chat-bg-sec:#F5F6F7;
+  --chat-bubble-bot:#EBEDF0;
+  --chat-bubble-user:#FFFFFF;
+  --chat-quote-bar:#B6B9BF;
+  --chat-divider:#DCDEE0;
+}
+
+/* Chat top app bar */
+.chat-top-bar {
+  flex:0 0 auto; background:var(--chat-bg-pri);
+  border-bottom:1px solid var(--stroke-default);
+  padding:var(--s8) var(--s4) var(--s8) var(--s12);
+  display:flex; gap:var(--s4); align-items:center;
+}
+.chat-top-bar-left { flex:1; min-width:0; display:flex; align-items:center; gap:var(--s8); height:48px; }
+.wiom-avatar { width:48px; height:48px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
+.wiom-avatar svg { width:100%; height:100%; display:block; }
+.chat-top-text { display:flex; flex-direction:column; gap:var(--s4); min-width:0; }
+.chat-top-name { font-weight:500; font-size:14px; line-height:20px; color:var(--text-default); }
+.chat-top-status { font-weight:400; font-size:10px; line-height:14px; color:var(--text-subtle); }
+.chat-top-actions { display:flex; align-items:center; }
+.chat-icon-btn {
+  width:48px; height:48px; background:transparent; border:0;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:var(--r-large); color:var(--icon-action); flex:0 0 auto; cursor:pointer;
+}
+.chat-icon-btn:hover { background:var(--chat-bg-sec); }
+.chat-icon-btn .ms { color:var(--icon-action); }
+
+/* Sticky net card */
+.sticky-net {
+  flex:0 0 auto; background:var(--chat-bg-pri);
+  padding:var(--s12) var(--s16); display:flex; justify-content:center;
+}
+.net-card {
+  width:100%; background:var(--bg-default);
+  border-radius:var(--r-large); box-shadow:var(--sh-lg);
+  padding:var(--s12); display:flex; gap:var(--s12); align-items:center;
+}
+.net-card-icon { width:24px; height:24px; flex:0 0 auto; display:flex; align-items:center; justify-content:center; }
+.net-card-icon .ms { font-size:24px; color:var(--icon-nonAction); font-variation-settings:'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.net-card-text { flex:1; display:flex; flex-direction:column; gap:var(--s4); min-width:0; }
+.net-card-heading { font-size:12px; line-height:16px; color:var(--text-subtle); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.net-card-status { display:flex; gap:4px; align-items:baseline; }
+.net-card-status-label { font-size:12px; line-height:16px; color:var(--text-subtle); }
+.net-card-status-value { font-size:16px; line-height:24px; font-weight:600; color:var(--text-default); }
+
+/* Chat body */
+.chat-body {
+  flex:1 1 auto; overflow-y:auto;
+  background:var(--chat-bg-sec);
+  padding:var(--s16) var(--s12) var(--s12);
+  display:flex; flex-direction:column; gap:var(--s12);
+  scroll-behavior:smooth;
+  scrollbar-width:none; -ms-overflow-style:none;
+}
+.chat-body::-webkit-scrollbar { display:none; }
+
+/* Bubbles */
+.msg-row { display:flex; width:100%; animation:fadeUp 220ms ease-out; }
+.msg-row.bot  { padding-left:var(--s12); padding-right:72px; }
+.msg-row.user { padding-left:72px; padding-right:var(--s12); justify-content:flex-end; }
+
+.msg-wrap { position:relative; max-width:280px; display:flex; flex-direction:column; }
+.msg-bubble { padding:var(--s4); display:flex; flex-direction:column; gap:var(--s4); }
+.msg-row.bot  .msg-bubble { background:var(--chat-bubble-bot); border-radius:0 var(--r-medium) var(--r-medium) var(--r-medium); align-items:flex-end; }
+.msg-row.user .msg-bubble { background:var(--chat-bubble-user); border-radius:var(--r-medium) 0 var(--r-medium) var(--r-medium); align-items:flex-start; }
+.msg-row.bot  .msg-bubble.has-cta-below { border-radius:0 var(--r-medium) 0 0; }
+.msg-row.bot.follow-up  .msg-bubble { border-radius:var(--r-medium); }
+.msg-row.user.follow-up .msg-bubble { border-radius:var(--r-medium); }
+.msg-row.bot.follow-up  .msg-bubble.has-cta-below { border-radius:var(--r-medium) var(--r-medium) 0 0; }
+.msg-row.follow-up .msg-tail { display:none; }
+
+.msg-tail { position:absolute; top:0; width:12px; height:12px; pointer-events:none; }
+.msg-row.bot  .msg-tail { left:-12px;  background:var(--chat-bubble-bot);  clip-path:polygon(100% 0%, 100% 100%, 0% 0%); }
+.msg-row.user .msg-tail { right:-12px; background:var(--chat-bubble-user); clip-path:polygon(0% 0%, 100% 0%, 0% 100%); }
+
+.msg-content { padding:var(--s8); display:flex; flex-direction:column; gap:var(--s4); width:100%; align-items:flex-start; }
+.msg-text { font-size:14px; line-height:20px; font-weight:400; color:var(--text-default); max-width:228px; }
+.msg-text.title { font-weight:700; font-size:16px; line-height:24px; }
+.msg-text strong, .msg-text .accent { font-weight:700; }
+.msg-time { font-size:10px; line-height:1.2; color:var(--text-disabled); align-self:flex-end; display:flex; align-items:center; gap:4px; }
+.msg-time .ms { font-size:12px; color:var(--text-disabled); }
+.msg-time.sent .ms { color:var(--icon-positive); }
+
+/* Inline CTA — sibling of bubble, joined by divider */
+.msg-divider { height:1px; background:var(--chat-divider); width:100%; }
+.msg-cta {
+  background:var(--chat-bubble-bot); border:0; width:100%;
+  padding:var(--s12) var(--s8);
+  display:flex; align-items:center; justify-content:center;
+  border-radius:0 0 var(--r-medium) var(--r-medium);
+  cursor:pointer;
+}
+.msg-cta-text { font-size:14px; line-height:20px; font-weight:500; color:var(--text-brand); text-align:center; }
+.msg-cta.muted .msg-cta-text { color:var(--text-disabled); }
+.msg-cta.muted { cursor:default; pointer-events:none; }
+.msg-cta.middle { border-radius:0; }
+
+/* Reply quote (user side) */
+.reply-quote { background:var(--chat-bubble-bot); border-radius:var(--r-small); overflow:hidden; display:flex; align-items:stretch; width:100%; }
+.reply-quote-bar { background:var(--chat-quote-bar); width:4px; flex:0 0 auto; border-radius:var(--r-small) 0 0 var(--r-small); }
+.reply-quote-text { padding:var(--s8); display:flex; flex-direction:column; gap:var(--s4); min-width:0; flex:1; }
+.reply-quote-author { font-size:12px; line-height:16px; font-weight:600; color:var(--text-default); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+.reply-quote-msg    { font-size:12px; line-height:16px; font-weight:400; color:var(--text-subtle); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
+
+/* Payment-success message: standard chat bubble UI + tick-only graphic
+   banner sitting flush with the bubble's 4px inner padding, separated
+   from the message body by a 12px gap. */
+.msg-bubble.success { gap:var(--s12); }
+.pay-success-graphic {
+  background:var(--bg-positive-subtle);
+  border-radius:var(--r-small);
+  padding:var(--s16);
+  display:flex; align-items:center; justify-content:center;
+  align-self:stretch;
+}
+.pay-success-graphic svg { display:block; }
+.msg-bubble.success .msg-text strong { font-weight:700; }
+
+/* Progressive chat stream — bubbles arrive one by one, swapping in for typing dots */
+.chat-stream-hidden { display:none !important; }
+.chat-stream-enter  { animation:chat-stream-in 360ms cubic-bezier(0.16, 1, 0.3, 1) both; }
+@keyframes chat-stream-in {
+  from { opacity:0; transform:translateY(10px) scale(0.96); }
+  to   { opacity:1; transform:translateY(0)    scale(1);    }
+}
+
+/* Typing bubble */
+.waiting-bubble {
+  padding:var(--s12); display:flex; align-items:center; gap:var(--s8);
+  background:var(--chat-bubble-bot);
+  border-radius:0 var(--r-medium) var(--r-medium) var(--r-medium);
+  align-self:flex-start;
+}
+.waiting-dots { width:36px; height:20px; display:flex; align-items:center; justify-content:center; gap:4px; }
+.waiting-dot { width:7px; height:7px; border-radius:50%; background:var(--text-disabled); animation:dotPulse 1.2s ease-in-out infinite; }
+.waiting-dot:nth-child(2) { animation-delay:0.15s; }
+.waiting-dot:nth-child(3) { animation-delay:0.3s; }
+
+/* Contact card (follow-up bot bubble) */
+.contact-card {
+  background:var(--chat-bubble-bot); border-radius:var(--r-medium);
+  padding:16px 0 12px; width:280px;
+  display:flex; flex-direction:column; gap:16px;
+}
+.contact-card-header { display:flex; gap:12px; align-items:center; padding:0 16px; }
+.contact-card-avatar {
+  width:40px; height:40px; background:var(--chat-bg-pri);
+  border-radius:24px; display:flex; align-items:center; justify-content:center; flex:0 0 auto;
+}
+.contact-card-avatar .ms { font-size:24px; color:var(--icon-action); }
+.contact-card-info { display:flex; flex-direction:column; gap:4px; flex:1; min-width:0; }
+.contact-card-name   { font-size:14px; font-weight:600; line-height:20px; color:var(--text-default); }
+.contact-card-number { font-size:12px; font-weight:400; line-height:16px; color:var(--text-default); }
+.contact-card-footer { display:flex; flex-direction:column; gap:12px; width:100%; }
+.contact-card-divider { height:1px; background:var(--chat-divider); width:100%; }
+.contact-card-cta {
+  font-size:14px; font-weight:500; line-height:20px;
+  color:var(--text-brand); text-align:center; cursor:pointer;
+  background:transparent; border:0; padding:0 16px;
+}
+.contact-card-cta.muted { color:var(--text-disabled); cursor:default; pointer-events:none; }
+
+/* Chat input */
+.chat-input {
+  flex:0 0 auto; background:var(--chat-bg-pri);
+  padding:var(--s12);
+  display:flex; gap:var(--s8); align-items:flex-end;
+  position:relative; z-index:2;
+}
+.input-field {
+  flex:1; background:var(--chat-bg-pri);
+  border:1px solid var(--stroke-default); border-radius:var(--r-xlarge);
+  padding:var(--s12) var(--s16); min-height:48px;
+  display:flex; align-items:center;
+  font-size:16px; line-height:24px; color:var(--text-default); cursor:text;
+}
+.input-field.placeholder { color:var(--text-disabled); }
+.send-btn {
+  width:48px; height:48px; border-radius:var(--r-xlarge);
+  background:var(--bg-brand); border:0;
+  display:flex; align-items:center; justify-content:center;
+  color:#FFFFFF; flex:0 0 auto; cursor:pointer;
+}
+.send-btn .ms { color:#FFFFFF; }
+.send-btn:disabled { background:var(--text-disabled); cursor:not-allowed; }
+.send-btn:not(:disabled):hover { background:var(--bg-brand-pressed); }
+
+@keyframes fadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+@keyframes dotPulse { 0%, 60%, 100% { opacity:0.35; transform:scale(0.8); } 30% { opacity:1; transform:scale(1); } }
+
+/* ---------- Form screen ---------- */
+.screen-body { flex:1; overflow-y:auto; padding:var(--s24) var(--s16) var(--s16); display:flex; flex-direction:column; gap:20px; background:var(--bg-default); }
+.screen-body.no-pad { padding:0; }
+.illust { display:flex; justify-content:center; padding:var(--s24) 0 var(--s16); }
+.illust-row { display:flex; gap:var(--s8); justify-content:center; align-items:flex-end; padding:var(--s24) 0 0; }
+.headline { font:var(--t-heading-lg); color:var(--text-default); }
+.subhead  { font:var(--t-body-lg); color:var(--text-subtle); }
+
+.field-block { display:flex; flex-direction:column; gap:var(--s8); }
+.screen-body > .headline { margin-bottom:var(--s4); }
+.screen-body > .subhead { margin-top:calc(-1 * var(--s12)); }
+.field-block .label-row { display:flex; align-items:center; justify-content:space-between; }
+.field-block .label { font:var(--t-label-lg); color:var(--text-default); }
+.field-block .info-icon { width:24px; height:24px; color:var(--icon-action); cursor:pointer; background:transparent; border:0; }
+.input-shell {
+  display:flex; align-items:center; gap:var(--s12); padding:var(--s12) var(--s16);
+  background:var(--bg-default); border:1px solid var(--stroke-subtle); border-radius:var(--r-medium);
+}
+.input-shell.focused { border:2px solid var(--stroke-brand-focus); padding:11px 15px; }
+.input-shell.error   { border:2px solid var(--stroke-critical-focus); padding:11px 15px; }
+.input-shell .pre-icon { color:var(--icon-nonAction); width:24px; height:24px; flex-shrink:0; }
+.input-shell input, .input-shell textarea { flex:1; border:0; outline:0; background:transparent; font:var(--t-body-lg); color:var(--text-default); width:100%; min-width:0; resize:none; font-family:var(--ff); }
+.input-shell input::placeholder, .input-shell textarea::placeholder { color:var(--text-disabled); }
+.input-shell.focused input, .input-shell.focused textarea { caret-color:var(--text-brand); }
+.input-shell.value-strong input { font-weight:700; }
+.input-textarea { align-items:flex-start; min-height:120px; }
+.input-textarea textarea { min-height:96px; }
+.input-helper { font:var(--t-body-md); color:var(--text-subtle); }
+.input-helper.error   { color:var(--text-critical); }
+.input-helper.success { color:var(--text-positive); display:flex; align-items:center; gap:var(--s4); }
+
+.chip-section { display:flex; flex-direction:column; gap:var(--s12); }
+.chip-section .lbl { font:var(--t-body-md); color:var(--text-default); font-weight:700; }
+.chip-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s12); }
+.chip {
+  padding:var(--s12) var(--s16); border-radius:var(--r-full);
+  border:1px solid var(--stroke-subtle); background:var(--bg-default);
+  font:var(--t-label-md); color:var(--text-brand); text-align:center; cursor:pointer;
+}
+.chip:hover { background:var(--bg-brand-subtle); }
+.chip.selected { background:var(--bg-selected); border-color:var(--stroke-selected); color:var(--text-selected); }
+.chip-row { display:flex; flex-wrap:wrap; gap:var(--s8); }
+.chip-row .chip { padding:var(--s8) var(--s16); }
+
+.tertiary-link { background:transparent; border:0; cursor:pointer; color:var(--text-default); font:var(--t-body-md); text-decoration:underline; padding:var(--s12); align-self:center; }
+
+.cta { width:100%; padding:var(--s12) var(--s16); border-radius:var(--r-large); border:0; cursor:pointer; font:var(--t-label-lg); display:inline-flex; align-items:center; justify-content:center; gap:var(--s8); }
+.cta.primary { background:var(--bg-brand); color:var(--text-onBrand); }
+.cta.primary:active { background:var(--bg-brand-pressed); }
+.cta.primary:disabled, .cta.primary[disabled] { background:var(--bg-disabled); color:var(--text-disabled); cursor:not-allowed; }
+.cta.secondary { background:transparent; border:2px solid var(--stroke-brand-focus); color:var(--text-brand); padding:10px 14px; }
+.cta.tertiary  { background:transparent; color:var(--text-brand); }
+.cta.destructive { background:var(--bg-critical); color:var(--text-onCritical); }
+
+.sticky-bar {
+  background:var(--bg-default); border-top:1px solid var(--stroke-subtle);
+  padding:var(--s16) var(--s16) var(--s12);
+}
+.sticky-bar.stack { display:flex; flex-direction:column; gap:var(--s8); }
+
+.confirmed-row {
+  display:flex; align-items:center; gap:var(--s12); padding:var(--s12) var(--s16);
+  background:var(--bg-default); border:1px solid var(--stroke-subtle); border-radius:var(--r-medium);
+}
+.confirmed-row .icon { color:var(--icon-positive); width:24px; height:24px; }
+.confirmed-row .name { flex:1; font:var(--t-body-lg); color:var(--text-positive); font-weight:700; }
+.confirmed-row .check { width:24px; height:24px; color:var(--icon-positive); }
+
+/* ---------- Loader screen ---------- */
+.brand-loader {
+  position:absolute; inset:0; background:#3a363f; color:#fff;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s24);
+}
+.brand-loader .logo { width:96px; height:72px; }
+.brand-loader .logo svg { width:100%; height:100%; overflow:visible; }
+.brand-loader .msg { font:var(--t-body-lg); color:#fff; }
+
+/* ---------- Payment processing / success screens (v7) ---------- */
+.pay-screen {
+  position:absolute; inset:0;
+  background:var(--bg-default);
+  color:var(--text-default);
+  display:flex; flex-direction:column; align-items:center;
+  padding:212px var(--s16) var(--s24);
+}
+.pay-head {
+  display:flex; flex-direction:column; align-items:center; gap:var(--s24);
+  width:328px; max-width:100%;
+}
+.pay-icon {
+  width:160px; height:160px; border-radius:50%;
+  display:grid; place-items:center;
+  position:relative;
+}
+.pay-icon.processing {
+  background:var(--bg-strong);
+  animation:pay-pulse 1.6s ease-in-out infinite;
+}
+.pay-icon.processing::before {
+  content:""; position:absolute; inset:18px;
+  border-radius:50%;
+  border:4px solid rgba(217,0,141,0.16);
+  border-top-color:var(--bg-brand);
+  animation:pay-spin 1s linear infinite;
+}
+@keyframes pay-pulse {
+  0%, 100% { transform:scale(1);    opacity:1; }
+  50%      { transform:scale(0.96); opacity:0.85; }
+}
+@keyframes pay-spin {
+  from { transform:rotate(0deg); }
+  to   { transform:rotate(360deg); }
+}
+.pay-icon.success {
+  background:var(--bg-positive-subtle);
+  animation:pay-icon-rise 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.pay-icon.success .ms {
+  color:var(--icon-positive);
+  font-size:88px;
+  font-variation-settings:'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 48;
+}
+.pay-icon.fail {
+  background:var(--bg-critical-subtle);
+  animation:pay-icon-rise 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  position:relative;
+}
+.pay-icon.fail::before {
+  content:""; position:absolute; inset:38px;
+  border-radius:50%;
+  background:var(--bg-critical);
+}
+.pay-icon.fail .ms {
+  position:relative;
+  color:#FFFFFF;
+  font-size:48px;
+  font-variation-settings:'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 48;
+}
+@keyframes pay-icon-rise {
+  from { transform:scale(0.7); opacity:0; }
+  to   { transform:scale(1);   opacity:1; }
+}
+.pay-text {
+  display:flex; flex-direction:column; align-items:center; gap:var(--s12);
+  text-align:center;
+}
+.pay-title { font:500 20px/28px var(--ff); color:var(--text-default); }
+.pay-title.success { font:700 24px/32px var(--ff); }
+.pay-sub   { font:400 16px/24px var(--ff); color:var(--text-default); }
+.pay-sub b { font-weight:700; }
+.pay-foot {
+  position:absolute; left:0; right:0; bottom:0;
+  padding:var(--s24) var(--s16);
+  text-align:center;
+  font:400 14px/20px var(--ff);
+  color:var(--text-disabled);
+  background:var(--bg-default);
+}
+
+/* Failed screen — icon visible immediately, text + CTA fade in after 1s */
+.pay-fail-screen {
+  position:absolute; inset:0;
+  background:var(--bg-default);
+  display:flex; flex-direction:column;
+}
+.pay-fail-head {
+  display:flex; flex-direction:column; align-items:center; gap:var(--s24);
+  width:328px; max-width:100%; margin:212px auto 0;
+  text-align:center;
+}
+.pay-fail-head .pay-title { font:500 20px/28px var(--ff); color:var(--text-default); }
+.pay-fail-head .pay-sub   { font:400 16px/24px var(--ff); color:var(--text-default); }
+
+/* Title + description + CTA appear together 1s after screen activates.
+   Scoped to .active so the animation re-fires every time the user returns. */
+.screen[data-screen="pay-fail"] .pay-fail-reveal {
+  opacity:0;
+}
+.screen[data-screen="pay-fail"].active .pay-fail-reveal {
+  animation:pay-fail-reveal 320ms ease-out 1000ms forwards;
+}
+@keyframes pay-fail-reveal {
+  from { opacity:0; transform:translateY(6px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.pay-fail-action {
+  position:absolute; left:0; right:0; bottom:0;
+  padding:var(--s16); background:var(--bg-default);
+}
+.pay-fail-action button {
+  width:100%; padding:var(--s12) var(--s16);
+  background:var(--bg-brand-accent); color:var(--text-default);
+  border:0; border-radius:var(--r-large);
+  font:500 16px/24px var(--ff); cursor:pointer;
+}
+.pay-fail-action button:active { transform:scale(0.99); }
+
+.wiom-infinity .track {
+  fill:none; stroke:rgba(255,255,255,0.18);
+  stroke-width:4; stroke-linecap:round; stroke-linejoin:round;
+}
+.wiom-infinity .comet {
+  fill:none; stroke:#fff;
+  stroke-width:4; stroke-linecap:round; stroke-linejoin:round;
+  stroke-dasharray:22 90;
+  animation:wiom-infinity-trace 1.6s linear infinite;
+}
+@keyframes wiom-infinity-trace {
+  from { stroke-dashoffset:0; }
+  to   { stroke-dashoffset:-112; }
+}
+
+/* ---------- Dialog ---------- */
+.scrim { position:absolute; inset:0; background:var(--bg-overlay); display:flex; align-items:center; justify-content:center; z-index:50; }
+.dialog {
+  width:312px; background:var(--bg-default); border-radius:var(--r-xlarge); padding:var(--s32) var(--s24);
+  display:flex; flex-direction:column; gap:var(--s48); box-shadow:var(--sh-xl);
+}
+.dialog .head { display:flex; flex-direction:column; gap:var(--s12); }
+.dialog .title { font:var(--t-heading-md); color:var(--text-default); }
+.dialog .body  { font:var(--t-body-lg); color:var(--text-default); }
+.dialog ol { padding-left:var(--s24); display:flex; flex-direction:column; gap:var(--s4); }
+
+/* ---------- Bottom sheet ---------- */
+.sheet-scrim { position:absolute; inset:0; background:var(--bg-overlay); display:flex; align-items:flex-end; z-index:40; }
+.sheet {
+  width:100%; max-height:80%; background:var(--bg-default);
+  border-top-left-radius:var(--r-xlarge); border-top-right-radius:var(--r-xlarge);
+  padding:var(--s16);
+  display:flex; flex-direction:column; gap:var(--s16);
+  box-shadow:var(--sh-md);
+  overflow-y:auto;
+}
+.sheet .handle { width:32px; height:4px; background:var(--bg-strong); border-radius:var(--r-full); align-self:center; }
+.sheet .heading { font:var(--t-heading-lg); color:var(--text-default); }
+.sheet .list { display:flex; flex-direction:column; }
+
+.list-item {
+  display:flex; align-items:center; gap:var(--s12); padding:var(--s16); cursor:pointer;
+  border-radius:var(--r-medium); background:var(--bg-default);
+}
+.list-item:hover { background:var(--bg-subtle); }
+.list-item .leading {
+  width:48px; height:48px; flex-shrink:0; border-radius:var(--r-full);
+  background:var(--bg-subtle); display:grid; place-items:center;
+  font:var(--t-label-md); color:var(--text-subtle);
+}
+.list-item .leading svg { color:var(--icon-nonAction); width:24px; height:24px; }
+.list-item .leading.distance { font-size:11px; line-height:14px; flex-direction:column; padding:var(--s4); text-align:center; }
+.list-item .body { flex:1; min-width:0; display:flex; flex-direction:column; gap:var(--s4); }
+.list-item .primary   { font:var(--t-title-sm); color:var(--text-default); }
+.list-item .secondary { font:var(--t-body-md); color:var(--text-subtle); }
+
+/* Keyboard mock */
+.kb-illust {
+  height:240px; background:#1f1c25; padding:var(--s8); display:grid;
+  grid-template-rows:repeat(4,1fr); gap:var(--s4);
+}
+.kb-illust .row { display:flex; gap:var(--s4); justify-content:center; }
+.kb-illust .key { flex:1; max-width:32px; background:#2c2832; color:#fff; border-radius:var(--r-tiny); display:grid; place-items:center; font:var(--t-label-md); }
+.kb-illust .key.wide { max-width:none; flex:3; }
+
+/* Landmark type tiles (kept for legacy; v3 uses the vertical list below) */
+.type-grid { display:grid; grid-template-columns:1fr 1fr; gap:var(--s12); }
+.type-tile {
+  background:var(--bg-default); border:1px solid var(--stroke-subtle); border-radius:var(--r-large);
+  padding:var(--s16) var(--s12); cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:var(--s12);
+  transition:border-color .15s, background .15s;
+}
+.type-tile:hover { border-color:var(--stroke-brand-focus); background:var(--bg-brand-subtle); }
+.type-tile.selected { border-color:var(--stroke-selected); background:var(--bg-selected); }
+.type-tile .badge {
+  width:64px; height:64px; border-radius:var(--r-full);
+  background:var(--bg-brand-subtle); color:var(--icon-brand);
+  display:grid; place-items:center;
+}
+.type-tile .badge .ms { font-size:32px; font-variation-settings:'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.type-tile .label { font:var(--t-label-lg); color:var(--text-default); text-align:center; }
+
+/* v3 landmark type list — vertical rows. 5 named types + "अन्य". */
+.type-list { display:flex; flex-direction:column; gap:var(--s8); }
+.type-row {
+  display:flex; align-items:center; gap:var(--s12);
+  background:var(--bg-default); border:1px solid var(--stroke-subtle); border-radius:var(--r-medium);
+  padding:var(--s12) var(--s16); width:100%; cursor:pointer; text-align:left;
+  transition:border-color .15s, background .15s;
+}
+.type-row:hover { border-color:var(--stroke-brand-focus); background:var(--bg-brand-subtle); }
+.type-row.selected { border-color:var(--stroke-selected); background:var(--bg-selected); }
+.type-row .row-icon {
+  width:40px; height:40px; flex-shrink:0; border-radius:var(--r-full);
+  background:var(--bg-brand-subtle); color:var(--icon-brand);
+  display:grid; place-items:center;
+}
+.type-row .row-icon .ms { font-size:24px; font-variation-settings:'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+.type-row .row-body { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+.type-row .row-label   { font:var(--t-label-lg); color:var(--text-default); font-weight:700; }
+.type-row .row-meta    { font:var(--t-body-sm);  color:var(--text-subtle); }
+.type-row .row-chev    { color:var(--icon-nonAction); flex-shrink:0; }
+.type-row .row-chev .ms { color:var(--icon-nonAction); }
+.type-row.is-other .row-icon { background:var(--bg-subtle); color:var(--icon-default); }
+.type-row.is-other .row-icon .ms { color:var(--icon-default); }
+
+/* Empty state for "Only Other" case — shown above the single Other row */
+.type-empty-banner {
+  background:var(--bg-warning-subtle); border:1px solid var(--stroke-subtle);
+  border-radius:var(--r-medium); padding:var(--s12) var(--s16);
+  font:var(--t-body-md); color:var(--text-default);
+  display:flex; gap:var(--s12); align-items:flex-start;
+}
+.type-empty-banner .ms { color:var(--icon-warning); flex-shrink:0; }
+.type-empty-banner .body { display:flex; flex-direction:column; gap:2px; }
+.type-empty-banner .ttl { font-weight:700; }
+.type-empty-banner .sub { color:var(--text-subtle); font:var(--t-body-sm); }
+
+.type-dropdown {
+  display:flex; align-items:center; gap:var(--s12);
+  padding:var(--s12) var(--s16); width:100%;
+  background:var(--bg-default); border:1px solid var(--stroke-subtle); border-radius:var(--r-medium);
+  cursor:pointer; text-align:left;
+}
+.type-dropdown:hover { border-color:var(--stroke-brand-focus); }
+.type-dropdown .lead-icon { width:24px; height:24px; flex-shrink:0; color:var(--icon-brand); display:grid; place-items:center; }
+.type-dropdown .lead-icon .ms { color:var(--icon-brand); }
+.type-dropdown .lbl  { flex:1; font:var(--t-body-lg); color:var(--text-default); font-weight:700; }
+.type-dropdown .chev { color:var(--icon-nonAction); }
+.type-dropdown .chev .ms { color:var(--icon-nonAction); }
+
+.input-shell .clear-btn {
+  background:transparent; border:0; padding:0;
+  width:24px; height:24px; display:grid; place-items:center; cursor:pointer; flex-shrink:0;
+}
+.input-shell .clear-btn .ms { color:var(--icon-nonAction); }
+
+.sheet-scrim.lm-sheet {
+  opacity:0; pointer-events:none; transition:opacity .18s ease; cursor:default;
+}
+.sheet-scrim.lm-sheet.open { opacity:1; pointer-events:auto; }
+.sheet-scrim.lm-sheet .sheet {
+  transform:translateY(100%); transition:transform .25s cubic-bezier(.2,.7,.2,1);
+}
+.sheet-scrim.lm-sheet.open .sheet { transform:translateY(0); }
+
+.sheet-head { display:flex; align-items:center; gap:var(--s8); }
+.sheet-head .heading { flex:1; }
+.sheet-close-btn {
+  width:40px; height:40px; border-radius:var(--r-full); border:0; background:transparent;
+  display:grid; place-items:center; cursor:pointer; color:var(--icon-action); flex-shrink:0;
+}
+.sheet-close-btn .ms { color:var(--icon-action); }
+.list-item.custom-row .leading { background:var(--bg-brand-subtle); color:var(--icon-brand); }
+.list-item.custom-row .leading .ms { color:var(--icon-brand); }
+.list-item.custom-row .primary { color:var(--text-brand); }
+
+/* Voice-guide example tip */
+.example-tip {
+  display:flex; gap:var(--s8); align-items:flex-start;
+  padding:var(--s12); border-radius:var(--r-medium);
+  background:var(--bg-info-subtle); color:var(--text-default);
+  font:var(--t-body-md); font-style:italic;
+}
+.example-tip .ms { color:var(--icon-info); flex-shrink:0; margin-top:2px; }
+
+/* Audio recorder */
+.audio-section {
+  background:var(--bg-default); border:1px solid var(--stroke-subtle); border-radius:var(--r-large);
+  padding:var(--s16); display:flex; flex-direction:column; gap:var(--s12);
+}
+.audio-head { display:flex; align-items:center; gap:var(--s8); }
+.audio-head .h-title { flex:1; font:var(--t-label-lg); color:var(--text-default); }
+.opt-tag {
+  font:var(--t-label-sm); color:var(--text-subtle);
+  background:var(--bg-subtle); padding:2px var(--s8); border-radius:var(--r-full);
+}
+.audio-sub { font:var(--t-body-md); color:var(--text-subtle); }
+
+.audio-rec { display:flex; align-items:center; gap:var(--s12); padding:var(--s8) 0; }
+.audio-rec.idle { flex-direction:column; gap:var(--s12); padding:var(--s12) 0; }
+.rec-btn {
+  width:80px; height:80px; border-radius:var(--r-full); border:0;
+  background:var(--bg-brand); color:var(--text-onBrand); cursor:pointer;
+  display:grid; place-items:center; box-shadow:var(--sh-md);
+}
+.rec-btn .ms { color:var(--text-onBrand); font-size:32px; }
+.rec-btn:hover  { background:var(--bg-brand-pressed); }
+.rec-btn:active { transform:scale(0.96); }
+.rec-label { font:var(--t-body-md); color:var(--text-subtle); }
+
+.rec-pulse {
+  width:48px; height:48px; border-radius:var(--r-full); flex-shrink:0;
+  background:var(--bg-critical); color:var(--text-onCritical);
+  display:grid; place-items:center;
+  animation:rec-pulse 1.2s ease-in-out infinite;
+}
+.rec-pulse .ms { color:var(--text-onCritical); font-size:24px; }
+@keyframes rec-pulse {
+  0%,100% { box-shadow:0 0 0 0 rgba(217,33,48,.45); }
+  50%     { box-shadow:0 0 0 10px rgba(217,33,48,0); }
+}
+.rec-meta { flex:1; min-width:0; display:flex; flex-direction:column; gap:var(--s4); }
+.rec-meta .time { font:var(--t-label-md); color:var(--text-default); }
+.rec-meta .hint { font:var(--t-body-sm); color:var(--text-critical); }
+
+.wave { display:flex; gap:3px; height:24px; align-items:center; }
+.wave span {
+  flex:1; max-width:6px; min-width:3px;
+  background:var(--bg-brand); border-radius:var(--r-full);
+  height:30%; animation:wave 0.7s ease-in-out infinite alternate;
+}
+.wave span:nth-child(1) { animation-delay:0.0s; }
+.wave span:nth-child(2) { animation-delay:0.1s; }
+.wave span:nth-child(3) { animation-delay:0.2s; }
+.wave span:nth-child(4) { animation-delay:0.3s; }
+.wave span:nth-child(5) { animation-delay:0.4s; }
+.wave span:nth-child(6) { animation-delay:0.5s; }
+.wave span:nth-child(7) { animation-delay:0.6s; }
+.wave span:nth-child(8) { animation-delay:0.7s; }
+@keyframes wave { 0% { height:25%; } 100%{ height:90%; } }
+.wave.static span { animation:none; height:var(--h, 50%); }
+
+.stop-btn, .play-btn, .del-btn {
+  width:40px; height:40px; border-radius:var(--r-full); border:0; cursor:pointer;
+  display:grid; place-items:center; flex-shrink:0;
+}
+.stop-btn { background:var(--bg-critical); color:var(--icon-inverse); }
+.stop-btn .ms { color:var(--icon-inverse); }
+.play-btn { background:var(--bg-brand); color:var(--icon-inverse); }
+.play-btn .ms { color:var(--icon-inverse); font-size:24px; }
+.del-btn  { background:transparent; border:1px solid var(--stroke-subtle); color:var(--icon-action); }
+.del-btn .ms { color:var(--icon-action); }
+
+/* helpers */
+.divider     { height:1px; background:var(--stroke-subtle); margin:0 var(--s16); }
+.spacer-flex { flex:1; }
+
+/* Top-right "Skip" link in the back-style top bar */
+.skip-link {
+  background:transparent; border:0; cursor:pointer;
+  height:48px; padding:0 var(--s16);
+  display:inline-flex; align-items:center; gap:var(--s4);
+  font:var(--t-label-md); color:var(--text-brand);
+  border-radius:var(--r-medium);
+}
+.skip-link:hover { background:var(--bg-brand-subtle); }
+.skip-link:disabled { color:var(--text-disabled); cursor:default; background:transparent; }
+
+/* Floating "back to scenarios" pill — only on phone screens, useful for demo navigation */
+.back-to-scenarios {
+  position:absolute; right:12px; top:12px; z-index:20;
+  background:rgba(31,24,48,0.78); color:#fff; border:0;
+  padding:6px 10px; border-radius:var(--r-full);
+  font:600 11px/16px var(--ff); cursor:pointer;
+  display:flex; gap:4px; align-items:center;
+  backdrop-filter:blur(8px);
+}
+.back-to-scenarios .ms { color:#fff; font-size:14px; }
+.back-to-scenarios:hover { background:rgba(31,24,48,0.95); }
+
+/* ============================================================
+   v11 · PRE-PAYMENT booking flow (rebuilt from Figma vectors)
+   Hides the demo scaffolding inherited from v10.
+   ============================================================ */
+.back-to-scenarios { display:none !important; }
+/* v12 variant switcher chip — sits in the empty centre of the status bar */
+.variant-badge { display:none; left:50%; right:auto; top:3px; transform:translateX(-50%);
+  background:rgba(31,24,48,0.82); color:#fff; border:0; padding:3px 10px; border-radius:var(--r-full);
+  font:600 10px/14px var(--ff); z-index:60; pointer-events:auto; cursor:pointer; align-items:center; gap:4px; }
+body.has-variant .variant-badge { display:inline-flex; }
+.variant-badge:hover { background:rgba(31,24,48,0.95); }
+.variant-badge .ms { color:#fff; }
+
+/* Pill / accent CTAs used across the marketing + booking screens */
+.cta.accent { background:var(--bg-brand-accent); color:var(--text-onBrandAccent); }
+.cta.accent:active { background:#F23FBE; }
+.cta.pill { border-radius:var(--r-full); }
+.sticky-bar.flush { border-top:0; box-shadow:0 -8px 20px 0 var(--bg-default); }
+
+/* Centred marketing layout (value-prop, serviceability, location) */
+.center-body { align-items:center; justify-content:center; text-align:center; gap:var(--s12); }
+.center-body .headline { text-align:center; }
+.center-body .subhead  { text-align:center; }
+.serv-place { font:var(--t-body-md); color:var(--text-subtle); }
+.link-row { display:inline-flex; align-items:center; gap:var(--s4); color:var(--text-brand);
+  font:var(--t-label-md); background:transparent; border:0; cursor:pointer; padding:var(--s8); }
+.link-row .ms { font-size:18px; color:var(--text-brand); }
+
+/* Numbered stepper (explainer screens) */
+.stepper { display:flex; flex-direction:column; }
+.step { display:flex; gap:var(--s16); }
+.step-rail { display:flex; flex-direction:column; align-items:center; }
+.step-num { width:32px; height:32px; border-radius:var(--r-full); border:1px solid var(--stroke-subtle);
+  display:grid; place-items:center; font:var(--t-label-md); color:var(--text-subtle); flex:0 0 auto; }
+.step-line { width:1px; flex:1; background:var(--stroke-subtle); min-height:var(--s24); }
+.step-body { padding:var(--s4) 0 var(--s32); display:flex; flex-direction:column; gap:2px; }
+.step:last-child .step-body { padding-bottom:var(--s4); }
+.step-title { font:var(--t-body-lg); color:var(--text-default); font-weight:600; }
+.step-sub   { font:var(--t-body-md); color:var(--text-subtle); }
+
+/* Info banner */
+.pre-banner { background:var(--bg-subtle); border-radius:var(--r-medium);
+  padding:var(--s12) var(--s16); font:var(--t-body-md); color:var(--text-default); }
+
+/* Plan list (pricing sheet) */
+.plan-list { background:var(--bg-subtle); border-radius:var(--r-large); overflow:hidden; }
+.plan-row { display:flex; align-items:center; justify-content:space-between;
+  padding:var(--s16); border-bottom:1px dashed var(--stroke-subtle); }
+.plan-row:last-child { border-bottom:0; }
+.plan-label { font:var(--t-body-lg); color:var(--text-default); }
+.plan-label b { font-weight:700; }
+.plan-label span { color:var(--text-subtle); font:var(--t-body-md); }
+.plan-row .ms { color:var(--icon-nonAction); font-size:20px; }
+
+/* Cost-breakdown card */
+.cost-card { background:var(--bg-default); border:1px solid var(--stroke-default);
+  border-radius:var(--r-large); box-shadow:var(--sh-md);
+  padding:var(--s24) var(--s16); display:flex; flex-direction:column; gap:var(--s24); }
+.cost-block { display:flex; flex-direction:column; gap:var(--s8); }
+.cost-badge { align-self:flex-start; background:var(--bg-strong); color:var(--text-subtle);
+  font:var(--t-label-sm); padding:var(--s4) var(--s12); border-radius:var(--r-small); }
+.cost-line { display:flex; gap:var(--s8); font:var(--t-body-lg); color:var(--text-default); align-items:baseline; }
+.cost-amt { font-weight:700; min-width:52px; }
+.cost-note { font:var(--t-body-md); color:var(--text-subtle); }
+.cost-pill { align-self:flex-start; background:var(--bg-positive-subtle); color:var(--text-positive);
+  font:var(--t-label-sm); padding:var(--s4) var(--s12); border-radius:var(--r-full); }
+
+/* Payment-method card (app UI) */
+.paym-card { background:var(--bg-default); border:1px solid var(--stroke-default);
+  border-radius:var(--r-large); box-shadow:var(--sh-sm);
+  padding:var(--s16); display:flex; gap:var(--s12); align-items:center; cursor:pointer; }
+.paym-card:active { background:var(--bg-subtle); }
+.paym-icon { width:48px; height:48px; border-radius:var(--r-full); background:var(--bg-brand-subtle);
+  display:grid; place-items:center; flex:0 0 auto; }
+.paym-icon .ms { color:var(--icon-brand); }
+.paym-body { flex:1; display:flex; flex-direction:column; gap:var(--s4); min-width:0; }
+.paym-title { font:var(--t-label-lg); color:var(--text-brand); }
+.paym-sub { font:var(--t-body-sm); color:var(--text-subtle); }
+.paym-logos { display:flex; gap:var(--s4); margin-top:var(--s4); flex-wrap:wrap; }
+.paym-logos span { font:700 9px/14px var(--ff); background:var(--bg-subtle);
+  border-radius:var(--r-tiny); padding:2px 6px; color:var(--text-subtle); }
+
+/* External payment-gateway screen */
+.pg-screen { position:absolute; inset:0; background:#FFFFFF; display:flex; flex-direction:column; overflow:hidden; }
+.pg-header { background:var(--bg-brand); height:56px; padding:0 var(--s16);
+  display:flex; align-items:center; gap:var(--s16); flex:0 0 auto; }
+.pg-header .ms { color:#fff; }
+.pg-header .t { font:var(--t-title-sm); color:#fff; }
+.pg-body { flex:1; overflow-y:auto; scrollbar-width:none; }
+.pg-body::-webkit-scrollbar { display:none; }
+.pg-plan { display:flex; align-items:center; justify-content:space-between;
+  padding:var(--s16); border-bottom:1px solid var(--stroke-default); }
+.pg-plan .pl-t { font:var(--t-label-md); color:var(--text-default); }
+.pg-plan .pl-s { font:var(--t-body-sm); color:var(--text-subtle); }
+.pg-plan .pl-amt { font:var(--t-title-sm); color:var(--text-default); }
+.pg-sec { padding:var(--s16) var(--s16) var(--s8); display:flex; flex-direction:column; gap:var(--s12); }
+.pg-sec-title { font:var(--t-label-sm); color:var(--text-subtle); text-transform:uppercase; letter-spacing:.04em; }
+.pg-box { border:1px solid var(--stroke-default); border-radius:var(--r-medium);
+  padding:var(--s16); display:flex; flex-direction:column; gap:var(--s12); }
+.pg-upi-grid { display:flex; gap:var(--s8); flex-wrap:wrap; }
+.pg-upi { display:flex; flex-direction:column; align-items:center; gap:var(--s4); width:60px; cursor:pointer; }
+.pg-upi:active { opacity:.7; }
+.pg-upi .ic { width:44px; height:44px; border-radius:var(--r-medium); display:grid; place-items:center;
+  font:800 16px/1 var(--ff); color:#fff; box-shadow:var(--sh-sm); }
+.pg-upi .nm { font:var(--t-body-sm); color:var(--text-default); text-align:center; line-height:14px; }
+.pg-link { font:var(--t-label-md); color:var(--text-brand); cursor:pointer; }
+.pg-row { display:flex; align-items:center; gap:var(--s12); cursor:pointer; }
+.pg-row:active { opacity:.7; }
+.pg-row .ms { color:var(--icon-nonAction); }
+.pg-row .l { flex:1; font:var(--t-body-lg); color:var(--text-default); }
+
+/* Location-confirm loader (matches Figma grey wait screen) */
+.brand-loader.grey { background:#5C5C5C; }
+
+/* D1 coupon / special-offer card */
+.strike-amt { text-decoration:line-through; color:var(--text-disabled); font-weight:400; margin-right:8px; }
+.coupon-card { background:var(--bg-default); border:1px dashed var(--stroke-brand-focus);
+  border-radius:var(--r-large); padding:var(--s16); display:flex; flex-direction:column; gap:var(--s12); }
+.coupon-head { display:flex; align-items:center; gap:var(--s8); font:var(--t-label-lg); color:var(--text-brand); }
+.coupon-head .ms { color:var(--icon-brand); }
+.coupon-applied { display:flex; align-items:center; justify-content:space-between;
+  background:var(--bg-brand-subtle); border-radius:var(--r-medium); padding:var(--s12); }
+.coupon-code { display:flex; align-items:center; gap:var(--s8); font:var(--t-label-md); color:var(--text-brand); }
+.coupon-code .ms { color:var(--icon-brand); }
+.coupon-off { font:var(--t-label-md); color:var(--text-positive); }
+.coupon-summary { display:flex; flex-direction:column; gap:var(--s4); }
+.coupon-row { display:flex; justify-content:space-between; font:var(--t-body-md); color:var(--text-subtle); }
+.coupon-row.total { font:var(--t-label-lg); color:var(--text-default);
+  padding-top:var(--s8); border-top:1px solid var(--stroke-subtle); margin-top:var(--s4); }
+.coupon-own { display:flex; flex-direction:column; gap:var(--s8); }
+.coupon-own-label { font:var(--t-body-sm); color:var(--text-subtle); }
+.coupon-input-row { display:flex; gap:var(--s8); }
+.coupon-input-row input { flex:1; min-width:0; border:1px solid var(--stroke-subtle);
+  border-radius:var(--r-medium); padding:var(--s12); font:var(--t-body-md); color:var(--text-default);
+  background:var(--bg-default); outline:0; text-transform:uppercase; font-family:var(--ff); }
+.coupon-input-row input:focus { border-color:var(--stroke-brand-focus); }
+.coupon-apply { background:var(--bg-brand); color:var(--text-onBrand); border:0;
+  border-radius:var(--r-medium); padding:0 var(--s16); font:var(--t-label-md); cursor:pointer; flex:0 0 auto; }
+.coupon-apply:active { background:var(--bg-brand-pressed); }
+.coupon-msg { font:var(--t-body-sm); color:var(--text-positive); min-height:16px; }
+.coupon-msg.err { color:var(--text-critical); }
+.coupon-row .pos { color:var(--text-positive); }
+.coupon-remove { align-self:flex-start; background:transparent; border:0; cursor:pointer;
+  color:var(--text-brand); font:var(--t-label-md); padding:var(--s4) 0; text-decoration:underline; }
+
+/* v12 · E — cost-screen communication variations */
+.demo-hero { display:flex; flex-direction:column; align-items:flex-start; gap:var(--s8); }
+.big-amt { font:800 40px/44px var(--ff); color:var(--text-default); }
+.big-amt .strike-amt { font-size:24px; }
+.demo-sub { font:var(--t-body-lg); color:var(--text-subtle); }
+.demo-note { font:var(--t-body-sm); color:var(--text-subtle); }
+.pct-badge { display:inline-flex; align-items:center; gap:4px; background:var(--bg-brand); color:#fff;
+  font:700 13px/18px var(--ff); padding:4px 12px; border-radius:var(--r-full); }
+.compare { display:flex; align-items:baseline; gap:var(--s12); flex-wrap:wrap; }
+.compare .old { font:400 22px/28px var(--ff); color:var(--text-disabled); text-decoration:line-through; }
+.compare .new { font:800 34px/38px var(--ff); color:var(--text-brand); }
+.zero-tag { align-self:flex-start; background:var(--bg-positive-subtle); color:var(--text-positive);
+  font:var(--t-label-md); padding:var(--s4) var(--s12); border-radius:var(--r-full); }
+.gift-banner { display:flex; align-items:center; gap:var(--s12); background:var(--bg-brand-subtle);
+  border:1px dashed var(--stroke-brand-focus); border-radius:var(--r-large); padding:var(--s16);
+  font:var(--t-label-lg); color:var(--text-brand); }
+.gift-banner .ms { color:var(--icon-brand); }
+.timer { display:inline-flex; align-items:center; gap:6px; background:var(--bg-critical-subtle);
+  color:var(--text-critical); font:var(--t-label-md); padding:var(--s4) var(--s12); border-radius:var(--r-full); }
+.timer .ms { color:var(--icon-critical); font-size:18px; }
+.pack-card { border:1px solid var(--stroke-default); border-radius:var(--r-large); padding:var(--s16);
+  display:flex; gap:var(--s12); align-items:center; box-shadow:var(--sh-sm); }
+.pack-ic { width:48px; height:48px; border-radius:var(--r-medium); background:var(--bg-brand-subtle);
+  display:grid; place-items:center; flex:0 0 auto; }
+.pack-ic .ms { color:var(--icon-brand); }
+
+/* v13 · ₹45 / 2-day-recharge message merged onto the serviceability screen */
+.variant-badge { display:none !important; }
+.recharge-tag { display:inline-flex; align-items:center; gap:6px; background:#fff;
+  color:var(--text-brand); font:var(--t-label-md); padding:4px 12px; border-radius:var(--r-full);
+  box-shadow:var(--sh-sm); }
+.recharge-tag .ms { color:var(--icon-brand); font-size:18px; }
+.serv-offer { display:flex; flex-direction:column; align-items:center; gap:var(--s8);
+  background:var(--bg-brand-subtle); border-radius:var(--r-large); padding:var(--s16); width:100%; }
+.serv-offer-line { font:var(--t-body-lg); color:var(--text-default); text-align:center; }
+.serv-offer-line b { color:var(--text-brand); font-weight:700; }
+.serv-offer-amt { font:800 28px/32px var(--ff); color:var(--text-brand); }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="device" id="device">
+
+    <!-- Floating badge that names the active variant for the reviewer -->
+    <button class="variant-badge" id="variantBadge" onclick="goto('exp-home')"><span class="ms" style="font-size:12px;">swap_horiz</span><span id="variantBadgeText">A1</span></button>
+
+    <!-- ============================================================
+         v11 PRE-PAYMENT FLOW (p1–p13) — rebuilt from Figma vectors.
+         Hands off to v10's pay-proc → pay-ok → chat at the gateway.
+         ============================================================ -->
+
+    <!-- ============ EXPERIMENT CHOOSER (Onboarding Friction · Phase 1) ============ -->
+    <section class="screen active" data-screen="exp-home">
+      <div class="yellow-screen">
+        <div class="scenario-content">
+          <div class="scenario-title">Onboarding Friction · Phase 1</div>
+          <div class="scenario-subtitle">Booking fee + framing micro-trial. Deposit held at ₹300 across all variants. Judged on CAC per coverage-sustaining household, not booking volume.</div>
+          <div class="scenario-section-title">Variants</div>
+
+          <div class="scenario-card" onclick="startExp('A1')">
+            <div class="scenario-card-num">A · Control</div>
+            <div class="scenario-card-title">₹100 · “Booking fee” (as today)</div>
+            <div class="scenario-card-desc">The current flow, locked. ₹100 booking fee upfront, ₹300 deposit at visit.</div>
+            <div class="scenario-card-cta">Walk A1 <span class="ms">arrow_forward</span></div>
+          </div>
+
+          <div class="scenario-card" onclick="startExp('B1')">
+            <div class="scenario-card-num">B · Lead</div>
+            <div class="scenario-card-title">₹45 credited · “2 din ka starting recharge”</div>
+            <div class="scenario-card-desc">Low, credited, legible entry. The ₹45 counts as the user’s 2-day starting recharge.</div>
+            <div class="scenario-card-cta">Walk B1 <span class="ms">arrow_forward</span></div>
+          </div>
+
+          <div class="scenario-card" onclick="startExp('C1')">
+            <div class="scenario-card-num">C · Low</div>
+            <div class="scenario-card-title">₹25 · “Starting recharge included”</div>
+            <div class="scenario-card-desc">Lowest non-zero fee, still credited as starting recharge.</div>
+            <div class="scenario-card-cta">Walk C1 <span class="ms">arrow_forward</span></div>
+          </div>
+
+          <div class="scenario-card" onclick="startExp('D1')">
+            <div class="scenario-card-num">D · Coupon offer</div>
+            <div class="scenario-card-title">₹25 · ₹100 booking, ₹75-off coupon</div>
+            <div class="scenario-card-desc">Special offer auto-applied (WIOM75): the ₹100 booking is discounted to ₹25. Customer can also enter their own coupon.</div>
+            <div class="scenario-card-cta">Walk D1 <span class="ms">arrow_forward</span></div>
+          </div>
+
+        </div>
+        <div class="context-cta-wrap" style="background:transparent; box-shadow:none;"></div>
+      </div>
+    </section>
+
+    <!-- ===== p1 · SPLASH ===== -->
+    <section class="screen" data-screen="p1">
+      <div class="brand-loader" style="background:var(--bg-default);">
+        <div class="logo">
+          <svg viewBox="0 0 64 48" class="wiom-infinity">
+            <path class="track" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24" style="stroke:rgba(217,0,141,0.16)"/>
+            <path class="comet" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24" style="stroke:#D9008D"/>
+          </svg>
+        </div>
+        <div class="msg" style="color:var(--text-subtle); font:var(--t-title-lg);">रिचार्ज वाला घर का नेट</div>
+      </div>
+    </section>
+
+    <!-- ===== p2 · VALUE PROP + SERVICEABILITY ENTRY ===== -->
+    <section class="screen" data-screen="p2">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar minimal">
+        <div class="spacer-flex"></div>
+        <div class="right"><button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button></div>
+      </header>
+      <div class="screen-body center-body">
+        <div class="spacer-flex"></div>
+        <svg width="148" height="132" viewBox="0 0 148 132" fill="none">
+          <rect x="40" y="6" width="7" height="18" rx="3.5" fill="#16324F"/>
+          <rect x="70" y="6" width="7" height="18" rx="3.5" fill="#16324F"/>
+          <rect x="100" y="6" width="7" height="18" rx="3.5" fill="#16324F"/>
+          <rect x="20" y="14" width="108" height="104" rx="10" fill="#FFFFFF" stroke="#16324F" stroke-width="2"/>
+          <rect x="20" y="14" width="108" height="16" rx="8" fill="#2F80ED"/>
+          <path d="M20 30 h108" stroke="#16324F" stroke-width="2"/>
+          <rect x="32" y="40" width="20" height="20" rx="4" fill="#DCEBFB"/>
+          <rect x="64" y="40" width="20" height="20" rx="4" fill="#2F80ED"/><path d="M68 50 l4 4 l8 -9" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="96" y="40" width="20" height="20" rx="4" fill="#DCEBFB"/>
+          <rect x="32" y="68" width="20" height="20" rx="4" fill="#2F80ED"/><path d="M36 78 l4 4 l8 -9" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="64" y="68" width="20" height="20" rx="4" fill="#2F80ED"/><path d="M68 78 l4 4 l8 -9" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <rect x="96" y="68" width="20" height="20" rx="4" fill="#2F80ED"/><path d="M100 78 l4 4 l8 -9" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="42" y="111" font-size="17" fill="#2F80ED" text-anchor="middle" font-weight="800">₹</text>
+          <rect x="64" y="96" width="20" height="20" rx="4" fill="#DCEBFB"/>
+          <rect x="96" y="96" width="20" height="20" rx="4" fill="#DCEBFB"/>
+        </svg>
+        <svg width="170" height="46" viewBox="0 0 170 46" fill="none" stroke="#161021" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" style="margin-top:8px;">
+          <rect x="8" y="10" width="44" height="26" rx="2"/><path d="M2 40 h56"/>
+          <rect x="76" y="6" width="20" height="36" rx="3"/>
+          <rect x="116" y="8" width="46" height="28" rx="2"/><path d="M139 36 v6"/><path d="M128 42 h22"/>
+        </svg>
+        <div class="headline" style="margin-top:16px;">रिचार्ज वाला घर का नेट</div>
+        <div class="subhead">जब चाहिए, तब रिचार्ज।</div>
+        <div class="spacer-flex"></div>
+      </div>
+      <div class="sticky-bar flush">
+        <button class="cta accent pill" onclick="goto('p3')">मेरे इलाके में है या नहीं?</button>
+      </div>
+    </section>
+
+    <!-- ===== p3 · SERVICEABILITY LOADER ===== -->
+    <section class="screen" data-screen="p3">
+      <div class="brand-loader">
+        <div class="logo">
+          <svg viewBox="0 0 64 48" class="wiom-infinity">
+            <path class="track" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24"/>
+            <path class="comet" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24"/>
+          </svg>
+        </div>
+        <div class="msg">आपके इलाके में नेट चेक कर रहे हैं</div>
+      </div>
+    </section>
+
+    <!-- ===== p4 · SERVICEABLE RESULT ===== -->
+    <section class="screen" data-screen="p4">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar minimal">
+        <div class="spacer-flex"></div>
+        <div class="right"><button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button></div>
+      </header>
+      <div class="screen-body center-body">
+        <div class="spacer-flex"></div>
+        <svg width="120" height="110" viewBox="0 0 120 110" fill="none" stroke="#161021" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M24 96 V52 L60 26 L96 52 V96 Z"/>
+          <path d="M48 96 V72 h24 v24"/>
+          <path d="M60 26 V8"/><path d="M60 10 h22 v13 h-22" fill="#2F80ED" stroke="#2F80ED"/>
+        </svg>
+        <div class="serv-place">Rajiv colony, Sector 40</div>
+        <div class="headline">यहाँ घर का नेट लग सकता है</div>
+        <div class="serv-offer"><span class="recharge-tag"><span class="ms">bolt</span>2 दिन का रिचार्ज</span><div class="serv-offer-line">बस <b>₹45</b> के 2 दिन के रिचार्ज से अपने घर का नेट शुरू करें</div></div>
+        <button class="link-row" onclick="goto('p3')">किसी और जगह के लिए चेक करें <span class="ms">chevron_right</span></button>
+        <div class="spacer-flex"></div>
+      </div>
+      <div class="sticky-bar flush">
+        <button class="cta accent pill" onclick="goto('p5')">इसे कैसे चलाना है?</button>
+      </div>
+    </section>
+
+    <!-- ===== p5 · EXPLAINER 1 (how recharge-net works) ===== -->
+    <section class="screen" data-screen="p5">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto('p4')"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="headline">रिचार्ज वाला नेट ऐसे चला सकते हैं</div>
+        <div class="stepper">
+          <div class="step">
+            <div class="step-rail"><div class="step-num">1</div><div class="step-line"></div></div>
+            <div class="step-body"><div class="step-title">आपके घर में नेट बॉक्स लगता है</div></div>
+          </div>
+          <div class="step">
+            <div class="step-rail"><div class="step-num">2</div><div class="step-line"></div></div>
+            <div class="step-body"><div class="step-title">जब चाहें, जितने दिन चाहें रिचार्ज करें</div><div class="step-sub">बिल्कुल मोबाइल रिचार्ज की तरह</div></div>
+          </div>
+          <div class="step">
+            <div class="step-rail"><div class="step-num">3</div></div>
+            <div class="step-body"><div class="step-title">घर के सभी लोग चला सकते हैं</div><div class="step-sub">8–12 डिवाइस आसानी से - मोबाइल, लैपटॉप, टीवी</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="sticky-bar flush stack">
+        <button class="cta accent pill" onclick="goto('p6')">मेरे घर पर कैसे शुरू होगा?</button>
+        <button class="link-row">पहले से व्योम लगा हुआ है <span class="ms">chevron_right</span></button>
+      </div>
+    </section>
+
+    <!-- ===== p6 · EXPLAINER 2 (visit + security) ===== -->
+    <section class="screen" data-screen="p6">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto('p5')"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="headline">घर पर नेट शुरू करने के लिए</div>
+        <div class="stepper">
+          <div class="step">
+            <div class="step-rail"><div class="step-num">1</div><div class="step-line"></div></div>
+            <div class="step-body"><div class="step-title">व्योम की तरफ़ से आपके घर पर एक विज़िट होती है।</div></div>
+          </div>
+          <div class="step">
+            <div class="step-rail"><div class="step-num">2</div></div>
+            <div class="step-body"><div class="step-title">नेट बॉक्स के लिए एक सिक्योरिटी फीस होता है।</div><div class="step-sub">लौटाने पर यह रकम वापस मिल जाती है</div></div>
+          </div>
+        </div>
+        <div class="pre-banner">रिचार्ज बाद में होता है, जब आप नेट चलाना चाहें।</div>
+      </div>
+      <div class="sticky-bar flush">
+        <button class="cta accent pill" onclick="goto('p8')">खर्चा कितना होगा?</button>
+      </div>
+    </section>
+
+    <!-- ===== p7 · PRICING BOTTOM SHEET ===== -->
+    <section class="screen" data-screen="p7">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto('p6')"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body"></div>
+      <div class="sheet-scrim lm-sheet open" onclick="if(event.target===this) goto('p6')">
+        <div class="sheet">
+          <div class="handle"></div>
+          <div class="headline">1, 2, 7, 14 या 28 दिन — जितने दिन चाहें उतने दिन का रिचार्ज करें</div>
+          <div class="subhead" style="margin-top:-4px;">शुरुआत का खर्चा <b>सिर्फ़ एक बार</b> लगता है, फिर बाद में सिर्फ़ रिचार्ज</div>
+          <div class="plan-list">
+            <div class="plan-row"><div class="plan-label"><b>1 दिन</b> <span>(24 घंटे)</span></div><span class="ms outlined">info</span></div>
+            <div class="plan-row"><div class="plan-label"><b>2 दिन</b> <span>(48 घंटे)</span></div><span class="ms outlined">info</span></div>
+            <div class="plan-row"><div class="plan-label"><b>7 दिन</b> <span>(1 हफ़्ता)</span></div><span class="ms outlined">info</span></div>
+            <div class="plan-row"><div class="plan-label"><b>14 दिन</b> <span>(2 हफ़्ते)</span></div><span class="ms outlined">info</span></div>
+            <div class="plan-row"><div class="plan-label"><b>28 दिन</b> <span>(4 हफ़्ते)</span></div><span class="ms outlined">info</span></div>
+          </div>
+          <button class="cta accent pill" onclick="goto('p8')">शुरुआती खर्चा देखें</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== p8 · COST BREAKDOWN ===== -->
+    <section class="screen" data-screen="p8">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto('p6')"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="headline">शुरू करने के लिए</div>
+        <div class="cost-card">
+          <div class="cost-block" id="exp-upfront">
+            <div class="cost-badge">पहले</div>
+            <div class="cost-line"><span class="cost-amt">₹100</span><span>-&nbsp;&nbsp;विज़िट कन्फर्म करने के लिए</span></div>
+          </div>
+          <div class="cost-block">
+            <div class="cost-badge">विज़िट के समय</div>
+            <div class="cost-line"><span class="cost-amt">₹300</span><span>-&nbsp;&nbsp;नेट बॉक्स के लिए सिक्योरिटी</span></div>
+            <div class="cost-note">लौटाने पर यह रकम वापस मिल जाती है।</div>
+            <div class="cost-pill">नेट बॉक्स वापस → पैसे वापस</div>
+          </div>
+        </div>
+        <div class="coupon-card" id="coupon-card" style="display:none;"></div>
+      </div>
+      <div class="sticky-bar flush">
+        <button class="cta accent pill" id="p8-cta" onclick="goto('p9')">₹100 देकर विज़िट कन्फर्म करें</button>
+      </div>
+    </section>
+
+    <!-- ===== p9 · NUMBER + NAME CAPTURE ===== -->
+    <section class="screen" data-screen="p9">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto('p8')"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="headline">आगे की प्रक्रिया के लिए</div>
+        <div class="field-block">
+          <div class="label">आपका नंबर</div>
+          <div class="input-shell value-strong">
+            <span class="pre-icon"><span class="ms">smartphone</span></span>
+            <input value="9876543210" inputmode="numeric" />
+          </div>
+          <div class="input-helper">इसी नंबर पर आगे की जानकारी मिलती है</div>
+        </div>
+        <div class="field-block">
+          <div class="label">आपका नाम</div>
+          <div class="input-shell value-strong">
+            <span class="pre-icon"><span class="ms">person</span></span>
+            <input value="Ramesh Kumar" />
+          </div>
+        </div>
+      </div>
+      <div class="sticky-bar flush stack">
+        <button class="cta accent pill" id="p9-cta" onclick="goto('p10')">₹100 का भुगतान करें</button>
+        <div class="input-helper" style="text-align:center;">आगे बढ़ने पर आप हमारे <u>नियम और शर्तों</u> से सहमत होते हैं</div>
+      </div>
+    </section>
+
+    <!-- ===== p10 · LOCATION CONFIRM (before payment) ===== -->
+    <section class="screen" data-screen="p10">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto('p9')"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body center-body">
+        <div class="spacer-flex"></div>
+        <svg width="130" height="120" viewBox="0 0 130 120" fill="none" stroke="#161021" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M20 110 H110"/>
+          <path d="M30 110 V58 H100 V110"/>
+          <path d="M22 58 L65 28 L108 58 Z" fill="#FF66C9" stroke="#161021"/>
+          <rect x="42" y="74" width="16" height="16"/>
+          <rect x="72" y="74" width="16" height="16"/>
+          <path d="M65 28 V14"/><circle cx="65" cy="12" r="5" fill="#D9008D" stroke="#D9008D"/>
+        </svg>
+        <div class="headline" id="p10-title" style="margin-top:8px;">पेमेंट से पहले नेट लगवाने की लोकेशन कन्फर्म करें</div>
+        <div class="subhead">ताकि आपका नेट सही पते पर लगे</div>
+        <div class="spacer-flex"></div>
+      </div>
+      <div class="sticky-bar flush stack">
+        <button class="cta accent pill" onclick="goto('p11')">मैं लोकेशन पर हूँ</button>
+        <button class="link-row">अभी लोकेशन पर नहीं हूँ <span class="ms">chevron_right</span></button>
+      </div>
+    </section>
+
+    <!-- ===== p11 · LOCATION LOADER ===== -->
+    <section class="screen" data-screen="p11">
+      <div class="brand-loader grey">
+        <div class="logo">
+          <svg viewBox="0 0 64 48" class="wiom-infinity">
+            <path class="track" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24"/>
+            <path class="comet" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24"/>
+          </svg>
+        </div>
+        <div class="msg">आपकी लोकेशन कन्फर्म कर रहे हैं</div>
+      </div>
+    </section>
+
+    <!-- ===== p12 · PAYMENT METHOD (app UI) ===== -->
+    <section class="screen" data-screen="p12">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto('p10')"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="headline" id="p12-title">₹100 के भुगतान का तरीका चुनें</div>
+        <div class="paym-card" onclick="goto('p13')">
+          <div class="paym-icon"><span class="ms">smartphone</span></div>
+          <div class="paym-body">
+            <div class="paym-title">UPI / ऑनलाइन भुगतान</div>
+            <div class="paym-sub">UPI, क्रेडिट/डेबिट कार्ड और अन्य तरीके</div>
+            <div class="paym-logos"><span>UPI</span><span>Paytm</span><span>VISA</span><span>RuPay</span></div>
+          </div>
+          <span class="ms" style="color:var(--icon-nonAction);">chevron_right</span>
+        </div>
+        <button class="link-row" style="align-self:center;">UPI/कार्ड नहीं है? <span class="ms">chevron_right</span></button>
+      </div>
+    </section>
+
+    <!-- ===== p13 · EXTERNAL PAYMENT GATEWAY ===== -->
+    <section class="screen" data-screen="p13">
+      <div class="pg-screen">
+        <div class="pg-header">
+          <button class="back-btn" aria-label="Back" onclick="goto('p12')" style="border:0;background:transparent;cursor:pointer;display:grid;place-items:center;width:32px;height:32px;"><span class="ms">arrow_back</span></button>
+          <div class="t">Payment Methods</div>
+        </div>
+        <div class="pg-body">
+          <div class="pg-plan">
+            <div><div class="pl-t">Plan Type</div><div class="pl-s">Complete your payment</div></div>
+            <div class="pl-amt" id="p13-amt">₹100</div>
+          </div>
+          <div class="pg-sec">
+            <div class="pg-sec-title">UPI</div>
+            <div class="pg-box">
+              <div class="pg-upi-grid">
+                <div class="pg-upi" onclick="goto('pay-proc')"><div class="ic" style="background:#202124;">a</div><div class="nm">Amazon</div></div>
+                <div class="pg-upi" onclick="goto('pay-proc')"><div class="ic" style="background:#C4172C;">A</div><div class="nm">Axis Mobile</div></div>
+                <div class="pg-upi" onclick="goto('pay-proc')"><div class="ic" style="background:#111;">C</div><div class="nm">CRED Pay UPI</div></div>
+                <div class="pg-upi" onclick="goto('pay-proc')"><div class="ic" style="background:#fff;color:#4285F4;border:1px solid #E8E4F0;">G</div><div class="nm">GPay</div></div>
+                <div class="pg-upi" onclick="goto('pay-proc')"><div class="ic" style="background:#F26B3A;">J</div><div class="nm">Jupiter</div></div>
+              </div>
+              <div class="pg-link" onclick="goto('pay-proc')">Other UPI Options</div>
+            </div>
+          </div>
+          <div class="pg-sec">
+            <div class="pg-sec-title">Debit / Credit Cards</div>
+            <div class="pg-box">
+              <div class="pg-row" onclick="goto('pay-proc')">
+                <span class="ms">credit_card</span>
+                <div class="l">Credit / Debit Card</div>
+                <span class="ms">chevron_right</span>
+              </div>
+            </div>
+          </div>
+          <div class="pg-sec">
+            <div class="pg-sec-title">Net Banking</div>
+            <div class="pg-box">
+              <div class="pg-upi-grid">
+                <div class="pg-upi" onclick="goto('pay-proc')"><div class="ic" style="background:#0B4DA2;">H</div><div class="nm">HDFC</div></div>
+                <div class="pg-upi" onclick="goto('pay-proc')"><div class="ic" style="background:#AE275F;">I</div><div class="nm">ICICI</div></div>
+                <div class="pg-upi" onclick="goto('pay-proc')"><div class="ic" style="background:#97144D;">A</div><div class="nm">Axis</div></div>
+              </div>
+              <div class="pg-link" onclick="goto('pay-proc')">Other Banks</div>
+            </div>
+          </div>
+          <div style="height:24px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTEXT SCREEN (yellow intro — unused in v11) ============ -->
+    <section class="screen" data-screen="context">
+      <div class="yellow-screen">
+        <div class="context-content">
+
+          <div class="context-header">
+            <div class="context-user-info">
+              <div class="context-q">यूजर कौन है?</div>
+              <div class="context-name">रमेश शर्मा</div>
+              <div class="context-tag">शर्मा परिवार के मुखिया।</div>
+            </div>
+            <div class="context-avatar">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="24" r="12" fill="#FFD888"/>
+                <path d="M12 56 C 12 42, 52 42, 52 56 Z" fill="#FFD888"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="context-block">
+            <div class="context-q">रमेश जी इस स्क्रीन पर क्यों आए?</div>
+            <div class="context-a">रमेश जी ने अभी-अभी Wiom पर ₹100 का पेमेंट किया है। अब बुकिंग पूरी करनी है — घर के नेट का नाम रखना है, पता भरना है, और घर के पास की कोई जगह बतानी है ताकि टेक्निशियन सीधे घर पहुँच सके।</div>
+          </div>
+
+          <div class="context-block">
+            <div class="context-q">रमेश जी इस स्टेप पर पहुँचने से पहले क्या कर रहे थे?</div>
+            <div class="context-a">पड़ोस में किसी ने Wiom की तारीफ़ की। रमेश जी ने Play Store से ऐप डाउनलोड किया, नंबर डाला, OTP से लॉग-इन हुए, और UPI से ₹100 का पेमेंट कर दिया। पेमेंट होते ही व्योम चैट खुल गई।</div>
+          </div>
+
+          <div class="context-block">
+            <div class="context-q">इस स्टेप के बाद रमेश जी क्या करेंगे?</div>
+            <div class="context-a">घर के नेट का एक नाम रखेंगे (जैसे “Ramesh Ji Ka Net”), पता भरेंगे, घर के पास की एक जगह चुनेंगे (मंदिर / दुकान / स्कूल), और घर पर पहुँच कर बुकिंग पक्की कर देंगे। फिर Wiom की टीम कॉल करके सेटअप का दिन तय कर देगी।</div>
+          </div>
+
+          <div class="context-block">
+            <div class="context-q">रमेश जी को कैसा महसूस होगा अगर यह दुनिया का सबसे बेहतरीन डिज़ाइन हो?</div>
+            <div class="context-a">पहली बार ब्रॉडबैंड लगवा रहे हैं, फिर भी एक भी कदम पर अटके नहीं। न कोई फॉर्म समझ नहीं आया, न कोई बटन गुम लगा। चैट में बातें होते-होते सब हो गया — जैसे किसी जान-पहचान वाले से बात कर रहे हों।</div>
+          </div>
+
+        </div>
+
+        <div class="context-cta-wrap">
+          <button class="btn-yellow-cta" onclick="goto('variants')">Variants देखें</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VARIANT CHOOSER (yellow) ============ -->
+    <section class="screen" data-screen="variants">
+      <div class="yellow-screen">
+        <div class="scenario-content">
+          <div class="scenario-title">v10 · WiFi save → address direct</div>
+          <div class="scenario-subtitle">WiFi name saved होते ही address screen सीधे खुलती है — बीच का चैट acknowledgment skip, और बाद में बुकिंग कन्फर्म screen पर पूरी history दिखती है।</div>
+
+          <div class="scenario-section-title">Payment outcomes</div>
+
+          <div class="scenario-card" onclick="startVariant('C1','success')">
+            <div class="scenario-card-num">Case 1 — Payment Success (default)</div>
+            <div class="scenario-card-title">Processing → चैट → WiFi → address direct</div>
+            <div class="scenario-card-desc">₹100 status चेक → व्योम चैट → "नेट का नाम रखें" → WiFi saved → सीधे address form (बीच का chat-ack skip). Address → landmark → voice → बुकिंग कन्फर्म, जहाँ पूरी history दिखती है।</div>
+            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
+          </div>
+
+          <div class="scenario-card" onclick="startVariant('C1','failed')">
+            <div class="scenario-card-num">Case 2 — Payment Failed</div>
+            <div class="scenario-card-title">Processing → failed screen → retry</div>
+            <div class="scenario-card-desc">₹100 status चेक → भुगतान असफल। डेबिट 4-7 दिनों में वापस; "दोबारा प्रयास करें" → वापस यहाँ।</div>
+            <div class="scenario-card-cta">Start <span class="ms">arrow_forward</span></div>
+          </div>
+
+        </div>
+        <div class="context-cta-wrap" style="background:transparent; box-shadow:none;"></div>
+      </div>
+    </section>
+
+    <!-- ============== PAY · PROCESSING (v7 new) ============== -->
+    <section class="screen" data-screen="pay-proc">
+      <div class="pay-screen">
+        <div class="pay-head">
+          <div class="pay-icon processing"></div>
+          <div class="pay-text">
+            <div class="pay-title">धैर्य रखें</div>
+            <div class="pay-sub">₹100 भुगतान की स्थिति जाँची जा रही है</div>
+          </div>
+        </div>
+        <div class="pay-foot">भुगतान पूरा होने तक इस स्क्रीन को बंद न करें</div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== PAY · SUCCESS (v7 new) ============== -->
+    <section class="screen" data-screen="pay-ok">
+      <div class="pay-screen">
+        <div class="pay-head">
+          <div class="pay-icon success"><span class="ms">check_circle</span></div>
+          <div class="pay-text">
+            <div class="pay-title success">भुगतान सफल रहा!</div>
+            <div class="pay-sub">अमाउंट: <b>₹100</b></div>
+          </div>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== PAY · FAIL (v9 — icon now, text + CTA fade in after 1s) ============== -->
+    <section class="screen" data-screen="pay-fail">
+      <div class="pay-fail-screen">
+        <div class="pay-fail-head">
+          <div class="pay-icon fail"><span class="ms">close</span></div>
+          <div class="pay-text pay-fail-reveal">
+            <div class="pay-title">भुगतान असफल रहा!</div>
+            <div class="pay-sub">डेबिट की गई कोई भी राशि 4-7 दिनों के अंदर वापस आ जाएगी।</div>
+          </div>
+        </div>
+        <div class="pay-fail-action pay-fail-reveal">
+          <button onclick="goto('variants')">दोबारा प्रयास करें</button>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 1. SPLASH LOADER ============== -->
+    <section class="screen" data-screen="1">
+      <div class="brand-loader">
+        <div class="logo">
+          <svg viewBox="0 0 64 48" class="wiom-infinity">
+            <path class="track" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24"/>
+            <path class="comet" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24"/>
+          </svg>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 2. CHAT · INITIAL GREET ============== -->
+    <section class="screen" data-screen="2">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="20" fill="#D9008D"/>
+              <path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">बुकिंग अधूरी है</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <!-- Stage 1: typing dots — bot is composing the success message -->
+        <div class="msg-row bot" data-step="typing-1">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="waiting-bubble">
+              <div class="waiting-dots">
+                <span class="waiting-dot"></span><span class="waiting-dot"></span><span class="waiting-dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 2: success bubble appears -->
+        <div class="msg-row bot success-row chat-stream-hidden" data-step="success">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble success">
+              <div class="pay-success-graphic">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="24" cy="24" r="20" fill="#008043"/>
+                  <path d="M14 24 L 21 31 L 34 17" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </div>
+              <div class="msg-content">
+                <div class="msg-text exp-success-text">बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>₹100</strong> का <strong>भुगतान सफल</strong> हो गया है।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 3: typing dots again — next message coming -->
+        <div class="msg-row bot chat-stream-hidden" data-step="typing-2">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="waiting-bubble">
+              <div class="waiting-dots">
+                <span class="waiting-dot"></span><span class="waiting-dot"></span><span class="waiting-dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 3. CHAT · FIRST INSTRUCTION ============== -->
+    <section class="screen" data-screen="3">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">बुकिंग अधूरी है</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <!-- Success bubble — carries over from screen 2, already prominent -->
+        <div class="msg-row bot success-row">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble success">
+              <div class="pay-success-graphic">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <circle cx="24" cy="24" r="20" fill="#008043"/>
+                  <path d="M14 24 L 21 31 L 34 17" stroke="#FFFFFF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                </svg>
+              </div>
+              <div class="msg-content">
+                <div class="msg-text exp-success-text">बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>₹100</strong> का <strong>भुगतान सफल</strong> हो गया है।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2-info onboarding — arrived from screen 2's typing -->
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">नमस्ते रमेश जी,</div>
+                <div class="msg-text">आपकी बुकिंग की प्रक्रिया अभी अधूरी है।</div>
+                <div class="msg-text">अब 2 और जानकारी चाहिए :</div>
+                <div class="msg-text">1. नेट का नाम</div>
+                <div class="msg-text">2. आपका पता</div>
+                <div class="msg-text">बस <strong>2-3 मिनट</strong> में पूरा हो जाएगा।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 4: typing dots — step1 message is composing -->
+        <div class="msg-row bot follow-up" data-step="typing-3">
+          <div class="msg-wrap">
+            <div class="waiting-bubble">
+              <div class="waiting-dots">
+                <span class="waiting-dot"></span><span class="waiting-dot"></span><span class="waiting-dot"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stage 5: step 1 message + CTA -->
+        <div class="msg-row bot follow-up chat-stream-hidden" data-step="step1">
+          <div class="msg-wrap">
+            <div class="msg-bubble has-cta-below">
+              <div class="msg-content">
+                <div class="msg-text"><strong>स्टेप 1:</strong> सबसे पहले अपने घर के नेट का नाम रखें।</div>
+                <div class="msg-text">यह नाम आपके नेट की पहचान के लिए ज़रूरी है।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+            <div class="msg-divider"></div>
+            <button class="msg-cta" onclick="goto(4)">
+              <span class="msg-cta-text">नेट का नाम रखें</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 4. NAME — SUGGESTIONS ============== -->
+    <section class="screen" data-screen="4">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar minimal">
+        <div class="spacer-flex"></div>
+        <div class="right">
+          <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+          <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+        </div>
+      </header>
+      <div class="screen-body">
+        <div class="illust">
+          <svg width="160" height="160" viewBox="0 0 160 160" fill="none">
+            <rect x="40" y="80" width="80" height="32" rx="6" fill="#D9008D"/>
+            <circle cx="56" cy="96" r="3" fill="#fff"/>
+            <circle cx="104" cy="96" r="3" fill="#fff"/>
+            <rect x="64" y="56" width="6" height="20" fill="#D9008D"/>
+            <rect x="78" y="44" width="6" height="32" fill="#D9008D"/>
+            <rect x="92" y="32" width="6" height="44" fill="#D9008D"/>
+          </svg>
+        </div>
+        <div class="headline">घर के नेट का एक अच्छा-सा नाम रख लें।</div>
+        <div class="subhead">ये नाम आपके घर के नेट को पहचान देगा</div>
+        <div class="chip-section">
+          <div class="lbl">इनमें से कोई एक नाम चुन सकते हैं :</div>
+          <div class="chip-grid">
+            <button class="chip" onclick="goto(5)">Ramesh Ji Ka Net</button>
+            <button class="chip" onclick="goto(5)">Ramesh Ka Net</button>
+            <button class="chip" onclick="goto(5)">Ramesh Net 123</button>
+            <button class="chip" onclick="goto(5)">Rameshnet</button>
+          </div>
+          <button class="tertiary-link" onclick="goto(6)">या अपनी पसंद का नाम लिखें ›</button>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 5. NAME — CONFIRMED ============== -->
+    <section class="screen" data-screen="5">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar minimal">
+        <div class="spacer-flex"></div>
+        <div class="right">
+          <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+          <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+        </div>
+      </header>
+      <div class="screen-body">
+        <div class="illust">
+          <svg width="160" height="160" viewBox="0 0 160 160" fill="none">
+            <rect x="40" y="80" width="80" height="32" rx="6" fill="#D9008D"/><circle cx="56" cy="96" r="3" fill="#fff"/><circle cx="104" cy="96" r="3" fill="#fff"/>
+            <rect x="64" y="56" width="6" height="20" fill="#D9008D"/><rect x="78" y="44" width="6" height="32" fill="#D9008D"/><rect x="92" y="32" width="6" height="44" fill="#D9008D"/>
+          </svg>
+        </div>
+        <div class="headline">अब घर का नेट आपके नाम पर है</div>
+        <div class="confirmed-row">
+          <div class="icon"><span class="ms">home</span></div>
+          <div class="name">Ramesh Ji Ka Net</div>
+          <div class="check"><span class="ms">check_circle</span></div>
+        </div>
+        <div class="input-helper" style="color:var(--text-default);">अच्छा नाम रखा है 🙂</div>
+      </div>
+      <div class="sticky-bar"><button class="cta primary" onclick="goto(10)">अब पता भरें</button></div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 6. NAME — CUSTOM (typing) ============== -->
+    <section class="screen" data-screen="6">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar minimal">
+        <div class="spacer-flex"></div>
+        <div class="right">
+          <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+          <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+        </div>
+      </header>
+      <div class="screen-body">
+        <div class="illust">
+          <svg width="120" height="80" viewBox="0 0 160 160" fill="none">
+            <rect x="40" y="80" width="80" height="32" rx="6" fill="#D9008D"/><circle cx="56" cy="96" r="3" fill="#fff"/><circle cx="104" cy="96" r="3" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="headline" style="font:var(--t-heading-md);">घर के नेट का एक अच्छा-सा नाम रख लें</div>
+        <div class="subhead">ये नाम आपके घर के नेट को पहचान देगा</div>
+        <div class="field-block">
+          <div class="label-row">
+            <div class="label">नेट का नाम</div>
+            <button class="info-icon" onclick="showDialog()" aria-label="Naming rules"><span class="ms">info</span></button>
+          </div>
+          <div class="input-shell focused value-strong">
+            <span class="pre-icon"><span class="ms">home</span></span>
+            <input value="Ramesh Ji Ka Net" />
+          </div>
+        </div>
+      </div>
+      <div class="sticky-bar"><button class="cta primary" onclick="goto(7)">नाम सेव करें</button></div>
+      <div class="kb-illust">
+        <div class="row"><div class="key">q</div><div class="key">w</div><div class="key">e</div><div class="key">r</div><div class="key">t</div><div class="key">y</div><div class="key">u</div><div class="key">i</div><div class="key">o</div><div class="key">p</div></div>
+        <div class="row"><div class="key">a</div><div class="key">s</div><div class="key">d</div><div class="key">f</div><div class="key">g</div><div class="key">h</div><div class="key">j</div><div class="key">k</div><div class="key">l</div></div>
+        <div class="row"><div class="key">↑</div><div class="key">z</div><div class="key">x</div><div class="key">c</div><div class="key">v</div><div class="key">b</div><div class="key">n</div><div class="key">m</div><div class="key">⌫</div></div>
+        <div class="row"><div class="key">?123</div><div class="key wide"></div><div class="key">.</div><div class="key" style="background:#D9008D;color:#fff;">↵</div></div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 7. NAME — ERROR: NOT UNIQUE ============== -->
+    <section class="screen" data-screen="7">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar minimal">
+        <div class="spacer-flex"></div>
+        <div class="right">
+          <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+          <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+        </div>
+      </header>
+      <div class="screen-body">
+        <div class="illust">
+          <svg width="120" height="80" viewBox="0 0 160 160" fill="none">
+            <rect x="40" y="80" width="80" height="32" rx="6" fill="#D9008D"/><circle cx="56" cy="96" r="3" fill="#fff"/><circle cx="104" cy="96" r="3" fill="#fff"/>
+            <rect x="64" y="56" width="6" height="20" fill="#D9008D"/><rect x="78" y="44" width="6" height="32" fill="#D9008D"/><rect x="92" y="32" width="6" height="44" fill="#D9008D"/>
+          </svg>
+        </div>
+        <div class="headline" style="font:var(--t-heading-md);">घर के नेट का एक अच्छा-सा नाम रख लें</div>
+        <div class="subhead">ये नाम आपके घर के नेट को पहचान देगा</div>
+        <div class="field-block">
+          <div class="label-row">
+            <div class="label">नेट का नाम</div>
+            <button class="info-icon" onclick="showDialog()" aria-label="Naming rules"><span class="ms">info</span></button>
+          </div>
+          <div class="input-shell error value-strong" onclick="goto(8)" title="Tap to retry with different chars (demo: → English-only error)">
+            <span class="pre-icon"><span class="ms">home</span></span>
+            <input value="Ramesh Ji Ka Net" readonly style="pointer-events:none;" />
+          </div>
+          <div class="input-helper error">यह नाम उपलब्ध नहीं है</div>
+        </div>
+        <div class="chip-section">
+          <div class="lbl">इनमें से कोई एक नाम चुन सकते हैं :</div>
+          <div class="chip-grid">
+            <button class="chip" onclick="goto(5)">Ramesh Ji Ka Net</button>
+            <button class="chip" onclick="goto(5)">Ramesh Ka Net</button>
+            <button class="chip" onclick="goto(5)">Ramesh Net 123</button>
+            <button class="chip" onclick="goto(5)">Rameshnet</button>
+          </div>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 8. NAME — ERROR: ENGLISH ONLY ============== -->
+    <section class="screen" data-screen="8">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar minimal">
+        <div class="spacer-flex"></div>
+        <div class="right">
+          <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+          <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+        </div>
+      </header>
+      <div class="screen-body">
+        <div class="illust">
+          <svg width="120" height="80" viewBox="0 0 160 160" fill="none">
+            <rect x="40" y="80" width="80" height="32" rx="6" fill="#D9008D"/><circle cx="56" cy="96" r="3" fill="#fff"/><circle cx="104" cy="96" r="3" fill="#fff"/>
+            <rect x="64" y="56" width="6" height="20" fill="#D9008D"/><rect x="78" y="44" width="6" height="32" fill="#D9008D"/><rect x="92" y="32" width="6" height="44" fill="#D9008D"/>
+          </svg>
+        </div>
+        <div class="headline" style="font:var(--t-heading-md);">घर के नेट का एक अच्छा-सा नाम रख लें</div>
+        <div class="subhead">ये नाम आपके घर के नेट को पहचान देगा</div>
+        <div class="field-block">
+          <div class="label-row"><div class="label">नेट का नाम</div>
+            <button class="info-icon" onclick="showDialog()"><span class="ms">info</span></button>
+          </div>
+          <div class="input-shell error value-strong">
+            <span class="pre-icon"><span class="ms">home</span></span>
+            <input value="क" />
+          </div>
+          <div class="input-helper error">अपने नेट का नाम English में ही लिखें।</div>
+        </div>
+        <div class="chip-section">
+          <div class="lbl">इनमें से कोई एक नाम चुन सकते हैं :</div>
+          <div class="chip-grid">
+            <button class="chip" onclick="goto(5)">Ramesh Ji Ka Net</button>
+            <button class="chip" onclick="goto(5)">Ramesh Ka Net</button>
+            <button class="chip" onclick="goto(5)">Ramesh Net 123</button>
+            <button class="chip" onclick="goto(5)">Rameshnet</button>
+          </div>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 9. CHAT · NAME SAVED + ADDRESS REQUEST ============== -->
+    <section class="screen" data-screen="9">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">बुकिंग अधूरी है</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <!-- Bot: previous instruction with consumed CTA -->
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble has-cta-below">
+              <div class="msg-content">
+                <div class="msg-text"><strong>स्टेप 1:</strong> सबसे पहले अपने घर के नेट का नाम रखें।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+            <div class="msg-divider"></div>
+            <div class="msg-cta muted">
+              <span class="msg-cta-text">नेट का नाम रखें</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- User: reply with quote + sent tick -->
+        <div class="msg-row user">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="reply-quote">
+                <div class="reply-quote-bar"></div>
+                <div class="reply-quote-text">
+                  <div class="reply-quote-author">Wiom</div>
+                  <div class="reply-quote-msg">स्टेप 1: सबसे पहले अपने घर के नेट का नाम रखें।</div>
+                </div>
+              </div>
+              <div class="msg-content">
+                <div class="msg-text">हो गया</div>
+                <div class="msg-time sent">10:15 AM <span class="ms">done_all</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: confirmation -->
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">आपके घर के नेट का नाम सेव हो गया है।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: next step + CTA -->
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="msg-bubble has-cta-below">
+              <div class="msg-content">
+                <div class="msg-text"><strong>आखिरी स्टेप:</strong> अब अपना पता बताएं।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+            <div class="msg-divider"></div>
+            <button class="msg-cta" onclick="goto(10)">
+              <span class="msg-cta-text">पता लिखें</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 10. ADDRESS FORM ============== -->
+    <section class="screen" data-screen="10">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="backFromAddress()"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="illust">
+          <svg width="160" height="120" viewBox="0 0 160 120" fill="none" stroke="#161021" stroke-width="2" stroke-linejoin="round">
+            <path d="M30 100 H 130" />
+            <path d="M40 100 V 60 L 80 30 L 120 60 V 100" />
+            <rect x="56" y="74" width="14" height="14" />
+            <rect x="90" y="74" width="14" height="14" />
+            <rect x="74" y="76" width="14" height="24" />
+            <path d="M76 30 V 18 H 86 V 24" />
+            <path d="M82 18 V 8" stroke="#D9008D" stroke-width="3" />
+            <circle cx="82" cy="14" r="6" fill="#D9008D" stroke="#D9008D" />
+          </svg>
+        </div>
+        <div class="headline">अपना पूरा पता भरें</div>
+        <div class="field-block">
+          <div class="label">मकान / फ्लैट / फ्लोर नंबर</div>
+          <div class="input-shell">
+            <input id="addr-house" placeholder="उदाहरण: #123, First Floor" oninput="checkAddrCta()" />
+          </div>
+        </div>
+        <div class="field-block">
+          <div class="label">स्ट्रीट / गली नं.</div>
+          <div class="input-shell">
+            <input id="addr-street" placeholder="उदाहरण: Galli No. 12" oninput="checkAddrCta()" />
+          </div>
+        </div>
+        <div class="field-block">
+          <div class="label">इलाका / लोकैलिटी</div>
+          <div class="input-shell value-strong">
+            <input id="addr-locality" value="Rajiv Colony, Sector 33, Gurugram, Haryana 122001" oninput="checkAddrCta()" />
+          </div>
+        </div>
+      </div>
+      <div class="sticky-bar">
+        <button class="cta primary" id="addr-confirm" onclick="goto(nextAfterAddress())" style="display:none;">सही सेट-अप के लिए पास की जगह दें</button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 11. LANDMARK · TYPE PICKER ============== -->
+    <section class="screen" data-screen="11">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto(10)"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="illust-row">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#161021" stroke-width="2"><path d="M10 50 H 46"/><path d="M14 50 V 28 L 28 18 L 42 28 V 50"/><rect x="22" y="34" width="8" height="14"/><path d="M28 18 V 10 L 38 8 V 16" stroke="#D9008D"/></svg>
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#161021" stroke-width="2"><path d="M10 50 H 46"/><path d="M14 50 V 24 L 28 14 L 42 24 V 50" /><circle cx="28" cy="20" r="3" fill="#D9008D"/><path d="M28 14 v -6" stroke="#D9008D"/></svg>
+          <svg width="80" height="56" viewBox="0 0 80 56" fill="none" stroke="#161021" stroke-width="2"><path d="M6 50 H 64"/><path d="M10 50 V 28 H 56 V 50" /><path d="M8 28 H 58 L 56 18 H 10 Z" fill="#D9008D" stroke="#D9008D"/><circle cx="68" cy="46" r="6"/><circle cx="74" cy="46" r="2" fill="#161021"/></svg>
+        </div>
+        <div class="headline">घर के पास कौन सी जगह है?</div>
+        <div class="subhead">जगह का प्रकार चुनें — फिर पास की जगहों की लिस्ट खुलेगी</div>
+        <div class="type-list" id="screen11-list"></div>
+        <button class="tertiary-link" onclick="pickCustom()">और कुछ नज़दीक है? खुद टाइप करें ›</button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 12. LANDMARK · BOTTOM SHEET ============== -->
+    <section class="screen" data-screen="12">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto(11)"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="illust-row">
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#161021" stroke-width="2"><path d="M10 50 H 46"/><path d="M14 50 V 28 L 28 18 L 42 28 V 50"/><rect x="22" y="34" width="8" height="14"/><path d="M28 18 V 10 L 38 8 V 16" stroke="#D9008D"/></svg>
+          <svg width="56" height="56" viewBox="0 0 56 56" fill="none" stroke="#161021" stroke-width="2"><path d="M10 50 H 46"/><path d="M14 50 V 24 L 28 14 L 42 24 V 50" /><circle cx="28" cy="20" r="3" fill="#D9008D"/><path d="M28 14 v -6" stroke="#D9008D"/></svg>
+          <svg width="80" height="56" viewBox="0 0 80 56" fill="none" stroke="#161021" stroke-width="2"><path d="M6 50 H 64"/><path d="M10 50 V 28 H 56 V 50" /><path d="M8 28 H 58 L 56 18 H 10 Z" fill="#D9008D" stroke="#D9008D"/><circle cx="68" cy="46" r="6"/><circle cx="74" cy="46" r="2" fill="#161021"/></svg>
+        </div>
+        <div class="headline">घर के पास कौन सी जगह है?</div>
+        <div class="subhead">जगह का प्रकार चुनें — फिर पास की जगहों की लिस्ट खुलेगी</div>
+        <div class="type-list" id="screen12-list"></div>
+      </div>
+
+      <div class="sheet-scrim lm-sheet open" id="lm-sheet-12" onclick="if(event.target===this) goto(11)">
+        <div class="sheet">
+          <div class="handle"></div>
+          <div class="sheet-head">
+            <div class="heading" id="lm-sheet-heading">पास के मंदिर / मस्जिद</div>
+            <button class="sheet-close-btn" onclick="goto(11)" aria-label="Close"><span class="ms">close</span></button>
+          </div>
+          <div class="subhead" style="margin-top:-8px;">घर के सबसे नज़दीक के</div>
+          <div class="list" id="lm-sheet-list"></div>
+          <div class="divider" style="margin:var(--s8) 0;"></div>
+          <button class="list-item custom-row" onclick="pickCustom()" style="width:100%; text-align:left; border:1px dashed var(--stroke-subtle); border-radius:var(--r-medium);">
+            <div class="leading"><span class="ms">edit</span></div>
+            <div class="body">
+              <div class="primary">मेरी जगह यहाँ नहीं है</div>
+              <div class="secondary">खुद टाइप करूँगा</div>
+            </div>
+          </button>
+        </div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 13. LOADER · CONFIRMING LOCATION ============== -->
+    <section class="screen" data-screen="13">
+      <div class="brand-loader">
+        <div class="logo">
+          <svg viewBox="0 0 64 48" class="wiom-infinity">
+            <path class="track" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24"/>
+            <path class="comet" d="M8 24 C 8 8, 28 8, 28 24 S 48 40, 56 24"/>
+          </svg>
+        </div>
+        <div class="msg">आपका पता सेव कर रहे हैं</div>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 14. CHAT · ARE YOU THERE NOW? ============== -->
+    <section class="screen" data-screen="14">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">बुकिंग अधूरी है</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">आपका पता सेव हो गया है।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="msg-bubble has-cta-below">
+              <div class="msg-content">
+                <div class="msg-text">आपको जहां नेट लगवाना है, क्या <strong>अभी आप वहीं हैं</strong>?</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+            <div class="msg-divider"></div>
+            <button class="msg-cta middle" onclick="goto(16)">
+              <span class="msg-cta-text">हाँ</span>
+            </button>
+            <div class="msg-divider"></div>
+            <button class="msg-cta" onclick="goto(15)">
+              <span class="msg-cta-text">नहीं</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 15. CHAT · NOT AT HOME (after NO) ============== -->
+    <section class="screen" data-screen="15">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">बुकिंग अधूरी है</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <!-- User: replied "नहीं" with quote -->
+        <div class="msg-row user">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="reply-quote">
+                <div class="reply-quote-bar"></div>
+                <div class="reply-quote-text">
+                  <div class="reply-quote-author">Wiom</div>
+                  <div class="reply-quote-msg">क्या आपको जहां नेट लगवाना है, अभी आप वहीं हैं?</div>
+                </div>
+              </div>
+              <div class="msg-content">
+                <div class="msg-text">नहीं</div>
+                <div class="msg-time sent">10:15 AM <span class="ms">done_all</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: instruction + CTA -->
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble has-cta-below">
+              <div class="msg-content">
+                <div class="msg-text">घर पहुँच कर नीचे दिये गये बटन को दबाएँ।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+            <div class="msg-divider"></div>
+            <button class="msg-cta" onclick="goto(16)">
+              <span class="msg-cta-text">मैं घर पर हूँ</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 16. CHAT · BOOKING CONFIRMED + SAVE NUMBER ============== -->
+    <section class="screen" data-screen="16">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">बुकिंग कन्फ़र्म</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <!-- Replay of the deferred chat acknowledgments — these would have
+             appeared between WiFi save and address save in the legacy flow.
+             v10 holds them until booking is fully confirmed so they all land
+             together as one cohesive timeline. -->
+
+        <!-- Bot: WiFi name saved -->
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">आपके घर के नेट का नाम <strong>Ramesh Ji Ka Net</strong> सेव हो गया है।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: address saved -->
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">आपका <strong>पता</strong> भी सेव हो गया है।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: booking confirmed + install ETA -->
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">बहुत बढ़िया, आपकी <strong>बुकिंग कन्फर्म</strong> हो गई है।</div>
+                <div class="msg-text">&nbsp;</div>
+                <div class="msg-text"><strong>2-3 दिन</strong> में आपके घर पर नेट लग जाएगा।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: save-number nudge -->
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">अगले <strong>24 घंटे</strong> में नेट लगवाने का दिन कन्फर्म करने के लिए व्योम से कॉल आएगा।</div>
+                <div class="msg-text">&nbsp;</div>
+                <div class="msg-text"><strong>नंबर को सेव कर लें</strong>, ताकि कॉल मिस ना हो :</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bot: contact card (follow-up — no tail) -->
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="contact-card">
+              <div class="contact-card-header">
+                <div class="contact-card-avatar"><span class="ms outlined">person</span></div>
+                <div class="contact-card-info">
+                  <div class="contact-card-name">Wiom</div>
+                  <div class="contact-card-number">+91 88803 22222</div>
+                </div>
+              </div>
+              <div class="contact-card-footer">
+                <div class="contact-card-divider"></div>
+                <button class="contact-card-cta" onclick="goto(17)">नंबर सेव करें</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 17. FLOW ENDED (yellow, mirrors context screen) ============== -->
+    <section class="screen" data-screen="17">
+      <div class="yellow-screen">
+        <div class="context-content">
+
+          <div class="context-header">
+            <div class="context-user-info">
+              <div class="context-q">यहाँ Flow खत्म होता है</div>
+              <div class="context-name">रमेश जी की बुकिंग पूरी हो गई 🎉</div>
+              <div class="context-tag">अब Wiom की टीम कॉल करके सेटअप का दिन तय कर देगी।</div>
+            </div>
+            <div class="context-avatar">
+              <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="32" cy="32" r="28" fill="#FFD888"/>
+                <path d="M20 33 L 28 41 L 44 25" stroke="#D9008D" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="context-block">
+            <div class="context-q">रमेश जी ने क्या-क्या किया?</div>
+            <div class="context-a">
+              • घर के नेट का नाम रखा (<strong>Ramesh Ji Ka Net</strong>)<br>
+              • अपना पूरा पता भरा<br>
+              • घर के पास का मंदिर बताया (Hanuman Mandir)<br>
+              • घर पर पहुँच कर “हाँ” कह कर बुकिंग पक्की की
+            </div>
+          </div>
+
+          <div class="context-block">
+            <div class="context-q">अब आगे क्या?</div>
+            <div class="context-a">Wiom की टीम जल्दी ही रमेश जी को कॉल करेगी और सेटअप का दिन तय कर देगी। कुछ ही दिनों में रमेश जी के घर का नेट चालू हो जाएगा।</div>
+          </div>
+
+        </div>
+
+        <div class="context-cta-wrap">
+          <button class="btn-yellow-cta" onclick="goto('p1')">⟲ फिर से शुरू करें</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============== 18. CHAT · TEAM WILL CALL ============== -->
+    <section class="screen" data-screen="18">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="chat-top-bar">
+        <div class="chat-top-bar-left">
+          <div class="wiom-avatar">
+            <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#D9008D"/><path d="M14 26 C 14 18, 22 18, 22 26 S 32 34, 36 22" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+          </div>
+          <div class="chat-top-text">
+            <div class="chat-top-name">व्योम</div>
+            <div class="chat-top-status">ऑनलाइन</div>
+          </div>
+        </div>
+        <div class="chat-top-actions">
+          <button class="chat-icon-btn" aria-label="Call"><span class="ms outlined">call</span></button>
+          <button class="chat-icon-btn" aria-label="More"><span class="ms outlined">more_vert</span></button>
+        </div>
+      </header>
+      <div class="sticky-net">
+        <div class="net-card">
+          <div class="net-card-icon"><span class="ms outlined">home</span></div>
+          <div class="net-card-text">
+            <div class="net-card-heading">घर का नेट: रमेश</div>
+            <div class="net-card-status">
+              <span class="net-card-status-label">स्थिति:</span>
+              <span class="net-card-status-value">सेटअप बाकी है</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-body">
+
+        <div class="msg-row user">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="reply-quote">
+                <div class="reply-quote-bar"></div>
+                <div class="reply-quote-text">
+                  <div class="reply-quote-author">Wiom</div>
+                  <div class="reply-quote-msg">आपको जहां नेट लगवाना है, अभी आप वहीं हैं?</div>
+                </div>
+              </div>
+              <div class="msg-content">
+                <div class="msg-text">हाँ</div>
+                <div class="msg-time sent">10:15 AM <span class="ms">done_all</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-row bot">
+          <div class="msg-wrap">
+            <div class="msg-tail"></div>
+            <div class="msg-bubble">
+              <div class="msg-content">
+                <div class="msg-text">आपकी बुकिंग पूरी हो गई है। आगे की प्रक्रिया के लिए हमारी टीम आपको कॉल करेगी।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="msg-row bot follow-up">
+          <div class="msg-wrap">
+            <div class="msg-bubble has-cta-below">
+              <div class="msg-content">
+                <div class="msg-text">नेट लगने वाली जगह पर पहुँच कर इस बटन को दबाएँ।</div>
+                <div class="msg-time">10:15 AM</div>
+              </div>
+            </div>
+            <div class="msg-divider"></div>
+            <button class="msg-cta" onclick="goto(16)">
+              <span class="msg-cta-text">मैं अब नेट लगने वाली जगह पर हूँ</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+      <div class="chat-input">
+        <div class="input-field placeholder">यहाँ पूछें....</div>
+        <button class="send-btn" aria-label="Send" disabled><span class="ms ms-20">send</span></button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 19. LANDMARK · INPUT + TYPE DROPDOWN ============== -->
+    <section class="screen" data-screen="19">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto(11)"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="icon-btn" aria-label="Support"><span class="ms">support_agent</span></button>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="illust" style="padding:var(--s24) 0 var(--s8);">
+          <svg width="120" height="80" viewBox="0 0 160 120" fill="none" stroke="#161021" stroke-width="2" stroke-linejoin="round">
+            <path d="M30 100 H 130" /><path d="M40 100 V 60 L 80 30 L 120 60 V 100" />
+            <rect x="56" y="74" width="14" height="14" /><rect x="90" y="74" width="14" height="14" />
+            <rect x="74" y="76" width="14" height="24" />
+            <path d="M82 18 V 8" stroke="#D9008D" stroke-width="3" />
+            <circle cx="82" cy="14" r="6" fill="#D9008D" stroke="#D9008D" />
+          </svg>
+        </div>
+        <div class="headline">जगह की पुष्टि करें</div>
+        <div class="subhead">यदि नाम सही नहीं है तो बदल सकते हैं — टेक्निशियन को इसी नाम से जगह ढूँढने में मदद मिलेगी</div>
+
+        <div class="field-block">
+          <div class="label">जगह क्या है?</div>
+          <button class="type-dropdown" onclick="goto(11)" aria-label="Change landmark type">
+            <div class="lead-icon"><span class="ms" id="td-icon">temple_hindu</span></div>
+            <div class="lbl" id="td-label">मंदिर / मस्जिद</div>
+            <div class="chev"><span class="ms">expand_more</span></div>
+          </button>
+          <div class="input-helper">बदलने के लिए ऊपर टैप करें</div>
+        </div>
+
+        <div class="field-block">
+          <div class="label">जगह का नाम</div>
+          <div class="input-shell value-strong">
+            <span class="pre-icon"><span class="ms" id="lm-input-icon">temple_hindu</span></span>
+            <input id="lm-name-input" value="Hanuman Mandir" placeholder="जगह का नाम लिखें" />
+            <button class="clear-btn" onclick="clearLm()" aria-label="Clear"><span class="ms ms-16">close</span></button>
+          </div>
+          <div class="input-helper">यदि नाम अलग है तो खुद टाइप कर सकते हैं</div>
+        </div>
+      </div>
+
+      <div class="sticky-bar">
+        <button class="cta primary" onclick="commitLandmark(); goto(nextAfterLandmark())">अगला कदम</button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============== 20. VOICE ROUTE GUIDE ============== -->
+    <section class="screen" data-screen="20">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto(11)"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <button class="skip-link" id="skip-link" onclick="goto(13)">छोड़ें</button>
+      </header>
+      <div class="screen-body" style="align-items:stretch;">
+        <div class="illust" style="padding:var(--s24) 0 var(--s8);">
+          <svg width="180" height="140" viewBox="0 0 180 140" fill="none">
+            <path d="M20 110 Q 50 80, 80 90 T 140 60" stroke="#A7A1B2" stroke-width="2" stroke-dasharray="4 6" fill="none"/>
+            <circle cx="140" cy="60" r="10" fill="#FFE5F6" stroke="#D9008D" stroke-width="2"/>
+            <circle cx="140" cy="60" r="3" fill="#D9008D"/>
+            <path d="M140 70 V 78" stroke="#D9008D" stroke-width="2"/>
+            <rect x="76" y="44" width="28" height="44" rx="14" fill="#D9008D"/>
+            <rect x="84" y="52" width="12" height="20" rx="6" fill="#FAF9FC"/>
+            <path d="M68 78 Q 90 96, 112 78" stroke="#161021" stroke-width="2" fill="none"/>
+            <path d="M90 96 V 110" stroke="#161021" stroke-width="2"/>
+            <path d="M82 110 H 98" stroke="#161021" stroke-width="2"/>
+            <path d="M58 56 Q 50 66, 58 76" stroke="#D9008D" stroke-width="2" fill="none"/>
+            <path d="M50 50 Q 38 66, 50 82" stroke="#D9008D" stroke-width="2" fill="none" opacity=".6"/>
+            <path d="M122 56 Q 130 66, 122 76" stroke="#D9008D" stroke-width="2" fill="none"/>
+            <path d="M130 50 Q 142 66, 130 82" stroke="#D9008D" stroke-width="2" fill="none" opacity=".6"/>
+          </svg>
+        </div>
+
+        <div class="headline">रास्ता बताएं — अपनी आवाज़ में</div>
+        <div class="subhead">अपनी आवाज़ में रास्ता बताएं ताकि टेक्निशियन सीधे आपके घर पहुंच सके। यह ज़रूरी नहीं है — चाहें तो छोड़ भी सकते हैं।</div>
+
+        <div class="example-tip">
+          <span class="ms ms-16">format_quote</span>
+          <span>“मेन रोड से अंदर आकर पहले दाएं मुड़ें, नीला गेट है, दूसरी मंज़िल।”</span>
+        </div>
+
+        <div class="audio-section">
+          <div class="audio-rec idle" id="audio-idle">
+            <button class="rec-btn" onclick="startRec()" aria-label="Start recording"><span class="ms">mic</span></button>
+            <div class="rec-label">रिकॉर्ड करने के लिए टैप करें</div>
+          </div>
+
+          <div class="audio-rec recording" id="audio-recording" style="display:none;">
+            <div class="rec-pulse"><span class="ms">mic</span></div>
+            <div class="rec-meta">
+              <div class="time" id="rec-time">00:00</div>
+              <div class="wave"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            </div>
+            <button class="stop-btn" onclick="stopRec()" aria-label="Stop"><span class="ms ms-20">stop</span></button>
+          </div>
+
+          <div class="audio-rec recorded" id="audio-recorded" style="display:none;">
+            <button class="play-btn" onclick="togglePlay(this)" aria-label="Play"><span class="ms">play_arrow</span></button>
+            <div class="rec-meta">
+              <div class="time" id="recorded-time">00:23</div>
+              <div class="wave static">
+                <span style="--h:30%"></span><span style="--h:60%"></span><span style="--h:80%"></span>
+                <span style="--h:50%"></span><span style="--h:90%"></span><span style="--h:40%"></span>
+                <span style="--h:70%"></span><span style="--h:55%"></span>
+              </div>
+            </div>
+            <button class="del-btn" onclick="deleteRec()" aria-label="Delete recording"><span class="ms ms-20">delete</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="sticky-bar">
+        <button class="cta primary" id="confirm-audio" onclick="goto(13)" style="display:none;">पता कन्फर्म करें</button>
+      </div>
+      <button class="back-to-scenarios" onclick="goto('variants')"><span class="ms">grid_view</span> Variants</button>
+    </section>
+
+    <!-- ============ Naming-rules dialog overlay ============ -->
+    <div class="scrim" id="dialog" style="display:none;">
+      <div class="dialog">
+        <div class="head">
+          <div class="title">नेट का नाम रखने के नियम</div>
+          <ol class="body">
+            <li>नेट के नाम में अधिकतम 28 अक्षर हो सकते हैं।</li>
+            <li>सिर्फ अंकों एवं अक्षरों का ही इस्तेमाल करें।</li>
+          </ol>
+        </div>
+        <button class="cta primary" onclick="hideDialog()">ठीक है, मैं समझ गया</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ---------- Routing (string + numeric screen IDs) ---------- */
+let cur = null;
+let pendingTimer = null;
+
+const autoAdvance = {
+  /* v11 pre-payment loaders */
+  'p1':  { to: 'p2',  ms: 1500 },
+  'p3':  { to: 'p4',  ms: 1900 },
+  'p11': { to: 'p12', ms: 1900 },
+  'pay-proc': { to: () => state.paymentCase === 'failed' ? 'pay-fail' : 2, ms: 2200 },
+  /* Screen 2 runs its own staged reveal (~5.4s) before handing off to
+     screen 3, where the step-1 message + CTA appear after one more
+     beat of typing. The intervals are deliberately generous so each
+     message has time to be read before the next one arrives. */
+  2:          { to: 3,                                                     ms: 5400 },
+  13:         { to: 16,                                                    ms: 1800 },
+};
+
+/* Layout groups — screens within a group share their chrome (top bar,
+   sticky-net, chat input / form layout / yellow surface), so we cross-fade
+   between them instead of pushing left. Group changes still slide. */
+function screenGroup(n) {
+  const k = String(n);
+  /* v11 pre-payment screens each form their own group so every transition
+     slides (native push feel). pay-* screens are handled below. */
+  if (/^p\d/.test(k)) return 'pre-' + k;
+  if (k === 'context' || k === 'variants' || k === '17' || k === 'exp-home') return 'yellow';
+  if (k === 'pay-proc' || k === 'pay-ok') return 'pay';
+  if (k === 'pay-fail')                   return 'pay-fail';
+  if (k === '1' || k === '13')       return 'loader';
+  if (['2','3','9','14','15','16','18'].includes(k)) return 'chat';
+  return 'form';
+}
+
+/* ---------- Variant routing ----------
+   v3 only ships C1 and C2 — both run address → landmark → voice.
+   C2 also fires a Hindi TTS prompt when the voice screen activates.
+   Each variant pairs with a dataCase that controls landmark availability:
+     default    — all 5 named types populated
+     sparse     — 2 named types empty (rows hide)
+     other-only — all 5 named empty; only "अन्य" remains, custom typing forced */
+const VARIANT_LABELS = {
+  'C1|success' : 'Case 1 · Payment Success',
+  'C1|failed'  : 'Case 2 · Payment Failed',
+};
+
+function startVariant(v, paymentCase) {
+  state.variant = v;
+  state.paymentCase = (paymentCase === 'failed') ? 'failed' : 'success';
+  applyDataCase('default');
+  document.body.classList.add('has-variant');
+  const badge = document.getElementById('variantBadge');
+  const key = v + '|' + state.paymentCase;
+  if (badge) badge.textContent = VARIANT_LABELS[key] || ('Variant ' + v);
+  goto('pay-proc');
+}
+
+/* Back button on the address screen (10) returns to the WiFi-saved
+   confirmation screen so the user can edit the WiFi name if needed. */
+function backFromAddress() {
+  goto(8);
+}
+
+function nextAfterAddress() {
+  /* v8 — address-step bundles address + landmark + voice. */
+  return 11;
+}
+function nextAfterLandmark() {
+  return 20;
+}
+function toggleSkip(show) {
+  const sk = document.getElementById('skip-link');
+  if (sk) sk.style.display = show ? '' : 'none';
+}
+
+/* Hindi TTS prompt for A2 / C2 — plays once when screen 20 activates.
+   Browsers gate autoplay; the user has already tapped through several
+   screens by this point so the gesture context is usually granted. */
+function speakVoicePrompt() {
+  if (!('speechSynthesis' in window)) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(
+      'अपनी आवाज़ में रास्ता बताने के लिए नीचे दिये गये माइक का बटन दबाइए, फिर बताइए घर तक कैसे पहुँचना है।'
+    );
+    u.lang = 'hi-IN';
+    u.rate = 0.92;
+    speechSynthesis.speak(u);
+  } catch (e) { /* swallow — prompt is best-effort */ }
+}
+
+function goto(n) {
+  if (n === undefined || n === null) return;
+  const key = String(n);
+  if (pendingTimer) { clearTimeout(pendingTimer); pendingTimer = null; }
+  hideDialog();
+
+  /* v9 — pay-proc → first chat screen should be a soft cross-fade, not a slide,
+     so the chat materialises out of the white processing surface. */
+  const seamlessPair = String(cur) === 'pay-proc' && String(n) === '2';
+  const sameGroup = cur !== null && screenGroup(cur) === screenGroup(n);
+  document.body.classList.toggle('same-group', sameGroup || seamlessPair);
+
+  cur = n;
+  document.querySelectorAll('.screen').forEach(s => {
+    s.classList.toggle('active', String(s.dataset.screen) === key);
+  });
+  document.querySelectorAll('.screen.active .chat-body').forEach(el => { el.scrollTop = el.scrollHeight; });
+  document.querySelectorAll('.screen.active .screen-body').forEach(el => { el.scrollTop = 0; });
+
+  /* Cancel any in-flight chat-stream timers from the previous screen so revisits
+     don't fire stale reveals. */
+  if (chatStreamTimers.length) { chatStreamTimers.forEach(clearTimeout); chatStreamTimers = []; }
+
+  if (n === 2)  animateChat2();
+  if (n === 3)  animateChat3();
+  if (n === 10) { checkAddrCta(); applyAddrCtaLabel(); }
+  if (n === 11) renderTypeList('screen11-list');
+  if (n === 12) { renderTypeList('screen12-list'); populateSheet(); }
+  if (n === 20 && (state.variant === 'A2' || state.variant === 'C2')) {
+    setTimeout(speakVoicePrompt, 350);
+  }
+
+  const auto = autoAdvance[n];
+  if (auto) pendingTimer = setTimeout(() => goto(typeof auto.to === 'function' ? auto.to() : auto.to), auto.ms);
+}
+
+/* ---------- Chat-stream reveal (success path) ----------
+   Screen 2: typing → success bubble → typing.   Then goto(3).
+   Screen 3: typing → step-1 + CTA.
+   Each call resets the screen's hidden/visible state so back-and-forth
+   navigation always replays the animation cleanly. */
+let chatStreamTimers = [];
+
+function streamReveal(sec, stepName, withEnter) {
+  const el = sec.querySelector('[data-step="' + stepName + '"]');
+  if (!el) return;
+  el.classList.remove('chat-stream-hidden');
+  if (withEnter) {
+    el.classList.remove('chat-stream-enter');
+    /* re-trigger the keyframe by forcing reflow */
+    void el.offsetWidth;
+    el.classList.add('chat-stream-enter');
+  }
+  const body = sec.querySelector('.chat-body');
+  if (body) body.scrollTop = body.scrollHeight;
+}
+
+function streamHide(sec, stepName) {
+  const el = sec.querySelector('[data-step="' + stepName + '"]');
+  if (el) el.classList.add('chat-stream-hidden');
+}
+
+function animateChat2() {
+  const sec = document.querySelector('.screen[data-screen="2"]');
+  if (!sec) return;
+  /* Reset: only typing-1 visible */
+  streamReveal(sec, 'typing-1', false);
+  streamHide(sec, 'success');
+  streamHide(sec, 'typing-2');
+
+  chatStreamTimers.push(setTimeout(() => {
+    streamHide(sec, 'typing-1');
+    streamReveal(sec, 'success', true);
+  }, 1800));
+
+  chatStreamTimers.push(setTimeout(() => {
+    streamReveal(sec, 'typing-2', true);
+  }, 3800));
+}
+
+function animateChat3() {
+  const sec = document.querySelector('.screen[data-screen="3"]');
+  if (!sec) return;
+  /* Reset: typing-3 visible, step1 hidden */
+  streamReveal(sec, 'typing-3', false);
+  streamHide(sec, 'step1');
+
+  chatStreamTimers.push(setTimeout(() => {
+    streamHide(sec, 'typing-3');
+    streamReveal(sec, 'step1', true);
+  }, 2200));
+}
+
+/* v8 — address-step is address + landmark + voice; CTA promises the next sub-step. */
+function applyAddrCtaLabel() {
+  const cta = document.getElementById('addr-confirm');
+  if (!cta) return;
+  cta.textContent = 'सही सेट-अप के लिए पास की जगह दें';
+}
+
+/* ---------- Flow state ---------- */
+const state = { variant:null, dataCase:'default', paymentCase:'success', type:'mandir', landmark:'Hanuman Mandir', landmarkShort:'मंदिर' };
+state.exp = 'A1';
+state.couponApplied = true;
+state.couponCode = 'WIOM75';
+
+/* ---------- v12 · Phase-1 experiment variants ----------
+   Booking fee + framing. Deposit held at ₹300 across all.
+   A1 control (₹100) · B1 lead (₹45 credited) · C1 low (₹25) · D1 gated zero (₹0). */
+const VARIANTS = {
+  A1: { badge:'A1 · ₹100', fee:'₹100', hasPay:true,
+        upAmt:'₹100', upLabel:'विज़िट कन्फर्म करने के लिए', upPill:'',
+        p8cta:'₹100 देकर विज़िट कन्फर्म करें', p9cta:'₹100 का भुगतान करें',
+        p10title:'पेमेंट से पहले नेट लगवाने की लोकेशन कन्फर्म करें',
+        p12title:'₹100 के भुगतान का तरीका चुनें',
+        success:'बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>₹100</strong> का <strong>भुगतान सफल</strong> हो गया है।' },
+  B1: { badge:'B1 · ₹45', fee:'₹45', hasPay:true,
+        upAmt:'₹45', upLabel:'2 दिन का शुरुआती रिचार्ज (शामिल)', upPill:'यह रकम आपके रिचार्ज में जुड़ जाती है',
+        p8cta:'₹45 देकर विज़िट कन्फर्म करें', p9cta:'₹45 का भुगतान करें',
+        p10title:'पेमेंट से पहले नेट लगवाने की लोकेशन कन्फर्म करें',
+        p12title:'₹45 के भुगतान का तरीका चुनें',
+        success:'बहुत बढ़िया! <strong>₹45</strong> का <strong>भुगतान सफल</strong>। इसमें आपका <strong>2 दिन का शुरुआती रिचार्ज</strong> शामिल है।' },
+  C1: { badge:'C1 · ₹25', fee:'₹25', hasPay:true,
+        upAmt:'₹25', upLabel:'शुरुआती रिचार्ज (शामिल)', upPill:'यह रकम आपके रिचार्ज में जुड़ जाती है',
+        p8cta:'₹25 देकर विज़िट कन्फर्म करें', p9cta:'₹25 का भुगतान करें',
+        p10title:'पेमेंट से पहले नेट लगवाने की लोकेशन कन्फर्म करें',
+        p12title:'₹25 के भुगतान का तरीका चुनें',
+        success:'बहुत बढ़िया! <strong>₹25</strong> का <strong>भुगतान सफल</strong>। इसमें आपका <strong>शुरुआती रिचार्ज</strong> शामिल है।' },
+  D1: { badge:'D1 · ₹25 कूपन', fee:'₹25', hasPay:true, coupon:true,
+        upAmt:'₹25', upLabel:'विज़िट कन्फर्म करने के लिए', upPill:'',
+        p8cta:'₹25 देकर विज़िट कन्फर्म करें', p9cta:'₹25 का भुगतान करें',
+        p10title:'पेमेंट से पहले नेट लगवाने की लोकेशन कन्फर्म करें',
+        p12title:'₹25 के भुगतान का तरीका चुनें',
+        success:'बहुत बढ़िया! ₹75 की छूट के साथ <strong>₹25</strong> का <strong>भुगतान सफल</strong> हो गया है। (आपने <strong>₹75 बचाए</strong>!)' },
+};
+
+function setTxt(id, t){ const e = document.getElementById(id); if (e) e.textContent = t; }
+
+function applyExperiment(v){
+  const d = VARIANTS[v]; if (!d) return;
+  state.exp = v;
+  document.body.classList.add('has-variant');
+  setTxt('variantBadgeText', d.badge);
+  const up = document.getElementById('exp-upfront');
+  if (up && !d.coupon)
+    up.innerHTML =
+      '<div class="cost-badge">पहले</div>' +
+      '<div class="cost-line"><span class="cost-amt">' + d.upAmt + '</span><span>-&nbsp;&nbsp;' + d.upLabel + '</span></div>' +
+      (d.upPill ? '<div class="cost-pill">' + d.upPill + '</div>' : '');
+  const cc = document.getElementById('coupon-card');
+  if (cc) cc.style.display = d.coupon ? 'flex' : 'none';
+  if (d.coupon) { state.couponApplied = true; state.couponCode = 'WIOM75'; renderCoupon(); }
+  setTxt('p8-cta', d.p8cta);
+  setTxt('p9-cta', d.p9cta);
+  setTxt('p10-title', d.p10title);
+  if (d.p12title) setTxt('p12-title', d.p12title);
+  setTxt('p13-amt', d.fee);
+  document.querySelectorAll('.exp-success-text').forEach(function(el){ el.innerHTML = d.success; });
+}
+
+function startExp(v){
+  state.paymentCase = 'success';
+  applyExperiment(v);
+  goto('p1');
+}
+
+/* D1 coupon card. Special offer WIOM75 is auto-applied; the apply input only
+   appears when NO coupon is applied, so the screen stays uncluttered. */
+function renderCoupon(){
+  const cc = document.getElementById('coupon-card'); if (!cc) return;
+  const on = state.couponApplied;
+  const pay = on ? '₹25' : '₹100';
+  const up = document.getElementById('exp-upfront');
+  if (up) up.innerHTML = on
+    ? '<div class="cost-badge">पहले · बुकिंग फीस</div>' +
+      '<div class="cost-line"><span class="cost-amt"><span class="strike-amt">₹100</span>₹25</span><span>-&nbsp;&nbsp;विज़िट कन्फर्म करने के लिए</span></div>' +
+      '<div class="cost-pill">स्पेशल ऑफर · ₹75 की छूट लागू</div>'
+    : '<div class="cost-badge">पहले · बुकिंग फीस</div>' +
+      '<div class="cost-line"><span class="cost-amt">₹100</span><span>-&nbsp;&nbsp;विज़िट कन्फर्म करने के लिए</span></div>';
+  setTxt('p8-cta', pay + ' देकर विज़िट कन्फर्म करें');
+  setTxt('p9-cta', pay + ' का भुगतान करें');
+  setTxt('p12-title', pay + ' के भुगतान का तरीका चुनें');
+  setTxt('p13-amt', pay);
+  document.querySelectorAll('.exp-success-text').forEach(function(el){
+    el.innerHTML = on
+      ? 'बहुत बढ़िया! ₹75 की छूट के साथ <strong>₹25</strong> का <strong>भुगतान सफल</strong> हो गया है। (आपने <strong>₹75 बचाए</strong>!)'
+      : 'बहुत बढ़िया! आपकी विज़िट कन्फर्म करने के लिए <strong>₹100</strong> का <strong>भुगतान सफल</strong> हो गया है।';
+  });
+  if (on) {
+    cc.innerHTML =
+      '<div class="coupon-head"><span class="ms">sell</span><span>स्पेशल ऑफर लागू है</span></div>' +
+      '<div class="coupon-applied">' +
+        '<div class="coupon-code"><span class="ms">confirmation_number</span><span>' + state.couponCode + '</span></div>' +
+        '<div class="coupon-off">₹75 OFF</div>' +
+      '</div>' +
+      '<div class="coupon-summary">' +
+        '<div class="coupon-row"><span>बुकिंग फीस</span><span>₹100</span></div>' +
+        '<div class="coupon-row"><span>कूपन छूट (' + state.couponCode + ')</span><span class="pos">−₹75</span></div>' +
+        '<div class="coupon-row total"><span>देना होगा</span><span>₹25</span></div>' +
+      '</div>' +
+      '<button class="coupon-remove" onclick="removeCoupon()">कूपन हटाएं</button>';
+  } else {
+    cc.innerHTML =
+      '<div class="coupon-head"><span class="ms">sell</span><span>कूपन / ऑफर</span></div>' +
+      '<div class="coupon-summary"><div class="coupon-row total"><span>देना होगा</span><span>₹100</span></div></div>' +
+      '<div class="coupon-own">' +
+        '<div class="coupon-own-label">कूपन कोड हो तो यहाँ डालें</div>' +
+        '<div class="coupon-input-row">' +
+          '<input id="coupon-input" placeholder="कूपन कोड" />' +
+          '<button class="coupon-apply" onclick="applyCoupon()">लगाएं</button>' +
+        '</div>' +
+        '<div class="coupon-msg" id="coupon-msg">WIOM75 लगाने पर ₹75 की छूट</div>' +
+      '</div>';
+  }
+}
+function removeCoupon(){ state.couponApplied = false; renderCoupon(); }
+function applyCoupon(){
+  const inp = document.getElementById('coupon-input');
+  const m = document.getElementById('coupon-msg');
+  const code = (inp && inp.value.trim().toUpperCase()) || '';
+  if (!code) { if (m) { m.textContent = 'कूपन कोड डालें'; m.classList.add('err'); } return; }
+  state.couponApplied = true; state.couponCode = code; renderCoupon();
+}
+
+function showDialog() { document.getElementById('dialog').style.display = 'flex'; }
+function hideDialog() { document.getElementById('dialog').style.display = 'none'; }
+
+/* ---------- Landmark data (v3 model) ----------
+   5 named types — mandir / school / hospital / bank / petrolpump — most-recognised
+   landmarks used to give directions in north Indian Tier-2/3 areas.
+   "other" is the catch-all that holds the rest of the Google-Places list
+   (police, post office, mall, station, park, etc.) AND always offers a custom-text
+   path. The vertical row hides itself only for named types whose items are empty;
+   "other" always renders so the customer never gets stuck. */
+const TYPE_ORDER = ['mandir', 'school', 'hospital', 'bank', 'petrolpump', 'other'];
+
+const FULL_PLACES_BY_TYPE = {
+  mandir: { icon:'temple_hindu',       label:'मंदिर / मस्जिद / गुरुद्वारा', short:'मंदिर', heading:'घर के पास का मंदिर / मस्जिद चुनें', items: [
+    {name:'Hanuman Mandir',              addr:'Gali No. 2, Rajiv Colony, Sector 33',          dist:'500 m'},
+    {name:'Shiv Mandir',                 addr:'Sector 33 chowk, Gurugram',                    dist:'700 m'},
+    {name:'Jama Masjid',                 addr:'Old Sector 33, Gurugram',                      dist:'1.2 km'},
+    {name:'Sai Mandir',                  addr:'Block C, Rajiv Colony',                        dist:'1.5 km'}
+  ]},
+  school: { icon:'school',             label:'स्कूल',                       short:'स्कूल', heading:'घर के पास का स्कूल चुनें', items: [
+    {name:'Chota Bheem Play School',     addr:'131, Rajiv Colony, Sector 33, Gurugram',       dist:'500 m'},
+    {name:'Chitranshi Global School',    addr:'Gali No. 2, Rajiv Colony, Sector 33',          dist:'700 m'},
+    {name:'DAV Public School',           addr:'Sector 33, Gurugram, Haryana 122001',          dist:'1.2 km'},
+    {name:'Government Primary School',   addr:'Block C, Sector 33, Gurugram',                 dist:'1.5 km'}
+  ]},
+  hospital: { icon:'local_hospital',   label:'अस्पताल',                     short:'अस्पताल', heading:'घर के पास का अस्पताल चुनें', items: [
+    {name:'Sharma Clinic',               addr:'Sector 33 main road, Gurugram',                dist:'400 m'},
+    {name:'Aarogya Hospital',            addr:'Block A, Sector 33, Gurugram',                 dist:'900 m'},
+    {name:'Civil Hospital',              addr:'Sector 33, Gurugram, Haryana',                 dist:'1.4 km'}
+  ]},
+  bank: { icon:'account_balance',      label:'बैंक / ATM',                   short:'बैंक',  heading:'घर के पास का बैंक चुनें', items: [
+    {name:'SBI ATM',                     addr:'Sector 33 main road, Gurugram',                dist:'300 m'},
+    {name:'HDFC Bank',                   addr:'Sector 33, Gurugram',                          dist:'800 m'},
+    {name:'Punjab National Bank',        addr:'Sector 33 market, Gurugram',                   dist:'1.0 km'},
+    {name:'ICICI Bank ATM',              addr:'Old Sector 33',                                dist:'1.4 km'}
+  ]},
+  petrolpump: { icon:'local_gas_station', label:'पेट्रोल पंप',              short:'पेट्रोल पंप', heading:'घर के पास का पेट्रोल पंप चुनें', items: [
+    {name:'Indian Oil Petrol Pump',      addr:'Sector 33 main road, Gurugram',                dist:'600 m'},
+    {name:'HP Petrol Pump',              addr:'Old Sector 33, Gurugram',                      dist:'1.1 km'},
+    {name:'Bharat Petroleum',            addr:'Sector 33 chowk, Gurugram',                    dist:'1.6 km'}
+  ]},
+  other: { icon:'more_horiz',          label:'अन्य',                         short:'अन्य', heading:'पास की और जगहें', items: [
+    {name:'Sector 33 Police Chowki',     addr:'Sector 33 main road, Gurugram',                dist:'700 m'},
+    {name:'Post Office',                 addr:'Block B, Sector 33, Gurugram',                 dist:'900 m'},
+    {name:'Apna Bazaar Mall',            addr:'Sector 33, Gurugram',                          dist:'1.0 km'},
+    {name:'Sector 33 Bus Stand',         addr:'Sector 33 chowk, Gurugram',                    dist:'1.2 km'},
+    {name:'Rajiv Colony Park',           addr:'Block C, Rajiv Colony',                        dist:'400 m'}
+  ]}
+};
+
+/* The active copy mutated by applyDataCase() — never clobber FULL_PLACES_BY_TYPE. */
+let placesByType = {};
+function clonePlaces() {
+  const out = {};
+  TYPE_ORDER.forEach(k => {
+    out[k] = Object.assign({}, FULL_PLACES_BY_TYPE[k], { items: FULL_PLACES_BY_TYPE[k].items.slice() });
+  });
+  return out;
+}
+
+/* dataCase is the edge-case lever for the chooser:
+     default    — every type populated
+     sparse     — hospital + petrolpump empty (those rows hide on screen 11)
+     other-only — all 5 named types empty; only "अन्य" row remains */
+function applyDataCase(c) {
+  state.dataCase = c || 'default';
+  placesByType = clonePlaces();
+  if (state.dataCase === 'sparse') {
+    placesByType.hospital.items   = [];
+    placesByType.petrolpump.items = [];
+  } else if (state.dataCase === 'other-only') {
+    placesByType.mandir.items     = [];
+    placesByType.school.items     = [];
+    placesByType.hospital.items   = [];
+    placesByType.bank.items       = [];
+    placesByType.petrolpump.items = [];
+  }
+  /* Reset state.type to the first available row so the type-dropdown on
+     screen 19 always shows a sensible default. */
+  const first = TYPE_ORDER.find(t => t === 'other' || placesByType[t].items.length > 0);
+  applyType(first || 'other');
+}
+
+function applyType(t) {
+  if (!t || !placesByType[t]) return;
+  const def = placesByType[t];
+  state.type = t;
+  state.landmarkShort = def.short;
+  /* Sync row selection across whichever screen is mounted. */
+  document.querySelectorAll('.type-row').forEach(el => {
+    el.classList.toggle('selected', el.dataset.t === t);
+  });
+  const tdIcon  = document.getElementById('td-icon');
+  const tdLabel = document.getElementById('td-label');
+  if (tdIcon)  tdIcon.textContent = def.icon;
+  if (tdLabel) tdLabel.textContent = def.label;
+  const inputIcon = document.getElementById('lm-input-icon');
+  if (inputIcon) inputIcon.textContent = def.icon;
+}
+
+function pickType(t) {
+  applyType(t);
+  goto(12);
+}
+
+/* Build the vertical row list. Named types with zero items are hidden;
+   "other" always renders so the customer can always move forward. */
+function renderTypeList(containerId) {
+  const c = document.getElementById(containerId);
+  if (!c) return;
+  c.innerHTML = '';
+  const allNamedEmpty = TYPE_ORDER.filter(t => t !== 'other').every(t => placesByType[t].items.length === 0);
+  if (allNamedEmpty) {
+    const banner = document.createElement('div');
+    banner.className = 'type-empty-banner';
+    banner.innerHTML = `
+      <span class="ms">info</span>
+      <div class="body">
+        <div class="ttl">पास में कोई पहचान वाली जगह नहीं मिली</div>
+        <div class="sub">आप “अन्य” में से चुन सकते हैं या खुद landmark टाइप कर सकते हैं</div>
+      </div>
+    `;
+    c.appendChild(banner);
+  }
+  TYPE_ORDER.forEach(t => {
+    const def = placesByType[t];
+    const isOther = t === 'other';
+    if (!isOther && def.items.length === 0) return; // hide empty named rows
+    const meta = isOther
+      ? (def.items.length > 0
+          ? `${def.items.length} और जगहें · खुद टाइप करने का option भी`
+          : 'खुद landmark टाइप करें')
+      : `${def.items.length} जगह नज़दीक`;
+    const row = document.createElement('button');
+    row.type = 'button';
+    row.className = 'type-row' + (isOther ? ' is-other' : '') + (state.type === t ? ' selected' : '');
+    row.dataset.t = t;
+    row.innerHTML = `
+      <div class="row-icon"><span class="ms">${def.icon}</span></div>
+      <div class="row-body">
+        <div class="row-label">${def.label}</div>
+        <div class="row-meta">${meta}</div>
+      </div>
+      <div class="row-chev"><span class="ms">chevron_right</span></div>
+    `;
+    row.addEventListener('click', () => pickType(t));
+    c.appendChild(row);
+  });
+}
+
+function populateSheet() {
+  const def = placesByType[state.type];
+  if (!def) return;
+  document.getElementById('lm-sheet-heading').textContent = def.heading || `पास के ${def.label}`;
+  const list = document.getElementById('lm-sheet-list');
+  if (def.items.length === 0) {
+    list.innerHTML = `
+      <div class="list-empty" style="padding:var(--s16); text-align:center; color:var(--text-subtle); font:var(--t-body-md);">
+        यहाँ कोई जगह नहीं मिली — नीचे से खुद टाइप करें
+      </div>
+    `;
+  } else {
+    list.innerHTML = def.items.map(it => `
+      <div class="list-item" data-name="${it.name}">
+        <div class="leading distance"><span class="ms ms-16">location_on</span><span>${it.dist}</span></div>
+        <div class="body"><div class="primary">${it.name}</div><div class="secondary">${it.addr}</div></div>
+      </div>
+    `).join('');
+    list.querySelectorAll('.list-item').forEach(el => {
+      el.addEventListener('click', () => pickPlace(el.dataset.name));
+    });
+  }
+}
+
+function pickPlace(name) {
+  state.landmark = name;
+  const input = document.getElementById('lm-name-input');
+  if (input) input.value = name;
+  goto(19);
+}
+
+/* Always-available custom-typing path. Per spec, custom landmarks default
+   to type "अन्य" — they don't fit any named bucket. */
+function pickCustom() {
+  applyType('other');
+  state.landmark = '';
+  const input = document.getElementById('lm-name-input');
+  if (input) input.value = '';
+  goto(19);
+  setTimeout(() => input && input.focus(), 280);
+}
+
+function clearLm() {
+  const input = document.getElementById('lm-name-input');
+  if (input) { input.value = ''; input.focus(); }
+  state.landmark = '';
+}
+
+function commitLandmark() {
+  const input = document.getElementById('lm-name-input');
+  const val = (input && input.value.trim()) || 'जगह दर्ज नहीं की';
+  state.landmark = val;
+}
+
+function checkAddrCta() {
+  const house    = (document.getElementById('addr-house')    || {}).value || '';
+  const street   = (document.getElementById('addr-street')   || {}).value || '';
+  const locality = (document.getElementById('addr-locality') || {}).value || '';
+  const ready = house.trim() && street.trim() && locality.trim();
+  const cta = document.getElementById('addr-confirm');
+  if (cta) cta.style.display = ready ? '' : 'none';
+}
+
+/* ---------- Audio recorder mock ---------- */
+let recTimer = null, recSeconds = 0;
+function fmtTime(s){ const m=String(Math.floor(s/60)).padStart(2,'0'); const ss=String(s%60).padStart(2,'0'); return `${m}:${ss}`; }
+function startRec() {
+  document.getElementById('audio-idle').style.display = 'none';
+  document.getElementById('audio-recorded').style.display = 'none';
+  document.getElementById('audio-recording').style.display = 'flex';
+  document.getElementById('confirm-audio').style.display = 'none';
+  toggleSkip(false);
+  recSeconds = 0;
+  document.getElementById('rec-time').textContent = '00:00';
+  recTimer = setInterval(() => {
+    recSeconds++;
+    document.getElementById('rec-time').textContent = fmtTime(recSeconds);
+  }, 1000);
+}
+function stopRec() {
+  if (recTimer) { clearInterval(recTimer); recTimer = null; }
+  document.getElementById('audio-recording').style.display = 'none';
+  document.getElementById('audio-recorded').style.display = 'flex';
+  document.getElementById('recorded-time').textContent = recSeconds > 0 ? fmtTime(recSeconds) : '00:23';
+  document.getElementById('confirm-audio').style.display = '';
+  toggleSkip(false);
+}
+function deleteRec() {
+  document.getElementById('audio-recorded').style.display = 'none';
+  document.getElementById('audio-idle').style.display = 'flex';
+  document.getElementById('confirm-audio').style.display = 'none';
+  toggleSkip(true);
+  recSeconds = 0;
+}
+function togglePlay(btn) {
+  const ic = btn.querySelector('.ms');
+  ic.textContent = ic.textContent === 'play_arrow' ? 'pause' : 'play_arrow';
+}
+
+/* Bootstrap with the default data case so the type-dropdown / sheet have
+   sensible initial values even before the user picks a variant. */
+applyDataCase('default');
+/* v11 — open at the pre-payment splash; payment defaults to the success case
+   so the gateway hands straight off to v10's chat flow. */
+/* v13 — single-variant (B / ₹45) '2-day recharge' approach. */
+state.paymentCase = 'success';
+applyExperiment('B1');
+goto('p1');
+</script>
+</body>
+</html>
