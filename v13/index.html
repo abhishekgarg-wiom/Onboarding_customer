@@ -2926,6 +2926,7 @@ function goto(n) {
   if (n === 11) renderTypeList('screen11-list');
   if (n === 12) { renderTypeList('screen12-list'); populateSheet(); }
   if (n === 'exp-home') renderIntroChooser();
+  if (n === 'p8') renderCost();
   if (n === 20 && (state.variant === 'A2' || state.variant === 'C2')) {
     setTimeout(speakVoicePrompt, 350);
   }
@@ -3135,9 +3136,9 @@ const INTRO_VARIANTS = [
 ];
 
 function introCore(f){
-  if (f === 'pack') return '<div class="pack-card"><div class="pack-ic"><span class="ms">bolt</span></div><div class="paym-body"><div class="paym-title" style="color:var(--text-default);">शुरुआती पैक · 2 दिन</div><div class="paym-sub">नेट तुरंत चालू</div></div><div class="big-amt" style="font-size:24px;">₹45</div></div><div class="pre-banner">₹45 का 2 दिन का रिचार्ज — मोबाइल रिचार्ज की तरह, बाद में जब चाहें बढ़ाएं।</div>';
-  if (f === 'mobile') return '<div class="compare" style="justify-content:center; gap:var(--s16); padding:var(--s8) 0;"><span class="ms" style="font-size:36px;color:var(--icon-brand);">smartphone</span><span class="ms" style="color:var(--icon-nonAction);">arrow_forward</span><span class="ms" style="font-size:36px;color:var(--icon-brand);">router</span></div><div class="demo-sub" style="text-align:center;font-weight:600;color:var(--text-default);">जैसे मोबाइल में रिचार्ज, वैसे ही — <b style="color:var(--text-brand);">₹45</b> में 2 दिन का नेट।</div>';
-  return '<div class="demo-hero" style="align-items:center;text-align:center;"><span class="recharge-tag"><span class="ms">bolt</span>2 दिन का रिचार्ज</span><div class="big-amt">₹45</div><div class="demo-sub">बस ₹45 के 2 दिन के रिचार्ज से अपने घर का नेट शुरू करें — नेट तुरंत चालू।</div></div><div class="pre-banner">मोबाइल रिचार्ज की तरह — बाद में जब चाहें, जितने दिन चाहें रिचार्ज करें।</div>';
+  if (f === 'pack') return '<div class="pack-card"><div class="pack-ic"><span class="ms">bolt</span></div><div class="paym-body"><div class="paym-title" style="color:var(--text-default);">शुरुआती पैक · 2 दिन</div><div class="paym-sub">नेट तुरंत चालू</div></div><div class="big-amt" style="font-size:24px;">₹45</div></div><div class="pre-banner">₹45 का 2 दिन का रिचार्ज · मोबाइल रिचार्ज की तरह, बाद में जब चाहें बढ़ाएं।</div>';
+  if (f === 'mobile') return '<div class="compare" style="gap:var(--s16); padding:var(--s4) 0 var(--s8);"><span class="ms" style="font-size:36px;color:var(--icon-brand);">smartphone</span><span class="ms" style="color:var(--icon-nonAction);">arrow_forward</span><span class="ms" style="font-size:36px;color:var(--icon-brand);">router</span></div><div class="demo-sub" style="font-weight:600;color:var(--text-default);">जैसे मोबाइल में रिचार्ज, वैसे ही <b style="color:var(--text-brand);">₹45</b> में 2 दिन का नेट।</div>';
+  return '<div class="demo-hero"><span class="recharge-tag"><span class="ms">bolt</span>2 दिन का रिचार्ज</span><div class="big-amt">₹45</div><div class="demo-sub">बस ₹45 के 2 दिन के रिचार्ज से अपने घर का नेट शुरू करें। नेट तुरंत चालू।</div></div><div class="pre-banner">मोबाइल रिचार्ज की तरह · बाद में जब चाहें, जितने दिन चाहें रिचार्ज करें।</div>';
 }
 
 function renderIntroChooser(){
@@ -3197,6 +3198,10 @@ function introContinue(){ closeIntro(); goto('p5'); }
    2-day-recharge approach inserts the intro presentation and skips the pricing sheet. */
 function introNext(){ if (state.mode === 'B') goto('p5'); else openIntro(); }
 function costNext(){ if (state.mode === 'B') goto('p7'); else goto('p8'); }
+function renderCost(){
+  const up = document.getElementById('exp-upfront');
+  if (up) up.style.display = (state.mode === 'recharge') ? 'none' : '';
+}
 function startVersionB(){
   state.mode = 'B';
   state.paymentCase = 'success';
