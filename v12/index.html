@@ -1075,6 +1075,32 @@ body.has-variant .variant-badge { display:inline-flex; }
 .coupon-row .pos { color:var(--text-positive); }
 .coupon-remove { align-self:flex-start; background:transparent; border:0; cursor:pointer;
   color:var(--text-brand); font:var(--t-label-md); padding:var(--s4) 0; text-decoration:underline; }
+
+/* v12 · E — cost-screen communication variations */
+.demo-hero { display:flex; flex-direction:column; align-items:flex-start; gap:var(--s8); }
+.big-amt { font:800 40px/44px var(--ff); color:var(--text-default); }
+.big-amt .strike-amt { font-size:24px; }
+.demo-sub { font:var(--t-body-lg); color:var(--text-subtle); }
+.demo-note { font:var(--t-body-sm); color:var(--text-subtle); }
+.pct-badge { display:inline-flex; align-items:center; gap:4px; background:var(--bg-brand); color:#fff;
+  font:700 13px/18px var(--ff); padding:4px 12px; border-radius:var(--r-full); }
+.compare { display:flex; align-items:baseline; gap:var(--s12); flex-wrap:wrap; }
+.compare .old { font:400 22px/28px var(--ff); color:var(--text-disabled); text-decoration:line-through; }
+.compare .new { font:800 34px/38px var(--ff); color:var(--text-brand); }
+.zero-tag { align-self:flex-start; background:var(--bg-positive-subtle); color:var(--text-positive);
+  font:var(--t-label-md); padding:var(--s4) var(--s12); border-radius:var(--r-full); }
+.gift-banner { display:flex; align-items:center; gap:var(--s12); background:var(--bg-brand-subtle);
+  border:1px dashed var(--stroke-brand-focus); border-radius:var(--r-large); padding:var(--s16);
+  font:var(--t-label-lg); color:var(--text-brand); }
+.gift-banner .ms { color:var(--icon-brand); }
+.timer { display:inline-flex; align-items:center; gap:6px; background:var(--bg-critical-subtle);
+  color:var(--text-critical); font:var(--t-label-md); padding:var(--s4) var(--s12); border-radius:var(--r-full); }
+.timer .ms { color:var(--icon-critical); font-size:18px; }
+.pack-card { border:1px solid var(--stroke-default); border-radius:var(--r-large); padding:var(--s16);
+  display:flex; gap:var(--s12); align-items:center; box-shadow:var(--sh-sm); }
+.pack-ic { width:48px; height:48px; border-radius:var(--r-medium); background:var(--bg-brand-subtle);
+  display:grid; place-items:center; flex:0 0 auto; }
+.pack-ic .ms { color:var(--icon-brand); }
 </style>
 </head>
 <body>
@@ -1126,8 +1152,46 @@ body.has-variant .variant-badge { display:inline-flex; }
             <div class="scenario-card-cta">Walk D1 <span class="ms">arrow_forward</span></div>
           </div>
 
+          <div class="scenario-section-title">Exploration</div>
+          <div class="scenario-card" onclick="goto('gallery')">
+            <div class="scenario-card-num">E · Variations</div>
+            <div class="scenario-card-title">“शुरू करने के लिए” communication gallery</div>
+            <div class="scenario-card-desc">Compare every framing of the cost screen: existing A1–D1 plus 5 new ways each for B and D.</div>
+            <div class="scenario-card-cta">Open gallery <span class="ms">grid_view</span></div>
+          </div>
+
         </div>
         <div class="context-cta-wrap" style="background:transparent; box-shadow:none;"></div>
+      </div>
+    </section>
+
+    <!-- ============ E · COST-SCREEN VARIATIONS GALLERY ============ -->
+    <section class="screen" data-screen="gallery">
+      <div class="yellow-screen">
+        <div class="scenario-content">
+          <div class="scenario-title">“शुरू करने के लिए” · Communication variations</div>
+          <div class="scenario-subtitle">Same screen, different ways to frame the fee / offer. Tap any to preview the full cost screen.</div>
+          <div id="gallery-list"></div>
+        </div>
+        <div class="context-cta-wrap" style="background:transparent; box-shadow:none;"></div>
+      </div>
+    </section>
+
+    <!-- ============ COST-SCREEN DEMO (rendered from a variation) ============ -->
+    <section class="screen" data-screen="cost-demo">
+      <div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>
+      <header class="topbar back">
+        <button class="back-btn" aria-label="Back" onclick="goto('gallery')"><span class="ms">arrow_back</span></button>
+        <div class="spacer-flex"></div>
+        <div id="demo-chip" style="font:var(--t-label-sm); color:var(--text-subtle); padding:0 8px;"></div>
+        <button class="icon-btn" aria-label="Translate"><span class="ms">translate</span></button>
+      </header>
+      <div class="screen-body">
+        <div class="headline" id="demo-headline">शुरू करने के लिए</div>
+        <div id="demo-offer"></div>
+      </div>
+      <div class="sticky-bar flush">
+        <button class="cta accent pill" id="demo-cta">शुरू करें</button>
       </div>
     </section>
 
@@ -2789,7 +2853,7 @@ function screenGroup(n) {
   /* v11 pre-payment screens each form their own group so every transition
      slides (native push feel). pay-* screens are handled below. */
   if (/^p\d/.test(k)) return 'pre-' + k;
-  if (k === 'context' || k === 'variants' || k === '17' || k === 'exp-home') return 'yellow';
+  if (k === 'context' || k === 'variants' || k === '17' || k === 'exp-home' || k === 'gallery') return 'yellow';
   if (k === 'pay-proc' || k === 'pay-ok') return 'pay';
   if (k === 'pay-fail')                   return 'pay-fail';
   if (k === '1' || k === '13')       return 'loader';
@@ -2882,6 +2946,7 @@ function goto(n) {
   if (n === 10) { checkAddrCta(); applyAddrCtaLabel(); }
   if (n === 11) renderTypeList('screen11-list');
   if (n === 12) { renderTypeList('screen12-list'); populateSheet(); }
+  if (n === 'gallery') renderGallery();
   if (n === 20 && (state.variant === 'A2' || state.variant === 'C2')) {
     setTimeout(speakVoicePrompt, 350);
   }
@@ -3076,6 +3141,113 @@ function applyCoupon(){
   const code = (inp && inp.value.trim().toUpperCase()) || '';
   if (!code) { if (m) { m.textContent = 'कूपन कोड डालें'; m.classList.add('err'); } return; }
   state.couponApplied = true; state.couponCode = code; renderCoupon();
+}
+
+/* ---------- E · cost-screen ("शुरू करने के लिए") communication variations ---------- */
+const SEC = `<div class="cost-block">
+  <div class="cost-badge">विज़िट के समय</div>
+  <div class="cost-line"><span class="cost-amt">₹300</span><span>-&nbsp;&nbsp;नेट बॉक्स के लिए सिक्योरिटी</span></div>
+  <div class="cost-note">लौटाने पर यह रकम वापस मिल जाती है।</div>
+  <div class="cost-pill">नेट बॉक्स वापस → पैसे वापस</div>
+</div>`;
+const STRIKE = '<span class="strike-amt">₹100</span>₹25';
+function upBlock(badge, amt, label, pill){
+  return '<div class="cost-block"><div class="cost-badge">' + badge + '</div>' +
+    '<div class="cost-line"><span class="cost-amt">' + amt + '</span><span>-&nbsp;&nbsp;' + label + '</span></div>' +
+    (pill ? '<div class="cost-pill">' + pill + '</div>' : '') + '</div>';
+}
+function costCard(inner){ return '<div class="cost-card">' + inner + '</div>'; }
+
+const VARIATIONS = [
+  { id:'A1', group:'existing', label:'A1 · ₹100 booking fee', note:'Plain itemised booking fee, as today.',
+    headline:'शुरू करने के लिए', cta:'₹100 देकर विज़िट कन्फर्म करें',
+    body: costCard(upBlock('पहले','₹100','विज़िट कन्फर्म करने के लिए','') + SEC) },
+  { id:'B1', group:'existing', label:'B1 · ₹45 starting recharge', note:'₹45 framed as a credited starting recharge.',
+    headline:'शुरू करने के लिए', cta:'₹45 देकर विज़िट कन्फर्म करें',
+    body: costCard(upBlock('पहले','₹45','2 दिन का शुरुआती रिचार्ज (शामिल)','यह रकम आपके रिचार्ज में जुड़ जाती है') + SEC) },
+  { id:'C1', group:'existing', label:'C1 · ₹25 starting recharge', note:'₹25, credited as starting recharge.',
+    headline:'शुरू करने के लिए', cta:'₹25 देकर विज़िट कन्फर्म करें',
+    body: costCard(upBlock('पहले','₹25','शुरुआती रिचार्ज (शामिल)','यह रकम आपके रिचार्ज में जुड़ जाती है') + SEC) },
+  { id:'D1', group:'existing', label:'D1 · ₹25 via ₹75 coupon', note:'₹100 discounted to ₹25 with coupon WIOM75.',
+    headline:'शुरू करने के लिए', cta:'₹25 देकर विज़िट कन्फर्म करें',
+    body: costCard(upBlock('पहले · बुकिंग फीस', STRIKE,'विज़िट कन्फर्म करने के लिए','स्पेशल ऑफर · ₹75 की छूट लागू') + SEC) },
+
+  { id:'B-v1', group:'B', label:'Benefit-first', note:'Lead with what you get: 2 days of net for ₹45.',
+    headline:'₹45 में नेट चालू करें', cta:'₹45 देकर नेट चालू करें',
+    body:`<div class="demo-hero"><div class="big-amt">₹45</div><div class="demo-sub">इसमें आपका <b>2 दिन का शुरुआती रिचार्ज</b> शामिल है — नेट तुरंत चालू।</div></div>
+<div class="pre-banner">यह ₹45 कोई अलग बुकिंग फीस नहीं — यही आपका पहला रिचार्ज है।</div>` + costCard(SEC) },
+  { id:'B-v2', group:'B', label:'Anchor / discount', note:'Anchor against ₹100: launch offer, 55% less.',
+    headline:'शुरू करने के लिए', cta:'₹45 देकर विज़िट पक्की करें',
+    body: costCard(`<div class="cost-block"><div class="cost-badge">लॉन्च ऑफर</div>
+<div class="compare"><span class="old">₹100</span><span class="new">₹45</span><span class="pct-badge">55% कम</span></div>
+<div class="cost-note">यह ₹45 आपके पहले रिचार्ज में जुड़ जाते हैं।</div></div>` + SEC) },
+  { id:'B-v3', group:'B', label:'Net-zero framing', note:'Both amounts come back: real fee ₹0.',
+    headline:'आपका असल खर्च', cta:'₹45 देकर शुरू करें',
+    body: costCard(`<div class="cost-block">
+<div class="cost-line"><span class="cost-amt">₹45</span><span>-&nbsp;&nbsp;बुकिंग (रिचार्ज में जुड़ता है)</span></div>
+<div class="cost-line"><span class="cost-amt">₹300</span><span>-&nbsp;&nbsp;सिक्योरिटी (वापसी योग्य)</span></div></div>
+<div class="zero-tag">असल में फीस ₹0 — दोनों रकम आपके ही पास</div>`) },
+  { id:'B-v4', group:'B', label:'Simple one-liner', note:'Minimal, high-trust single statement.',
+    headline:'बस इतना ही', cta:'₹45 देकर आगे बढ़ें',
+    body:`<div class="demo-hero"><div class="big-amt">₹45</div><div class="demo-sub">बस ₹45 में विज़िट पक्की। यही ₹45 आपके पहले रिचार्ज में जुड़ जाते हैं।</div></div>
+<div class="demo-note">+ ₹300 सिक्योरिटी (नेट बॉक्स लौटाने पर वापस)</div>` },
+  { id:'B-v5', group:'B', label:'Recharge-pack', note:'Frame ₹45 as a 2-day starter pack, not a fee.',
+    headline:'शुरुआती पैक चुनें', cta:'₹45 का पैक लेकर शुरू करें',
+    body:`<div class="pack-card"><div class="pack-ic"><span class="ms">bolt</span></div>
+<div class="paym-body"><div class="paym-title" style="color:var(--text-default);">शुरुआती पैक · 2 दिन</div><div class="paym-sub">नेट तुरंत चालू · ₹45</div></div>
+<div class="big-amt" style="font-size:24px;">₹45</div></div>
+<div class="pre-banner">अलग से बुकिंग फीस नहीं — पैक लेते ही विज़िट पक्की।</div>` + costCard(SEC) },
+
+  { id:'D-v1', group:'D', label:'Percent-off hero', note:'Big 75% OFF, ₹100 struck to ₹25.',
+    headline:'स्पेशल ऑफर', cta:'₹25 देकर विज़िट पक्की करें',
+    body:`<div class="demo-hero"><span class="pct-badge">75% OFF</span><div class="compare"><span class="old">₹100</span><span class="new">₹25</span></div><div class="demo-sub">बुकिंग फीस ₹100, स्पेशल ऑफर (WIOM75) से सिर्फ ₹25।</div></div>` + costCard(SEC) },
+  { id:'D-v2', group:'D', label:'Gift / coupon received', note:'Frame the ₹75 off as a gift coupon.',
+    headline:'आपके लिए तोहफ़ा', cta:'₹25 देकर शुरू करें',
+    body:`<div class="gift-banner"><span class="ms">redeem</span><span>आपको ₹75 का कूपन मिला है!</span></div>` + costCard(upBlock('पहले · बुकिंग फीस', STRIKE,'विज़िट कन्फर्म करने के लिए','कूपन WIOM75 अपने आप लग गया') + SEC) },
+  { id:'D-v3', group:'D', label:'Urgency / limited-time', note:'Countdown framing: only today.',
+    headline:'सिर्फ आज का ऑफर', cta:'₹25 देकर अभी पक्की करें',
+    body:`<div class="timer"><span class="ms">timer</span><span>ऑफर खत्म होने में 09:58</span></div>` + costCard(upBlock('पहले · बुकिंग फीस', STRIKE,'विज़िट कन्फर्म करने के लिए','WIOM75 · ₹75 की छूट') + SEC) },
+  { id:'D-v4', group:'D', label:'Transparent breakdown', note:'Receipt: ₹100 − ₹75 = ₹25.',
+    headline:'शुरू करने के लिए', cta:'₹25 देकर विज़िट कन्फर्म करें',
+    body: costCard(upBlock('पहले · बुकिंग फीस', STRIKE,'विज़िट कन्फर्म करने के लिए','') + SEC) +
+      `<div class="coupon-card" style="display:flex;"><div class="coupon-head"><span class="ms">sell</span><span>स्पेशल ऑफर लागू है</span></div>
+<div class="coupon-applied"><div class="coupon-code"><span class="ms">confirmation_number</span><span>WIOM75</span></div><div class="coupon-off">₹75 OFF</div></div>
+<div class="coupon-summary"><div class="coupon-row"><span>बुकिंग फीस</span><span>₹100</span></div><div class="coupon-row"><span>कूपन छूट (WIOM75)</span><span class="pos">−₹75</span></div><div class="coupon-row total"><span>देना होगा</span><span>₹25</span></div></div></div>` },
+  { id:'D-v5', group:'D', label:'Referral / own coupon', note:'Foreground applying a coupon from a friend.',
+    headline:'कूपन लगाकर बचाएं', cta:'₹25 देकर शुरू करें',
+    body: costCard(upBlock('पहले · बुकिंग फीस', STRIKE,'विज़िट कन्फर्म करने के लिए','') + SEC) +
+      `<div class="coupon-card" style="display:flex;"><div class="coupon-head"><span class="ms">sell</span><span>कूपन / ऑफर</span></div>
+<div class="coupon-applied"><div class="coupon-code"><span class="ms">confirmation_number</span><span>WIOM75</span></div><div class="coupon-off">₹75 OFF</div></div>
+<div class="coupon-own"><div class="coupon-own-label">दोस्त से कूपन मिला है? लगाकर ₹75 तक बचाएं</div>
+<div class="coupon-input-row"><input placeholder="कूपन कोड" /><button class="coupon-apply">लगाएं</button></div></div></div>` },
+];
+
+function renderGallery(){
+  const c = document.getElementById('gallery-list'); if (!c) return;
+  const groups = [['Existing variants','existing'], ['Option B · ₹45 — 5 ways','B'], ['Option D · ₹25 coupon — 5 ways','D']];
+  let html = '';
+  groups.forEach(function(grp){
+    html += '<div class="scenario-section-title">' + grp[0] + '</div>';
+    VARIATIONS.filter(function(v){ return v.group === grp[1]; }).forEach(function(v){
+      html += `<div class="scenario-card" onclick="openDemo('${v.id}')">` +
+        `<div class="scenario-card-num">${v.id}</div>` +
+        `<div class="scenario-card-title">${v.label}</div>` +
+        `<div class="scenario-card-desc">${v.note}</div>` +
+        `<div class="scenario-card-cta">देखें <span class="ms">arrow_forward</span></div>` +
+      `</div>`;
+    });
+  });
+  c.innerHTML = html;
+}
+
+function openDemo(id){
+  const v = VARIATIONS.find(function(x){ return x.id === id; });
+  if (!v) return;
+  setTxt('demo-chip', v.id);
+  setTxt('demo-headline', v.headline || 'शुरू करने के लिए');
+  const off = document.getElementById('demo-offer'); if (off) off.innerHTML = v.body;
+  setTxt('demo-cta', v.cta);
+  goto('cost-demo');
 }
 
 function showDialog() { document.getElementById('dialog').style.display = 'flex'; }
