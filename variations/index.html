@@ -1117,13 +1117,29 @@ body.has-variant .variant-badge { display:inline-flex; }
     display:flex; flex-direction:column; box-shadow:0 10px 30px rgba(0,0,0,.42); border:6px solid #2a2238; }
   .mini .statusbar, .mini .sticky-bar, .mini .topbar { flex:0 0 auto; }
   .mini .screen-body { overflow-y:auto; }
+  .mini { position:relative; }
+  .recharge-tag { display:inline-flex; align-items:center; gap:6px; background:#fff; color:var(--text-brand);
+    font:600 13px/18px var(--ff); padding:4px 12px; border-radius:9999px; box-shadow:var(--sh-sm); }
+  .recharge-tag .ms { color:var(--icon-brand); font-size:16px; }
+  .offer-banner { background:var(--bg-brand-subtle); border:1px dashed var(--stroke-brand-focus);
+    border-radius:16px; padding:12px 16px; display:flex; gap:8px; align-items:flex-start;
+    font:var(--t-body-md); color:var(--text-default); width:100%; }
+  .offer-banner .ms { color:var(--icon-brand); flex:0 0 auto; }
+  .offer-banner b { color:var(--text-brand); }
+  .mini-scrim { position:absolute; inset:0; background:var(--bg-overlay); }
+  .mini-sheet { position:absolute; left:0; right:0; bottom:0; background:var(--bg-default);
+    border-radius:24px 24px 0 0; padding:16px; display:flex; flex-direction:column; gap:12px; box-shadow:0 -8px 24px rgba(0,0,0,.25); }
+  .mini-sheet .handle { width:32px; height:4px; background:var(--bg-strong); border-radius:9999px; align-self:center; }
+  .sheet-title { font:700 18px/26px var(--ff); color:var(--text-default); }
+  .sheet-sub { font:var(--t-body-md); color:var(--text-subtle); }
+  .sheet-sub b { color:var(--text-default); }
 </style>
 </head>
 <body>
 <div class="board">
   <div class="board-head">
-    <h1>“शुरू करने के लिए” · सारी variations एक जगह</h1>
-    <p>Existing A1–D1 plus 5 communication treatments each for B (₹45) and D (₹25 coupon). Everything on one page — no clicking through.</p>
+    <h1>Onboarding · communication variations</h1>
+    <p>Cost-screen framings (A1–D1, B×5, D×5), plus the special-offer message on the serviceability screen (×5) and the offer bottom sheet on “₹100 देकर विज़िट कन्फर्म करें” (×5). All on one page.</p>
   </div>
   <div class="grid" id="grid"></div>
 </div>
@@ -1212,6 +1228,56 @@ function miniScreen(v){
     '<div class="screen-body"><div class="headline">' + (v.headline || 'शुरू करने के लिए') + '</div>' + v.body + '</div>' +
     '<div class="sticky-bar flush"><button class="cta accent pill">' + v.cta + '</button></div>';
 }
+const SERV_HOUSE = '<svg width="110" height="100" viewBox="0 0 120 110" fill="none" stroke="#161021" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"><path d="M24 96 V52 L60 26 L96 52 V96 Z"/><path d="M48 96 V72 h24 v24"/><path d="M60 26 V8"/><path d="M60 10 h22 v13 h-22" fill="#2F80ED" stroke="#2F80ED"/></svg>';
+
+/* 5 ways to tell the special offer on the serviceability screen */
+const SERV_OFFERS = [
+  { id:'S1', label:'Offer banner', note:'Dashed offer banner below the headline.',
+    offer:'<div class="offer-banner"><span class="ms">redeem</span><div>स्पेशल ऑफर: सिर्फ <b>₹45</b> के 2 दिन के रिचार्ज से अपने घर का नेट लगवाएं</div></div>' },
+  { id:'S2', label:'Anchored card', note:'Anchored against ₹100.',
+    offer:'<div class="offer-banner" style="flex-direction:column; align-items:flex-start; gap:6px;"><span class="recharge-tag"><span class="ms">bolt</span>स्पेशल ऑफर</span><div>₹100 की जगह सिर्फ <b>₹45</b>। 2 दिन के रिचार्ज से शुरू करें।</div></div>' },
+  { id:'S3', label:'Inline subtext', note:'Light one-line under the headline.',
+    offer:'<div class="subhead" style="color:var(--text-brand); font-weight:600;">और खास बात: सिर्फ 2 दिन के रिचार्ज (₹45) से नेट चालू हो जाएगा</div>' },
+  { id:'S4', label:'Celebration', note:'Area-specific celebratory offer.',
+    offer:'<div class="offer-banner"><span class="ms">celebration</span><div><b>आपके इलाके के लिए स्पेशल ऑफर!</b> सिर्फ 2 दिन का रिचार्ज (₹45) और नेट चालू।</div></div>' },
+  { id:'S5', label:'Tag + line', note:'Compact offer tag.',
+    offer:'<span class="recharge-tag"><span class="ms">bolt</span>ऑफर · 2 दिन का रिचार्ज</span><div class="subhead">सिर्फ <b style="color:var(--text-brand);">₹45</b> में नेट लगवाएं</div>' },
+];
+
+/* 5 ways for the bottom sheet on "₹100 देकर विज़िट कन्फर्म करें" */
+const CONFIRM_SHEETS = [
+  { id:'CS1', label:'Discount reveal', note:'Reveal: ₹100 dropped to ₹45.',
+    body:'<div class="sheet-title">🎉 स्पेशल ऑफर!</div><div class="sheet-sub"><b><span class="strike-amt" style="font-size:inherit;">₹100</span> की जगह सिर्फ ₹45।</b> सिर्फ 2 दिन के रिचार्ज में आपकी विज़िट कन्फर्म हो जाएगी।</div><button class="cta accent pill">₹45 देकर विज़िट कन्फर्म करें</button>' },
+  { id:'CS2', label:'Savings', note:'You saved ₹55.',
+    body:'<div class="sheet-title">आपने ₹55 बचाए!</div><div class="sheet-sub">स्पेशल ऑफर के चलते सिर्फ <b>₹45</b> के 2 दिन के रिचार्ज में विज़िट कन्फर्म।</div><button class="cta accent pill">₹45 देकर कन्फर्म करें</button>' },
+  { id:'CS3', label:'Simple', note:'Plain statement.',
+    body:'<div class="sheet-title">स्पेशल ऑफर लागू</div><div class="sheet-sub">₹100 की जगह अब सिर्फ <b>₹45</b> देना होगा। यही आपका 2 दिन का रिचार्ज है, और विज़िट कन्फर्म।</div><button class="cta accent pill">₹45 देकर कन्फर्म करें</button>' },
+  { id:'CS4', label:'Coupon-style', note:'OFFER55 applied: ₹100 − ₹55 = ₹45.',
+    body:'<div class="sheet-title">स्पेशल ऑफर</div><div class="coupon-applied"><div class="coupon-code"><span class="ms">confirmation_number</span><span>OFFER55</span></div><div class="coupon-off">₹55 OFF</div></div><div class="coupon-summary"><div class="coupon-row"><span>बुकिंग</span><span>₹100</span></div><div class="coupon-row"><span>ऑफर छूट</span><span class="pos">−₹55</span></div><div class="coupon-row total"><span>देना होगा (2 दिन का रिचार्ज)</span><span>₹45</span></div></div><button class="cta accent pill">₹45 देकर कन्फर्म करें</button>' },
+  { id:'CS5', label:'Recharge framing', note:'₹45 = your 2-day recharge, not a fee.',
+    body:'<div class="sheet-title">₹45 का 2 दिन का रिचार्ज</div><div class="sheet-sub">स्पेशल ऑफर के चलते कोई अलग बुकिंग फीस नहीं। सिर्फ ₹45 का 2 दिन का रिचार्ज करें और विज़िट कन्फर्म।</div><button class="cta accent pill">₹45 का रिचार्ज करके कन्फर्म करें</button>' },
+];
+
+function servMini(offer){
+  return '<div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>' +
+    '<header class="topbar minimal"><div class="spacer-flex"></div><div class="right"><button class="icon-btn"><span class="ms">translate</span></button></div></header>' +
+    '<div class="screen-body center-body"><div class="spacer-flex"></div>' + SERV_HOUSE +
+    '<div class="serv-place">Rajiv colony, Sector 40</div>' +
+    '<div class="headline">यहाँ घर का नेट लग सकता है</div>' + offer +
+    '<button class="link-row">किसी और जगह के लिए चेक करें <span class="ms">chevron_right</span></button>' +
+    '<div class="spacer-flex"></div></div>' +
+    '<div class="sticky-bar flush"><button class="cta accent pill">इसे कैसे चलाना है?</button></div>';
+}
+
+function sheetMini(body){
+  var cost = '<div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>' +
+    '<header class="topbar back"><button class="back-btn"><span class="ms">arrow_back</span></button><div class="spacer-flex"></div><button class="icon-btn"><span class="ms">translate</span></button></header>' +
+    '<div class="screen-body"><div class="headline">शुरू करने के लिए</div>' +
+    costCard(upBlock('पहले','₹100','विज़िट कन्फर्म करने के लिए','') + SEC) + '</div>' +
+    '<div class="sticky-bar flush"><button class="cta accent pill">₹100 देकर विज़िट कन्फर्म करें</button></div>';
+  return cost + '<div class="mini-scrim"></div><div class="mini-sheet"><div class="handle"></div>' + body + '</div>';
+}
+
 var grid = document.getElementById('grid');
 [['Existing variants','existing'], ['Option B · ₹45 — 5 ways','B'], ['Option D · ₹25 coupon — 5 ways','D']].forEach(function(g){
   var h = document.createElement('div'); h.className = 'group-title'; h.textContent = g[0]; grid.appendChild(h);
@@ -1222,6 +1288,24 @@ var grid = document.getElementById('grid');
     grid.appendChild(cell);
   });
 });
+(function(){
+  var h = document.createElement('div'); h.className='group-title';
+  h.textContent='Serviceability screen · special offer (5 ways)'; grid.appendChild(h);
+  SERV_OFFERS.forEach(function(v){
+    var cell=document.createElement('div'); cell.className='cell';
+    cell.innerHTML='<div class="cell-label"><b>'+v.id+'</b> · '+v.label+'<div class="cell-note">'+v.note+'</div></div><div class="mini">'+servMini(v.offer)+'</div>';
+    grid.appendChild(cell);
+  });
+})();
+(function(){
+  var h = document.createElement('div'); h.className='group-title';
+  h.textContent='“₹100 देकर विज़िट कन्फर्म करें” → offer bottom sheet (5 ways)'; grid.appendChild(h);
+  CONFIRM_SHEETS.forEach(function(v){
+    var cell=document.createElement('div'); cell.className='cell';
+    cell.innerHTML='<div class="cell-label"><b>'+v.id+'</b> · '+v.label+'<div class="cell-note">'+v.note+'</div></div><div class="mini">'+sheetMini(v.body)+'</div>';
+    grid.appendChild(cell);
+  });
+})();
 </script>
 </body>
 </html>
