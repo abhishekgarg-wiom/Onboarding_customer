@@ -1139,7 +1139,7 @@ body.has-variant .variant-badge { display:inline-flex; }
 <div class="board">
   <div class="board-head">
     <h1>Onboarding · communication variations</h1>
-    <p>Cost-screen framings (A1–D1, B×5, D×5), plus the special-offer message on the serviceability screen (×5) and the offer bottom sheet on “₹100 देकर विज़िट कन्फर्म करें” (×5). All on one page.</p>
+    <p>Cost-screen framings (A1–D1, B×5, D×5), plus the special-offer message on the serviceability screen (×5) and a visit-confirm offer bottom sheet (₹45 / 2-day recharge, ×5). All on one page.</p>
   </div>
   <div class="grid" id="grid"></div>
 </div>
@@ -1233,29 +1233,29 @@ const SERV_HOUSE = '<svg width="110" height="100" viewBox="0 0 120 110" fill="no
 /* 5 ways to tell the special offer on the serviceability screen */
 const SERV_OFFERS = [
   { id:'S1', label:'Offer banner', note:'Dashed offer banner below the headline.',
-    offer:'<div class="offer-banner"><span class="ms">redeem</span><div>स्पेशल ऑफर: सिर्फ <b>₹45</b> के 2 दिन के रिचार्ज से अपने घर का नेट लगवाएं</div></div>' },
-  { id:'S2', label:'Anchored card', note:'Anchored against ₹100.',
-    offer:'<div class="offer-banner" style="flex-direction:column; align-items:flex-start; gap:6px;"><span class="recharge-tag"><span class="ms">bolt</span>स्पेशल ऑफर</span><div>₹100 की जगह सिर्फ <b>₹45</b>। 2 दिन के रिचार्ज से शुरू करें।</div></div>' },
+    offer:'<div class="offer-banner"><span class="ms">redeem</span><div>स्पेशल ऑफर: सिर्फ <b>2 दिन के रिचार्ज</b> से अपने घर का नेट लगवाएं</div></div>' },
+  { id:'S2', label:'Highlight card', note:'Recharge-to-start, no price.',
+    offer:'<div class="offer-banner" style="flex-direction:column; align-items:flex-start; gap:6px;"><span class="recharge-tag"><span class="ms">bolt</span>स्पेशल ऑफर</span><div>सिर्फ <b>2 दिन के रिचार्ज</b> से अपने घर का नेट शुरू करें</div></div>' },
   { id:'S3', label:'Inline subtext', note:'Light one-line under the headline.',
-    offer:'<div class="subhead" style="color:var(--text-brand); font-weight:600;">और खास बात: सिर्फ 2 दिन के रिचार्ज (₹45) से नेट चालू हो जाएगा</div>' },
+    offer:'<div class="subhead" style="color:var(--text-brand); font-weight:600;">और खास बात: सिर्फ 2 दिन के रिचार्ज से नेट चालू हो जाएगा</div>' },
   { id:'S4', label:'Celebration', note:'Area-specific celebratory offer.',
-    offer:'<div class="offer-banner"><span class="ms">celebration</span><div><b>आपके इलाके के लिए स्पेशल ऑफर!</b> सिर्फ 2 दिन का रिचार्ज (₹45) और नेट चालू।</div></div>' },
+    offer:'<div class="offer-banner"><span class="ms">celebration</span><div><b>आपके इलाके के लिए स्पेशल ऑफर!</b> सिर्फ 2 दिन के रिचार्ज से नेट चालू।</div></div>' },
   { id:'S5', label:'Tag + line', note:'Compact offer tag.',
-    offer:'<span class="recharge-tag"><span class="ms">bolt</span>ऑफर · 2 दिन का रिचार्ज</span><div class="subhead">सिर्फ <b style="color:var(--text-brand);">₹45</b> में नेट लगवाएं</div>' },
+    offer:'<span class="recharge-tag"><span class="ms">bolt</span>ऑफर · 2 दिन का रिचार्ज</span><div class="subhead">बस 2 दिन के रिचार्ज में नेट लगवाएं</div>' },
 ];
 
 /* 5 ways for the bottom sheet on "₹100 देकर विज़िट कन्फर्म करें" */
 const CONFIRM_SHEETS = [
-  { id:'CS1', label:'Discount reveal', note:'Reveal: ₹100 dropped to ₹45.',
-    body:'<div class="sheet-title">🎉 स्पेशल ऑफर!</div><div class="sheet-sub"><b><span class="strike-amt" style="font-size:inherit;">₹100</span> की जगह सिर्फ ₹45।</b> सिर्फ 2 दिन के रिचार्ज में आपकी विज़िट कन्फर्म हो जाएगी।</div><button class="cta accent pill">₹45 देकर विज़िट कन्फर्म करें</button>' },
-  { id:'CS2', label:'Savings', note:'You saved ₹55.',
-    body:'<div class="sheet-title">आपने ₹55 बचाए!</div><div class="sheet-sub">स्पेशल ऑफर के चलते सिर्फ <b>₹45</b> के 2 दिन के रिचार्ज में विज़िट कन्फर्म।</div><button class="cta accent pill">₹45 देकर कन्फर्म करें</button>' },
-  { id:'CS3', label:'Simple', note:'Plain statement.',
-    body:'<div class="sheet-title">स्पेशल ऑफर लागू</div><div class="sheet-sub">₹100 की जगह अब सिर्फ <b>₹45</b> देना होगा। यही आपका 2 दिन का रिचार्ज है, और विज़िट कन्फर्म।</div><button class="cta accent pill">₹45 देकर कन्फर्म करें</button>' },
-  { id:'CS4', label:'Coupon-style', note:'OFFER55 applied: ₹100 − ₹55 = ₹45.',
-    body:'<div class="sheet-title">स्पेशल ऑफर</div><div class="coupon-applied"><div class="coupon-code"><span class="ms">confirmation_number</span><span>OFFER55</span></div><div class="coupon-off">₹55 OFF</div></div><div class="coupon-summary"><div class="coupon-row"><span>बुकिंग</span><span>₹100</span></div><div class="coupon-row"><span>ऑफर छूट</span><span class="pos">−₹55</span></div><div class="coupon-row total"><span>देना होगा (2 दिन का रिचार्ज)</span><span>₹45</span></div></div><button class="cta accent pill">₹45 देकर कन्फर्म करें</button>' },
-  { id:'CS5', label:'Recharge framing', note:'₹45 = your 2-day recharge, not a fee.',
-    body:'<div class="sheet-title">₹45 का 2 दिन का रिचार्ज</div><div class="sheet-sub">स्पेशल ऑफर के चलते कोई अलग बुकिंग फीस नहीं। सिर्फ ₹45 का 2 दिन का रिचार्ज करें और विज़िट कन्फर्म।</div><button class="cta accent pill">₹45 का रिचार्ज करके कन्फर्म करें</button>' },
+  { id:'CS1', label:'Offer hero', note:'Celebratory: confirm visit with a 2-day recharge.',
+    body:'<div class="sheet-title">🎉 स्पेशल ऑफर!</div><div class="sheet-sub">सिर्फ <b>2 दिन के रिचार्ज (₹45)</b> से अपनी विज़िट कन्फर्म करें।</div><button class="cta accent pill">₹45 का रिचार्ज करके कन्फर्म करें</button>' },
+  { id:'CS2', label:'Recharge = start', note:'The ₹45 recharge starts everything.',
+    body:'<span class="recharge-tag"><span class="ms">bolt</span>2 दिन का रिचार्ज</span><div class="big-amt" style="margin-top:8px;">₹45</div><div class="sheet-sub">इतने में ही आपकी विज़िट कन्फर्म और नेट चालू।</div><button class="cta accent pill">₹45 देकर विज़िट कन्फर्म करें</button>' },
+  { id:'CS3', label:'Simple', note:'Plain one-liner.',
+    body:'<div class="sheet-title">विज़िट कन्फर्म करें</div><div class="sheet-sub">बस <b>₹45 का 2 दिन का रिचार्ज</b> करें और आपकी विज़िट कन्फर्म हो जाएगी।</div><button class="cta accent pill">₹45 का रिचार्ज करें</button>' },
+  { id:'CS4', label:'Pack-style', note:'2-day starter-pack framing.',
+    body:'<div class="pack-card"><div class="pack-ic"><span class="ms">bolt</span></div><div class="paym-body"><div class="paym-title" style="color:var(--text-default);">शुरुआती रिचार्ज · 2 दिन</div><div class="paym-sub">विज़िट कन्फर्म करने के लिए</div></div><div class="big-amt" style="font-size:24px;">₹45</div></div><button class="cta accent pill" style="margin-top:8px;">₹45 का पैक लेकर कन्फर्म करें</button>' },
+  { id:'CS5', label:'Benefit', note:'Net starts with a small recharge.',
+    body:'<div class="sheet-title">सिर्फ ₹45 में नेट की शुरुआत</div><div class="sheet-sub">2 दिन का रिचार्ज करें · विज़िट कन्फर्म · नेट चालू।</div><button class="cta accent pill">₹45 देकर विज़िट कन्फर्म करें</button>' },
 ];
 
 function servMini(offer){
@@ -1270,12 +1270,17 @@ function servMini(offer){
 }
 
 function sheetMini(body){
-  var cost = '<div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>' +
-    '<header class="topbar back"><button class="back-btn"><span class="ms">arrow_back</span></button><div class="spacer-flex"></div><button class="icon-btn"><span class="ms">translate</span></button></header>' +
-    '<div class="screen-body"><div class="headline">शुरू करने के लिए</div>' +
-    costCard(upBlock('पहले','₹100','विज़िट कन्फर्म करने के लिए','') + SEC) + '</div>' +
-    '<div class="sticky-bar flush"><button class="cta accent pill">₹100 देकर विज़िट कन्फर्म करें</button></div>';
-  return cost + '<div class="mini-scrim"></div><div class="mini-sheet"><div class="handle"></div>' + body + '</div>';
+  var bg = '<div class="statusbar"><span>04:35 PM</span><span class="right">📶 📡 50%</span></div>' +
+    '<header class="topbar back"><button class="back-btn"><span class="ms">arrow_back</span></button><div class="spacer-flex"></div><button class="icon-btn"><span class="ms">support_agent</span></button><button class="icon-btn"><span class="ms">translate</span></button></header>' +
+    '<div class="screen-body"><div class="headline">घर पर नेट शुरू करने के लिए</div>' +
+      '<div class="stepper">' +
+        '<div class="step"><div class="step-rail"><div class="step-num">1</div><div class="step-line"></div></div>' +
+          '<div class="step-body"><div class="cost-badge" style="margin-bottom:6px;">पहले</div><div class="step-title">व्योम की तरफ़ से आपके घर पर एक विज़िट होती है।</div></div></div>' +
+        '<div class="step"><div class="step-rail"><div class="step-num">2</div></div>' +
+          '<div class="step-body"><div class="cost-badge" style="margin-bottom:6px;">फिर विज़िट के समय</div><div class="step-title">विज़िट के समय नेट बॉक्स के लिए ₹200 का सिक्योरिटी फीस देना होता है</div><div class="step-sub">लौटाने पर यह रकम वापस मिल जाती है</div><div class="cost-pill" style="margin-top:8px;">नेट बॉक्स वापस → ₹200 वापस</div></div></div>' +
+      '</div></div>' +
+    '<div class="sticky-bar flush"><button class="cta accent pill">अपने हिसाब से रिचार्ज चुनें</button></div>';
+  return bg + '<div class="mini-scrim"></div><div class="mini-sheet"><div class="handle"></div>' + body + '</div>';
 }
 
 var grid = document.getElementById('grid');
@@ -1299,7 +1304,7 @@ var grid = document.getElementById('grid');
 })();
 (function(){
   var h = document.createElement('div'); h.className='group-title';
-  h.textContent='“₹100 देकर विज़िट कन्फर्म करें” → offer bottom sheet (5 ways)'; grid.appendChild(h);
+  h.textContent='विज़िट कन्फर्म offer · bottom sheet (₹45 / 2 दिन का रिचार्ज) — 5 ways'; grid.appendChild(h);
   CONFIRM_SHEETS.forEach(function(v){
     var cell=document.createElement('div'); cell.className='cell';
     cell.innerHTML='<div class="cell-label"><b>'+v.id+'</b> · '+v.label+'<div class="cell-note">'+v.note+'</div></div><div class="mini">'+sheetMini(v.body)+'</div>';
